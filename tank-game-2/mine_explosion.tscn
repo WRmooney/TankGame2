@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://fsq07lybxybf"]
+
+[ext_resource type="Script" uid="uid://bve3tqdff7pmn" path="res://mine_explosion.gd" id="1_f8ti5"]
+[ext_resource type="Script" uid="uid://bda8nerevvxfn" path="res://mine_explosion_area.gd" id="2_fgtiq"]
+
+[sub_resource type="Gradient" id="Gradient_fgtiq"]
+offsets = PackedFloat32Array(0, 0.32, 0.49454546)
+colors = PackedColorArray(0.93, 0.055800002, 0.055800002, 1, 0.96, 0.58144, 0.08639997, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_sp1n0"]
+gradient = SubResource("Gradient_fgtiq")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Curve" id="Curve_28tef"]
+_limits = [0.0, 5.0, 0.0, 1.0]
+_data = [Vector2(0.0038910508, 0), 0.0, 0.0, 0, 0, Vector2(0.09727626, 5), 0.0, 0.0, 0, 0, Vector2(0.75097275, 5), 0.0, 0.0, 0, 0, Vector2(1, 0.04508257), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_8grcl"]
+curve = SubResource("Curve_28tef")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_okcqs"]
+particle_flag_disable_z = true
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+linear_accel_min = -100.0
+linear_accel_max = -50.0
+scale_min = 0.5
+scale_max = 0.5
+scale_curve = SubResource("CurveTexture_8grcl")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_f8ti5"]
+
+[node name="GPUParticles2D" type="GPUParticles2D" unique_id=404837875]
+emitting = false
+amount = 1
+texture = SubResource("GradientTexture2D_sp1n0")
+lifetime = 1.5
+one_shot = true
+explosiveness = 1.0
+randomness = 1.0
+process_material = SubResource("ParticleProcessMaterial_okcqs")
+script = ExtResource("1_f8ti5")
+length = 1.5
+
+[node name="Area2D" type="Area2D" parent="." unique_id=393544565]
+script = ExtResource("2_fgtiq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=2142857652]
+scale = Vector2(16, 16)
+shape = SubResource("CircleShape2D_f8ti5")
+disabled = true
+
+[node name="Col_on" type="Timer" parent="." unique_id=419117336]
+one_shot = true
+
+[node name="Col_off" type="Timer" parent="." unique_id=116272695]
+one_shot = true
+
+[connection signal="finished" from="." to="." method="_on_finished"]
+[connection signal="body_shape_entered" from="Area2D" to="Area2D" method="_on_body_shape_entered"]
+[connection signal="timeout" from="Col_on" to="." method="_on_col_on_timeout"]
+[connection signal="timeout" from="Col_off" to="." method="_on_col_off_timeout"]

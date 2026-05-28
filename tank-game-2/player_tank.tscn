@@ -1,0 +1,139 @@
+[gd_scene format=3 uid="uid://cgpy1t8nxtt64"]
+
+[ext_resource type="Script" uid="uid://jmfgb2pilcxo" path="res://player_tank.gd" id="1_n5f8l"]
+[ext_resource type="Texture2D" uid="uid://iw36stixn77l" path="res://icon.svg" id="2_1jnsx"]
+[ext_resource type="Script" uid="uid://bhd0kon3chuyq" path="res://player_movement_component.gd" id="3_4ab8g"]
+[ext_resource type="Script" uid="uid://cmsp808x0ak8j" path="res://shooting_component.gd" id="4_w85wn"]
+[ext_resource type="Script" uid="uid://b5mqk2aoeg38r" path="res://health_component.gd" id="5_1jnsx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1ealj"]
+size = Vector2(19.060402, 19.060402)
+
+[sub_resource type="SystemFont" id="SystemFont_1jnsx"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_4ab8g"]
+font = SubResource("SystemFont_1jnsx")
+font_size = 30
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SystemFont" id="SystemFont_4ab8g"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_w85wn"]
+font = SubResource("SystemFont_4ab8g")
+font_size = 30
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SystemFont" id="SystemFont_w85wn"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_vi4l0"]
+font = SubResource("SystemFont_w85wn")
+font_size = 80
+outline_size = 15
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 5
+shadow_color = Color(0.87, 0.1044, 0.84448004, 1)
+shadow_offset = Vector2(10, 10)
+
+[node name="Player_tank" type="CharacterBody2D" unique_id=1198161332]
+motion_mode = 1
+wall_min_slide_angle = 0.0
+script = ExtResource("1_n5f8l")
+speed = 150
+max_bullets = 10
+max_secondary = 3
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=338251651]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_1jnsx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=672815603]
+position = Vector2(-1.1920929e-07, 1.1920929e-07)
+scale = Vector2(1.5, 1.5)
+shape = SubResource("RectangleShape2D_1ealj")
+debug_color = Color(0.9349291, 2.0407439e-05, 0.6405946, 0.41960785)
+
+[node name="movement_component" type="Node" parent="." unique_id=555221281]
+script = ExtResource("3_4ab8g")
+
+[node name="shooting_component" type="Node" parent="." unique_id=1012643861]
+script = ExtResource("4_w85wn")
+
+[node name="health_component" type="Node" parent="." unique_id=488077003]
+script = ExtResource("5_1jnsx")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=1341149735 groups=["hurtable"]]
+radius = 50.0
+affect_navigation_mesh = true
+carve_navigation_mesh = true
+avoidance_layers = 15
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1369838070]
+position_smoothing_enabled = true
+
+[node name="PrimaryContainer" type="Node" parent="." unique_id=2116076968]
+
+[node name="SecondaryContainer" type="Node" parent="." unique_id=122439246]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1956557960]
+
+[node name="HealthLabel" type="Label" parent="CanvasLayer" unique_id=1170438300]
+z_index = 1
+offset_left = -550.0
+offset_top = -300.0
+offset_right = -150.0
+offset_bottom = -258.0
+text = "20/20"
+label_settings = SubResource("LabelSettings_4ab8g")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=721049005]
+offset_left = -550.0
+offset_top = -300.0
+offset_right = -150.0
+offset_bottom = -260.0
+color = Color(0.6455512, 2.5629624e-06, 4.813075e-07, 1)
+
+[node name="AmmoLabel" type="Label" parent="CanvasLayer" unique_id=1254816575]
+offset_left = -550.0
+offset_top = -250.0
+offset_right = -327.0
+offset_bottom = -208.0
+text = "Bullets (LMB): 5"
+label_settings = SubResource("LabelSettings_w85wn")
+
+[node name="AmmoLabel2" type="Label" parent="CanvasLayer" unique_id=1687843005]
+offset_left = -550.0
+offset_top = -200.0
+offset_right = -336.0
+offset_bottom = -158.0
+text = "Mines (RMB): 2"
+label_settings = SubResource("LabelSettings_w85wn")
+
+[node name="LosingUI" type="CanvasLayer" parent="." unique_id=117271549]
+
+[node name="Label" type="Label" parent="LosingUI" unique_id=1974601965]
+visible = false
+offset_left = -300.0
+offset_top = -200.0
+offset_right = 300.0
+offset_bottom = 200.0
+text = "YOU LOSE!!!"
+label_settings = SubResource("LabelSettings_vi4l0")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WinningUI" type="CanvasLayer" parent="." unique_id=372388518]
+
+[node name="Label" type="Label" parent="WinningUI" unique_id=1643653251]
+visible = false
+offset_left = -300.0
+offset_top = -200.0
+offset_right = 300.0
+offset_bottom = 200.0
+text = "YOU WIN!!!"
+label_settings = SubResource("LabelSettings_vi4l0")
+horizontal_alignment = 1
+vertical_alignment = 1

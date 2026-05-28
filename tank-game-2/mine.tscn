@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://b805iv216drvd"]
+
+[ext_resource type="Script" uid="uid://cmmgscow23ke6" path="res://mine.gd" id="1_i6hay"]
+[ext_resource type="Script" uid="uid://dxyjtr7hxqbm" path="res://timer_component.gd" id="2_i213m"]
+[ext_resource type="Script" uid="uid://b8ea6wk78kafc" path="res://mine_collision.gd" id="2_w3yfb"]
+[ext_resource type="Texture2D" uid="uid://up7cy7iuhshf" path="res://mine_normal.tres" id="3_vanlv"]
+[ext_resource type="Texture2D" uid="uid://0h710hn0tul0" path="res://mine_flicker.tres" id="4_w3yfb"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_i6hay"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_i6hay"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_vanlv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_w3yfb")
+}],
+"loop": true,
+"name": &"mineframes",
+"speed": 5.0
+}]
+
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1262470450]
+script = ExtResource("1_i6hay")
+timer_length = 10.0
+explosion_radius = 20.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1035387905]
+scale = Vector2(0.7, 0.7)
+shape = SubResource("CircleShape2D_i6hay")
+script = ExtResource("2_w3yfb")
+
+[node name="timer_component" type="Node" parent="." unique_id=1865309054]
+script = ExtResource("2_i213m")
+
+[node name="MineTimer" type="Timer" parent="timer_component" unique_id=1615489757]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=194281224]
+sprite_frames = SubResource("SpriteFrames_i6hay")
+animation = &"mineframes"
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=564250815]
+radius = 75.0
+affect_navigation_mesh = true
+carve_navigation_mesh = true
+
+[connection signal="timeout" from="timer_component/MineTimer" to="timer_component" method="_on_mine_timer_timeout"]

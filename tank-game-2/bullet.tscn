@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://wke5ai7laija"]
+
+[ext_resource type="Script" uid="uid://dentxpjqj65op" path="res://bullet.gd" id="1_v8qja"]
+[ext_resource type="Script" uid="uid://dfa4potodkpdj" path="res://bullet_movement_component.gd" id="2_t4vbm"]
+[ext_resource type="Script" uid="uid://cb8ysfhw3vp74" path="res://prediction_obstacle.gd" id="3_t4vbm"]
+
+[sub_resource type="Gradient" id="Gradient_b7duk"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.18149467)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_t2bd8"]
+gradient = SubResource("Gradient_b7duk")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2b2rl"]
+radius = 7.071068
+
+[node name="Bullet" type="CharacterBody2D" unique_id=968395164 groups=["bullets", "destroy_on_bullet_collide"]]
+script = ExtResource("1_v8qja")
+speed = 200
+bounces = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1722539163]
+texture = SubResource("GradientTexture2D_t2bd8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=809777015]
+z_index = 10
+shape = SubResource("CircleShape2D_2b2rl")
+debug_color = Color(0.9014762, 0.17861408, 0.6276487, 1)
+
+[node name="movement_component" type="Node" parent="." unique_id=887341812]
+script = ExtResource("2_t4vbm")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=2048208839]
+radius = 40.0
+affect_navigation_mesh = true
+carve_navigation_mesh = true
+avoidance_layers = 15
+
+[node name="PredictionObstacle" type="NavigationObstacle2D" parent="." unique_id=245199030]
+vertices = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0)
+avoidance_layers = 15
+script = ExtResource("3_t4vbm")

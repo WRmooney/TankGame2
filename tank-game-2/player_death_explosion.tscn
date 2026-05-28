@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://cutshicojckwb"]
+
+[ext_resource type="Script" uid="uid://bl2uhrp3uf1wr" path="res://player_death_explosion.gd" id="1_o2fbo"]
+
+[sub_resource type="Gradient" id="Gradient_c2th1"]
+offsets = PackedFloat32Array(0, 0.63272727, 1)
+colors = PackedColorArray(0.93, 0.018599983, 0.018599983, 1, 0.93, 0.59582, 0.018599983, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_o2fbo"]
+gradient = SubResource("Gradient_c2th1")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.89316237, 0.13675214)
+
+[sub_resource type="Gradient" id="Gradient_o2fbo"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 0, 0.9333334, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_o8gg7"]
+gradient = SubResource("Gradient_o2fbo")
+
+[sub_resource type="Curve" id="Curve_0ikl1"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.6614786, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_cgder"]
+curve = SubResource("Curve_0ikl1")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1xkwg"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 10.0
+initial_velocity_max = 1000.0
+radial_velocity_min = -2.2351742e-05
+radial_velocity_max = -2.2351742e-05
+gravity = Vector3(0, 0, 0)
+linear_accel_min = -2.2351742e-06
+linear_accel_max = -2.2351742e-06
+radial_accel_min = -2.2351742e-06
+radial_accel_max = -2.2351742e-06
+tangential_accel_min = 300.0
+tangential_accel_max = 500.0
+scale_min = 0.5
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_cgder")
+color = Color(1, 0.98333335, 0, 1)
+color_ramp = SubResource("GradientTexture1D_o8gg7")
+
+[node name="GPUParticles2D" type="GPUParticles2D" unique_id=1720958241]
+z_index = 20
+emitting = false
+amount = 1000
+texture = SubResource("GradientTexture2D_o2fbo")
+lifetime = 3.0
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_1xkwg")
+script = ExtResource("1_o2fbo")
