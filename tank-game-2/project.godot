@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="TankGame2"
-run/main_scene="uid://3j16wx6qb1mr"
+run/main_scene="uid://bco57hx8pn1x6"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 

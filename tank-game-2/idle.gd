@@ -2,12 +2,14 @@ extends Node
 
 @onready var nav_agent := $"../../NavigationAgent2D" as NavigationAgent2D
 @onready var parent = $"../.."
+@onready var timer = $PathNearPlayer
 
 signal transition_state(new_state_name: String)
 
 func enter() -> void:
 	await get_tree().process_frame
 	get_new_target()
+	timer.start(10) # aggressiveness?
 	
 func exit() -> void:
 	print("exiting idle state")
@@ -30,3 +32,7 @@ func get_new_target() -> void:
 func target_reached() -> void:
 	get_new_target()
 	
+
+func _on_path_near_player_timeout() -> void:
+	nav_agent.target_position = NavigationServer2D.map_get_closest_point(get_viewport().get_world_2d().navigation_map,parent.player.position)
+	timer.start(20)

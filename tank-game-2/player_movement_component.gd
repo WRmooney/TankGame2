@@ -4,8 +4,8 @@ var speed = 0
 var x_vel = 0
 var y_vel = 0
 
-func _process(delta: float) -> void:
-	if get_parent().enemy_container.get_child_count() <= 0 or get_parent().health <= 0:
+func _physics_process(delta: float) -> void:
+	if get_parent().health <= 0:
 		return
 	speed = get_parent().speed
 	process_movement_input()

@@ -1,15 +1,16 @@
 [gd_scene format=3 uid="uid://cgpy1t8nxtt64"]
 
-[ext_resource type="Script" uid="uid://jmfgb2pilcxo" path="res://player_tank.gd" id="1_n5f8l"]
+[ext_resource type="Script" uid="uid://c67ukmk1o447f" path="res://player_tank.gd" id="1_n5f8l"]
 [ext_resource type="Texture2D" uid="uid://iw36stixn77l" path="res://icon.svg" id="2_1jnsx"]
-[ext_resource type="Script" uid="uid://bhd0kon3chuyq" path="res://player_movement_component.gd" id="3_4ab8g"]
-[ext_resource type="Script" uid="uid://cmsp808x0ak8j" path="res://shooting_component.gd" id="4_w85wn"]
-[ext_resource type="Script" uid="uid://b5mqk2aoeg38r" path="res://health_component.gd" id="5_1jnsx"]
+[ext_resource type="Script" uid="uid://bg3wn21urexh7" path="res://player_movement_component.gd" id="3_4ab8g"]
+[ext_resource type="Script" uid="uid://bsoda1gn0b6i4" path="res://shooting_component.gd" id="4_w85wn"]
+[ext_resource type="Script" uid="uid://du2gieyivvbtr" path="res://health_component.gd" id="5_1jnsx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1ealj"]
 size = Vector2(19.060402, 19.060402)
 
 [sub_resource type="SystemFont" id="SystemFont_1jnsx"]
+subpixel_positioning = 0
 
 [sub_resource type="LabelSettings" id="LabelSettings_4ab8g"]
 font = SubResource("SystemFont_1jnsx")
@@ -18,6 +19,7 @@ outline_size = 10
 outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="SystemFont" id="SystemFont_4ab8g"]
+subpixel_positioning = 0
 
 [sub_resource type="LabelSettings" id="LabelSettings_w85wn"]
 font = SubResource("SystemFont_4ab8g")
@@ -26,6 +28,7 @@ outline_size = 10
 outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="SystemFont" id="SystemFont_w85wn"]
+subpixel_positioning = 0
 
 [sub_resource type="LabelSettings" id="LabelSettings_vi4l0"]
 font = SubResource("SystemFont_w85wn")
@@ -39,8 +42,8 @@ shadow_offset = Vector2(10, 10)
 [node name="Player_tank" type="CharacterBody2D" unique_id=1198161332]
 motion_mode = 1
 wall_min_slide_angle = 0.0
+platform_on_leave = 2
 script = ExtResource("1_n5f8l")
-speed = 150
 max_bullets = 10
 max_secondary = 3
 

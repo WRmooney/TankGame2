@@ -7,7 +7,7 @@ const explosion = preload("res://mine_explosion.tscn")
 @onready var secondarycontainer = $"../SecondaryContainer"
 
 func _input(event):
-	if get_parent().enemy_container.get_child_count() <= 0 or get_parent().health <= 0:
+	if get_parent().health <= 0:
 		return
 	var cur_bullets = primarycontainer.get_child_count()
 	var max_bullets = get_parent().max_bullets
@@ -32,7 +32,7 @@ func secondary_shoot():
 	var instance = MINE.instantiate()
 	instance.position = get_parent().position
 	instance.damage = 5
-	instance.timer_length = 10
+	instance.timer_length = 5
 	instance.parent = get_parent()
 	secondarycontainer.add_child(instance)
 	

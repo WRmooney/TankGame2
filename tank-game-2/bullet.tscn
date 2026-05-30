@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://wke5ai7laija"]
 
-[ext_resource type="Script" uid="uid://dentxpjqj65op" path="res://bullet.gd" id="1_v8qja"]
-[ext_resource type="Script" uid="uid://dfa4potodkpdj" path="res://bullet_movement_component.gd" id="2_t4vbm"]
-[ext_resource type="Script" uid="uid://cb8ysfhw3vp74" path="res://prediction_obstacle.gd" id="3_t4vbm"]
+[ext_resource type="Script" uid="uid://cps3lpguu2lob" path="res://bullet.gd" id="1_v8qja"]
+[ext_resource type="Script" uid="uid://bjm5u751rwhux" path="res://bullet_movement_component.gd" id="2_t4vbm"]
+[ext_resource type="Script" uid="uid://dxuj2jlucsoem" path="res://prediction_obstacle.gd" id="3_t4vbm"]
 
 [sub_resource type="Gradient" id="Gradient_b7duk"]
 interpolation_mode = 1
@@ -34,7 +34,7 @@ debug_color = Color(0.9014762, 0.17861408, 0.6276487, 1)
 script = ExtResource("2_t4vbm")
 
 [node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=2048208839]
-radius = 40.0
+radius = 25.0
 affect_navigation_mesh = true
 carve_navigation_mesh = true
 avoidance_layers = 15

@@ -2,9 +2,9 @@ extends CharacterBody2D
 
 @export var max_health: float = 10
 @export var health: float = 10
-@export var speed = 3
-@export var max_bullets = 5
-@export var max_secondary = 2
+@export var speed: float = 3
+@export var max_bullets: int = 5
+@export var max_secondary: int = 2
 @export var enemy_container: Node
 
 var WUIon = false
@@ -22,6 +22,7 @@ func hit(damage: float) -> void:
 
 func _process(delta: float) -> void:
 	if enemy_container.get_child_count() <= 0 and not WUIon and not LUIon:
+		return
 		WUIon = true
 		if $WinningUI:
 			for UIElement in $WinningUI.get_children():
