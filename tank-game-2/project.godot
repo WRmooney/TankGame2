@@ -28,6 +28,7 @@ destroy_on_bullet_collide="Nodes that will cause a bullet to be destroyed on con
 bounceable=""
 tanks=""
 hurtable=""
+player=""
 
 [input]
 

@@ -24,15 +24,17 @@ func primary_shoot():
 	var instance = BULLET.instantiate()
 	instance.position = get_parent().position
 	instance.dir_vector = Vector2(mouse_pos_diff_x, mouse_pos_diff_y).normalized()
-	instance.damage = 1
+	instance.damage = get_parent().bullet_damage
+	instance.speed = get_parent().bullet_speed
 	instance.parent = get_parent()
 	primarycontainer.add_child(instance)
 	
 func secondary_shoot():
 	var instance = MINE.instantiate()
 	instance.position = get_parent().position
-	instance.damage = 5
+	instance.damage = get_parent().mine_damage
 	instance.timer_length = 5
+	instance.explosion_radius = get_parent().mine_radius
 	instance.parent = get_parent()
 	secondarycontainer.add_child(instance)
 	

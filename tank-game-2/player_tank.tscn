@@ -5,6 +5,8 @@
 [ext_resource type="Script" uid="uid://bg3wn21urexh7" path="res://player_movement_component.gd" id="3_4ab8g"]
 [ext_resource type="Script" uid="uid://bsoda1gn0b6i4" path="res://shooting_component.gd" id="4_w85wn"]
 [ext_resource type="Script" uid="uid://du2gieyivvbtr" path="res://health_component.gd" id="5_1jnsx"]
+[ext_resource type="Script" uid="uid://cnlyxgictprtw" path="res://xp_component.gd" id="6_4ab8g"]
+[ext_resource type="PackedScene" uid="uid://dqaj80548ygcg" path="res://upgrade_presets.tscn" id="7_w85wn"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1ealj"]
 size = Vector2(19.060402, 19.060402)
@@ -27,6 +29,15 @@ font_size = 30
 outline_size = 10
 outline_color = Color(0, 0, 0, 1)
 
+[sub_resource type="SystemFont" id="SystemFont_vi4l0"]
+subpixel_positioning = 0
+
+[sub_resource type="LabelSettings" id="LabelSettings_4sbgd"]
+font = SubResource("SystemFont_vi4l0")
+font_size = 60
+outline_size = 15
+outline_color = Color(0, 0, 0, 1)
+
 [sub_resource type="SystemFont" id="SystemFont_w85wn"]
 subpixel_positioning = 0
 
@@ -39,7 +50,7 @@ shadow_size = 5
 shadow_color = Color(0.87, 0.1044, 0.84448004, 1)
 shadow_offset = Vector2(10, 10)
 
-[node name="Player_tank" type="CharacterBody2D" unique_id=1198161332]
+[node name="Player_tank" type="CharacterBody2D" unique_id=1198161332 groups=["player"]]
 motion_mode = 1
 wall_min_slide_angle = 0.0
 platform_on_leave = 2
@@ -79,9 +90,9 @@ position_smoothing_enabled = true
 
 [node name="SecondaryContainer" type="Node" parent="." unique_id=122439246]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1956557960]
+[node name="StatsUI" type="CanvasLayer" parent="." unique_id=1956557960]
 
-[node name="HealthLabel" type="Label" parent="CanvasLayer" unique_id=1170438300]
+[node name="HealthLabel" type="Label" parent="StatsUI" unique_id=1170438300]
 z_index = 1
 offset_left = -550.0
 offset_top = -300.0
@@ -92,14 +103,14 @@ label_settings = SubResource("LabelSettings_4ab8g")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=721049005]
+[node name="ColorRect" type="ColorRect" parent="StatsUI" unique_id=721049005]
 offset_left = -550.0
 offset_top = -300.0
 offset_right = -150.0
 offset_bottom = -260.0
 color = Color(0.6455512, 2.5629624e-06, 4.813075e-07, 1)
 
-[node name="AmmoLabel" type="Label" parent="CanvasLayer" unique_id=1254816575]
+[node name="AmmoLabel" type="Label" parent="StatsUI" unique_id=1254816575]
 offset_left = -550.0
 offset_top = -250.0
 offset_right = -327.0
@@ -107,7 +118,7 @@ offset_bottom = -208.0
 text = "Bullets (LMB): 5"
 label_settings = SubResource("LabelSettings_w85wn")
 
-[node name="AmmoLabel2" type="Label" parent="CanvasLayer" unique_id=1687843005]
+[node name="AmmoLabel2" type="Label" parent="StatsUI" unique_id=1687843005]
 offset_left = -550.0
 offset_top = -200.0
 offset_right = -336.0
@@ -115,10 +126,26 @@ offset_bottom = -158.0
 text = "Mines (RMB): 2"
 label_settings = SubResource("LabelSettings_w85wn")
 
+[node name="XPBar" type="ColorRect" parent="StatsUI" unique_id=1589978385]
+offset_bottom = 40.0
+color = Color(0.25046408, 0.55846304, 0.9821889, 1)
+
+[node name="LVLUPTXT" type="Label" parent="StatsUI" unique_id=114435673]
+visible = false
+offset_left = -200.0
+offset_top = -300.0
+offset_right = 200.0
+offset_bottom = -100.0
+text = "Level Up!"
+label_settings = SubResource("LabelSettings_4sbgd")
+horizontal_alignment = 1
+
+[node name="OnScreenTimer" type="Timer" parent="StatsUI/LVLUPTXT" unique_id=1330350502]
+
 [node name="LosingUI" type="CanvasLayer" parent="." unique_id=117271549]
+visible = false
 
 [node name="Label" type="Label" parent="LosingUI" unique_id=1974601965]
-visible = false
 offset_left = -300.0
 offset_top = -200.0
 offset_right = 300.0
@@ -126,9 +153,19 @@ offset_bottom = 200.0
 text = "YOU LOSE!!!"
 label_settings = SubResource("LabelSettings_vi4l0")
 horizontal_alignment = 1
-vertical_alignment = 1
+
+[node name="FinalScore" type="Label" parent="LosingUI" unique_id=1120960363]
+offset_left = -300.0
+offset_top = -200.0
+offset_right = 300.0
+offset_bottom = 200.0
+text = "Kills: 0"
+label_settings = SubResource("LabelSettings_vi4l0")
+horizontal_alignment = 1
+vertical_alignment = 2
 
 [node name="WinningUI" type="CanvasLayer" parent="." unique_id=372388518]
+visible = false
 
 [node name="Label" type="Label" parent="WinningUI" unique_id=1643653251]
 visible = false
@@ -140,3 +177,27 @@ text = "YOU WIN!!!"
 label_settings = SubResource("LabelSettings_vi4l0")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="xp_component" type="Node" parent="." unique_id=202771539]
+process_mode = 3
+script = ExtResource("6_4ab8g")
+
+[node name="UpgradeComponent" type="CanvasLayer" parent="." unique_id=571242943]
+process_mode = 3
+visible = false
+
+[node name="UpgradeContainer" type="Node" parent="UpgradeComponent" unique_id=267218919]
+
+[node name="ColorRect" type="ColorRect" parent="UpgradeComponent" unique_id=655372687]
+visible = false
+z_index = -5
+offset_left = -325.0
+offset_top = -200.0
+offset_right = 325.0
+offset_bottom = 100.0
+mouse_filter = 2
+color = Color(0.77, 0.77, 0.77, 0.81960785)
+
+[node name="UpgradePresets" parent="." unique_id=413033068 instance=ExtResource("7_w85wn")]
+
+[connection signal="timeout" from="StatsUI/LVLUPTXT/OnScreenTimer" to="xp_component" method="_on_on_screen_timer_timeout"]

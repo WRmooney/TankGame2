@@ -16,14 +16,15 @@ func enter() -> void:
 	last_seen_location = nav_agent.target_position
 	
 func exit() -> void:
-	print("exiting search state")
+	pass
+	#print("exiting search state")
 	
 func on_process() -> void:
 	if not player:
 		emit_signal("transition_state", "idle")
 		return
 	if parent.sees_player:
-		print("found player again, switching to attack state")
+		#print("found player again, switching to attack state")
 		emit_signal("transition_state", "attack")
 	
 func pathing_timer_timeout() -> void:

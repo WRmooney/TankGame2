@@ -7,22 +7,36 @@ const ENEMY = preload("res://default_tank.tscn")
 @onready var tilemap = $TileMapLayer
 @onready var enemy_container = $Enemy_Container
 
-@export var level_width = 10
-@export var level_height = 10
+@export var level_width: int = 6
+@export var level_height: int = 6
 
 @export var player_maxhealth: float
 @export var player_speed: float
 @export var player_max_bullets: int
 @export var player_max_secondary: int
 
+var spawn_tile = Vector2i(0,0)
 
+var enemy_spawn_time = 5
+var enemy_health = 3
+var enemy_fire_rate = 1
+var enemy_damage = 1
 
 func _ready() -> void:
-	generate_level(10,10)
+	generate_level(level_width,level_height)
 	tilemap.update_internals()
 	spawn_player()
 	$EnemySpawnTimer.start(3)
+		
+func _process(delta: float) -> void:
+	pass
 	
+func print_map(tile: Vector2i) -> void:
+	for i in range(10*level_height):
+		var line = ""
+		for j in range(10*level_width): # true if floor, false otherwise
+			line += (str("0" if tilemap.get_cell_source_id(Vector2i(j,i)) == 2 and tilemap.get_cell_atlas_coords(Vector2(j,i)) == Vector2i(0,0) else "1") + (" " if Vector2i(j,i) != tile else "<"))
+		print(line)
 	
 func generate_level(width_chunks: int, height_chunks: int) -> void: # chunk dimensions are 10x10
 	# generate maze to base chunks off of, in order to prevent chunks from being cut off
@@ -39,8 +53,8 @@ func generate_level(width_chunks: int, height_chunks: int) -> void: # chunk dime
 	# prevent navigation bugs
 	var cur_used = tilemap.get_used_cells()
 	while true:
-		for x_val in range(width_chunks * level_width - 1):
-			for y_val in range(height_chunks * level_height - 1):
+		for x_val in range(width_chunks * 10 - 1):
+			for y_val in range(height_chunks * 10 - 1):
 				# floor tiles are 2, wall tiles are changed to 0
 				var cur: int = tilemap.get_cell_source_id(Vector2(x_val, y_val)) if tilemap.get_cell_atlas_coords(Vector2(x_val, y_val)) == Vector2i(0,0) else 0
 				var right: int = tilemap.get_cell_source_id(Vector2(x_val + 1, y_val)) if tilemap.get_cell_atlas_coords(Vector2(x_val + 1, y_val)) == Vector2i(0,0) else 0
@@ -67,6 +81,7 @@ func place_random_chunk(chunk_x: int, chunk_y: int, mazeref):
 			open_wall_indexes.append(i)
 	var used_cells: Array[Vector2i]
 	var chunk: TileMapLayer
+	var needs_2_walls = randi_range(0,1)
 	
 	# get valid chunk based on the maze walls
 	while true:
@@ -95,6 +110,8 @@ func place_random_chunk(chunk_x: int, chunk_y: int, mazeref):
 		# basically, checks what sides should be open in the current chunk
 		# and only breaks the loop if those sides are open
 		var valid = true
+		if len(open_wall_indexes) == 2 and walls.count(false) != 2 and needs_2_walls == 1: # 2 sided maze sections must have 2 sided chunks half the time
+			valid = false
 		for open_side in open_wall_indexes:
 			if walls[open_side]:
 				valid = false
@@ -108,16 +125,16 @@ func place_random_chunk(chunk_x: int, chunk_y: int, mazeref):
 		tilemap.set_cell(cell_pos + Vector2i(chunk_x*10, chunk_y*10),src_id, atlas_pos, alt_id)
 
 func create_outline(width_chunks: int, height_chunks: int):
-	for x_val in range(width_chunks * level_width):
+	for x_val in range(width_chunks * 10):
 		tilemap.set_cell(Vector2(x_val, -1), 2, Vector2(0,1))
-		tilemap.set_cell(Vector2(x_val, height_chunks * level_height), 2, Vector2(0,1))
-	for y_val in range(height_chunks * level_width):
+		tilemap.set_cell(Vector2(x_val, height_chunks * 10), 2, Vector2(0,1))
+	for y_val in range(height_chunks * 10):
 		tilemap.set_cell(Vector2(-1, y_val), 2, Vector2(0,1))
-		tilemap.set_cell(Vector2(width_chunks*level_width, y_val), 2, Vector2(0,1))
+		tilemap.set_cell(Vector2(width_chunks*10, y_val), 2, Vector2(0,1))
 	tilemap.set_cell(Vector2(-1,-1), 2, Vector2(0,1))
-	tilemap.set_cell(Vector2(width_chunks*level_width,-1), 2, Vector2(0,1))
-	tilemap.set_cell(Vector2(-1,height_chunks*level_height), 2, Vector2(0,1))
-	tilemap.set_cell(Vector2(width_chunks*level_width,height_chunks*level_height), 2, Vector2(0,1))
+	tilemap.set_cell(Vector2(width_chunks*10,-1), 2, Vector2(0,1))
+	tilemap.set_cell(Vector2(-1,height_chunks*10), 2, Vector2(0,1))
+	tilemap.set_cell(Vector2(width_chunks*10,height_chunks*10), 2, Vector2(0,1))
 
 func is_valid(pattern: Array[int]):
 	if pattern.count(0) == 2 and pattern.count(4) == 0: # Exactly 2 walls and no diagonals
@@ -128,7 +145,7 @@ func is_valid(pattern: Array[int]):
 			return false # exactly 2 floors diagonal from each other
 	return true
 
-func generate_maze(maze_width: int, maze_height: int):
+func generate_maze(maze_width: int, maze_height: int) -> Dictionary:
 	var width = maze_width
 	var height = maze_height
 	
@@ -178,14 +195,13 @@ func generate_maze(maze_width: int, maze_height: int):
 	
 func spawn_player() -> void:
 	var instance = PLAYER.instantiate()
+	tilemap.update_internals()
 	while true:
-		var chunk_x = randi_range(1,level_width)
-		var chunk_y = randi_range(1,level_height)
-		instance.position = NavigationServer2D.map_get_closest_point(get_viewport().get_world_2d().navigation_map, Vector2(chunk_x*10*64 - 32, chunk_y*10*64 - 32))
-		if (instance.position.x == 0.0 and instance.position.y == 0.0):
-			await get_tree().create_timer(0.001).timeout
-			continue
-		else:
+		var tile = Vector2i(randi_range(1,level_width*10), randi_range(1, level_height*10)+1)
+		if tilemap.get_cell_source_id(tile) == 2 and tilemap.get_cell_atlas_coords(tile) == Vector2i(0,0):
+			instance.position = Vector2(tile.x * 64 + 32, tile.y * 64 + 32)
+			spawn_tile = tile
+			#print_map(tile)
 			break
 			
 	instance.max_health = player_maxhealth
@@ -193,24 +209,28 @@ func spawn_player() -> void:
 	instance.max_bullets = player_max_bullets
 	instance.max_secondary = player_max_secondary
 	instance.enemy_container = enemy_container
-	add_child(instance)
+	instance.xp = 0
+	instance.level_threshold = 6
 
+	add_child(instance)
 
 func _on_enemy_spawn_timer_timeout() -> void:
 	var instance = ENEMY.instantiate()
+	tilemap.update_internals()
 	while true:
-		var chunk_x = randi_range(1,level_width)
-		var chunk_y = randi_range(1,level_height)
-		instance.position = NavigationServer2D.map_get_closest_point(get_viewport().get_world_2d().navigation_map, Vector2(chunk_x*10*64 - 32, chunk_y*10*64 - 32))
-		if (instance.position.x == 0.0 and instance.position.y == 0.0):
-			await get_tree().create_timer(0.001).timeout
-			continue
-		else:
+		var tile = Vector2i(randi_range(1,level_width*10), randi_range(1, level_height*10)+1)
+		if tilemap.get_cell_source_id(tile) == 2 and tilemap.get_cell_atlas_coords(tile) == Vector2i(0,0):
+			instance.position = Vector2(tile.x * 64 + 32, tile.y * 64 + 32)
+			spawn_tile = tile
+			#print_map(tile)
 			break
-	instance.maxhealth = 3
+	instance.maxhealth = enemy_health
 	instance.speed = 100
 	instance.player = $Player_tank
 	instance.turn_speed = 10
 	instance.max_bullets = 5
+	instance.fire_rate = enemy_fire_rate
+	instance.damage = enemy_damage
+	instance.enemy_container = enemy_container
 	enemy_container.add_child(instance)
-	$EnemySpawnTimer.start(5)
+	$EnemySpawnTimer.start(enemy_spawn_time)

@@ -8,12 +8,17 @@ extends GPUParticles2D
 @export var length: float
 @export var damage: float = 1
 
+@export var ex_radius: float = 2
+
 
 var col_start: float
 var col_end: float
 
 func _ready() -> void:
 	lifetime = length
+	$Area2D/CollisionShape2D.scale = Vector2(ex_radius, ex_radius)
+	process_material.scale_min = 0.5 * ex_radius
+	process_material.scale_max = 0.5 * ex_radius
 	col_start = length * 0.1
 	col_end = length * 0.75
 	col_on.start(col_start)

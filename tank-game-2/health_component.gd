@@ -1,12 +1,12 @@
 extends Node
 
 @onready var parent = get_parent()
-@onready var healthrect = $"../CanvasLayer/ColorRect"
-@onready var healthlabel =$"../CanvasLayer/HealthLabel"
-@onready var ammolabel = $"../CanvasLayer/AmmoLabel"
+@onready var healthrect = $"../StatsUI/ColorRect"
+@onready var healthlabel =$"../StatsUI/HealthLabel"
+@onready var ammolabel = $"../StatsUI/AmmoLabel"
 @onready var prim_cont = $"../PrimaryContainer"
 @onready var second_cont = $"../SecondaryContainer"
-@onready var ammolabel2 = $"../CanvasLayer/AmmoLabel2"
+@onready var ammolabel2 = $"../StatsUI/AmmoLabel2"
 
 const player_death = preload("res://player_death_explosion.tscn")
 
@@ -22,10 +22,10 @@ func hit(damage: float) -> void:
 		$"../NavigationObstacle2D".queue_free()
 		if not parent.WUIon:
 			parent.LUIon = true
+			$"../LosingUI".visible = true
+			$"../LosingUI/FinalScore".text = "Kills: " + str(parent.enemy_container.kills)
 			for UIElement in $"../LosingUI".get_children():
-				print(get_viewport().position.x)
 				UIElement.global_position = Vector2(get_viewport().size.x/2 - UIElement.size.x/2,get_viewport().size.y/2 - UIElement.size.y/2)
-				UIElement.visible = true
 			
 func _process(delta: float) -> void:
 	healthrect.size.x = 400 * (parent.health / parent.max_health)

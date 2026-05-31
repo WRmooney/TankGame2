@@ -68,29 +68,11 @@ script = ExtResource("5_u62d1")
 [node name="SearchTime" type="Timer" parent="StateMachine/Search" unique_id=1392995714]
 wait_time = 30.0
 
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=981007089]
-path_desired_distance = 50.0
-target_desired_distance = 30.0
-path_max_distance = 1000.0
-path_postprocessing = 1
-avoidance_enabled = true
-radius = 20.0
-time_horizon_agents = 0.2
-max_speed = 1000.0
-avoidance_priority = 0.1
-
 [node name="enemy_movement_component" type="Node2D" parent="." unique_id=626775412]
 script = ExtResource("4_asy6k")
 
-[node name="PathingTimer" type="Timer" parent="." unique_id=677604365]
-wait_time = 0.5
-autostart = true
-
 [node name="vision_component" type="Node" parent="." unique_id=286284342]
 script = ExtResource("7_7o4ld")
-
-[node name="RayCast2D" type="RayCast2D" parent="." unique_id=740316403]
-target_position = Vector2(0, 0)
 
 [node name="enemy_health_component" type="Node" parent="." unique_id=898658593]
 script = ExtResource("8_u62d1")
@@ -112,11 +94,29 @@ script = ExtResource("10_r258f")
 
 [node name="BulletContainer" type="Node" parent="enemy_shooting_component" unique_id=2065221680]
 
+[node name="RayCast2D" type="RayCast2D" parent="." unique_id=740316403]
+target_position = Vector2(0, 0)
+
+[node name="PathingTimer" type="Timer" parent="." unique_id=677604365]
+wait_time = 0.5
+autostart = true
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=981007089]
+path_desired_distance = 50.0
+target_desired_distance = 30.0
+path_max_distance = 1000.0
+path_postprocessing = 1
+avoidance_enabled = true
+radius = 20.0
+time_horizon_agents = 0.2
+max_speed = 1000.0
+avoidance_priority = 0.1
+
 [connection signal="timeout" from="StateMachine/Idle/PathNearPlayer" to="StateMachine/Idle" method="_on_path_near_player_timeout"]
 [connection signal="timeout" from="StateMachine/Attack/LostPlayer" to="StateMachine/Attack" method="_on_lost_player_timeout"]
 [connection signal="timeout" from="StateMachine/Search/SearchTime" to="StateMachine/Search" method="_on_search_time_timeout"]
-[connection signal="target_reached" from="NavigationAgent2D" to="StateMachine" method="_on_navigation_agent_2d_target_reached"]
-[connection signal="velocity_computed" from="NavigationAgent2D" to="enemy_movement_component" method="_on_navigation_agent_2d_velocity_computed"]
-[connection signal="timeout" from="PathingTimer" to="StateMachine" method="_on_pathing_timer_timeout"]
 [connection signal="timeout" from="enemy_shooting_component/TurretTurningTimer" to="enemy_shooting_component" method="_on_turret_turning_timer_timeout"]
 [connection signal="timeout" from="enemy_shooting_component/ShootingTimer" to="enemy_shooting_component" method="_on_shooting_timer_timeout"]
+[connection signal="timeout" from="PathingTimer" to="StateMachine" method="_on_pathing_timer_timeout"]
+[connection signal="target_reached" from="NavigationAgent2D" to="StateMachine" method="_on_navigation_agent_2d_target_reached"]
+[connection signal="velocity_computed" from="NavigationAgent2D" to="enemy_movement_component" method="_on_navigation_agent_2d_velocity_computed"]

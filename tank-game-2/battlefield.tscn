@@ -3,12 +3,15 @@
 [ext_resource type="Script" uid="uid://c33r1dhudx6lw" path="res://battlefield.gd" id="1_4eiu0"]
 [ext_resource type="TileSet" uid="uid://2s2tgby7gknw" path="res://level_tiles.tres" id="2_y8d5v"]
 [ext_resource type="Script" uid="uid://gefucfacvxaj" path="res://tile_map_layer.gd" id="3_vsh2u"]
+[ext_resource type="Script" uid="uid://bbn2qj2w6strb" path="res://enemy_container.gd" id="4_tkjg1"]
 [ext_resource type="PackedScene" uid="uid://2v26uh3qsfnv" path="res://map_generation_presets.tscn" id="8_ki6g1"]
 
 [node name="Battlefield" type="Node2D" unique_id=593888957]
 script = ExtResource("1_4eiu0")
+level_width = 10
+level_height = 10
 player_maxhealth = 10.0
-player_speed = 300.0
+player_speed = 200.0
 player_max_bullets = 10
 player_max_secondary = 3
 
@@ -18,6 +21,7 @@ physics_quadrant_size = 1
 script = ExtResource("3_vsh2u")
 
 [node name="Enemy_Container" type="Node" parent="." unique_id=128872803]
+script = ExtResource("4_tkjg1")
 
 [node name="MapGenerationPresets" parent="." unique_id=1804707453 instance=ExtResource("8_ki6g1")]
 

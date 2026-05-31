@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://fsq07lybxybf"]
 
-[ext_resource type="Script" uid="uid://bve3tqdff7pmn" path="res://mine_explosion.gd" id="1_f8ti5"]
-[ext_resource type="Script" uid="uid://bda8nerevvxfn" path="res://mine_explosion_area.gd" id="2_fgtiq"]
+[ext_resource type="Script" uid="uid://rrq45r45f128" path="res://mine_explosion.gd" id="1_f8ti5"]
+[ext_resource type="Script" uid="uid://bswsxt1dwj0uo" path="res://mine_explosion_area.gd" id="2_fgtiq"]
 
 [sub_resource type="Gradient" id="Gradient_fgtiq"]
 offsets = PackedFloat32Array(0, 0.32, 0.49454546)
@@ -15,8 +15,7 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="Curve" id="Curve_28tef"]
-_limits = [0.0, 5.0, 0.0, 1.0]
-_data = [Vector2(0.0038910508, 0), 0.0, 0.0, 0, 0, Vector2(0.09727626, 5), 0.0, 0.0, 0, 0, Vector2(0.75097275, 5), 0.0, 0.0, 0, 0, Vector2(1, 0.04508257), 0.0, 0.0, 0, 0]
+_data = [Vector2(0.0038910508, 0), 0.0, 0.0, 0, 0, Vector2(0.102880664, 1), 0.0, 0.0, 0, 0, Vector2(0.74897116, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.04508257), 0.0, 0.0, 0, 0]
 point_count = 4
 
 [sub_resource type="CurveTexture" id="CurveTexture_8grcl"]
@@ -33,6 +32,7 @@ scale_max = 0.5
 scale_curve = SubResource("CurveTexture_8grcl")
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_f8ti5"]
+radius = 30.0
 
 [node name="GPUParticles2D" type="GPUParticles2D" unique_id=404837875]
 emitting = false
@@ -50,7 +50,6 @@ length = 1.5
 script = ExtResource("2_fgtiq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=2142857652]
-scale = Vector2(16, 16)
 shape = SubResource("CircleShape2D_f8ti5")
 disabled = true
 

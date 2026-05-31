@@ -1,12 +1,13 @@
 [gd_scene format=3 uid="uid://b805iv216drvd"]
 
-[ext_resource type="Script" uid="uid://cmmgscow23ke6" path="res://mine.gd" id="1_i6hay"]
-[ext_resource type="Script" uid="uid://dxyjtr7hxqbm" path="res://timer_component.gd" id="2_i213m"]
-[ext_resource type="Script" uid="uid://b8ea6wk78kafc" path="res://mine_collision.gd" id="2_w3yfb"]
+[ext_resource type="Script" uid="uid://dhcjb0lssoq1e" path="res://mine.gd" id="1_i6hay"]
+[ext_resource type="Script" uid="uid://disdlsj28vjag" path="res://timer_component.gd" id="2_i213m"]
+[ext_resource type="Script" uid="uid://boaqydemory2y" path="res://mine_collision.gd" id="2_w3yfb"]
 [ext_resource type="Texture2D" uid="uid://up7cy7iuhshf" path="res://mine_normal.tres" id="3_vanlv"]
 [ext_resource type="Texture2D" uid="uid://0h710hn0tul0" path="res://mine_flicker.tres" id="4_w3yfb"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_i6hay"]
+radius = 8.0
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_i6hay"]
 animations = [{
@@ -19,8 +20,11 @@ animations = [{
 }],
 "loop": true,
 "name": &"mineframes",
-"speed": 5.0
+"speed": 8.0
 }]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_w3yfb"]
+radius = 30.0
 
 [node name="CharacterBody2D" type="CharacterBody2D" unique_id=1262470450]
 script = ExtResource("1_i6hay")
@@ -28,7 +32,6 @@ timer_length = 10.0
 explosion_radius = 20.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1035387905]
-scale = Vector2(0.7, 0.7)
 shape = SubResource("CircleShape2D_i6hay")
 script = ExtResource("2_w3yfb")
 
@@ -46,4 +49,10 @@ radius = 75.0
 affect_navigation_mesh = true
 carve_navigation_mesh = true
 
+[node name="Area2D" type="Area2D" parent="." unique_id=1755758861]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=186760673]
+shape = SubResource("CircleShape2D_w3yfb")
+
 [connection signal="timeout" from="timer_component/MineTimer" to="timer_component" method="_on_mine_timer_timeout"]
+[connection signal="body_entered" from="Area2D" to="timer_component" method="_on_area_2d_body_entered"]

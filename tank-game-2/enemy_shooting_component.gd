@@ -11,7 +11,7 @@ var attacking = false
 var rand_angle = 1
 
 func _ready() -> void:
-	$ShootingTimer.start(1.0)
+	$ShootingTimer.start(parent.fire_rate)
 
 func _process(delta: float) -> void:
 	if parent.sees_player:
@@ -76,7 +76,7 @@ func _on_shooting_timer_timeout() -> void:
 			var instance = BULLET.instantiate()
 			instance.position = parent.position
 			instance.dir_vector = Vector2(cos(turret.rotation), sin(turret.rotation)).normalized().rotated(ang_offset)
-			instance.damage = 1
+			instance.damage = parent.damage
 			instance.parent = parent
 			$BulletContainer.add_child(instance)
 	elif not parent.sees_player:
@@ -86,10 +86,10 @@ func _on_shooting_timer_timeout() -> void:
 			var instance = BULLET.instantiate()
 			instance.position = parent.position
 			instance.dir_vector = Vector2(cos(turret.rotation), sin(turret.rotation)).normalized().rotated(ang_offset)
-			instance.damage = 1
+			instance.damage = parent.damage
 			instance.parent = parent
 			$BulletContainer.add_child(instance)
-	timer.start(1.0)
+	timer.start(parent.fire_rate)
 			
 			
 			

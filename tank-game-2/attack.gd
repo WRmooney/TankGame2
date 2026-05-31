@@ -11,7 +11,8 @@ func enter() -> void:
 	get_new_target()
 	
 func exit() -> void:
-	print("exiting attack state")
+	pass
+	#print("exiting attack state")
 
 func on_process() -> void:
 	pass

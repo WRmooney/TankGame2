@@ -9,14 +9,15 @@ signal transition_state(new_state_name: String)
 func enter() -> void:
 	await get_tree().process_frame
 	get_new_target()
-	timer.start(10) # aggressiveness?
+	timer.start(5) # aggressiveness?
 	
 func exit() -> void:
-	print("exiting idle state")
+	pass
+	#print("exiting idle state")
 
 func on_process() -> void:
 	if parent.sees_player:
-		print("sees player, switching to attack state")
+		#print("sees player, switching to attack state")
 		emit_signal("transition_state", "attack")
 
 func pathing_timer_timeout() -> void:
