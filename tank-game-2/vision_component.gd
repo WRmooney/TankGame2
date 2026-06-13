@@ -10,6 +10,8 @@ func _ready() -> void:
 func can_see_player():
 	if not player:
 		return false
+	if parent.position.distance_to(player.position) > parent.range:
+		return false
 	var rel_pos = player.position - parent.position
 	raycast.target_position = rel_pos
 	

@@ -1,0 +1,475 @@
+[gd_scene format=3 uid="uid://3iuiabuxxvn8"]
+
+[ext_resource type="Script" uid="uid://cgubihet3bmem" path="res://endless_survival_mode.gd" id="1_c2u3w"]
+[ext_resource type="Script" uid="uid://qm1gp8t4c07w" path="res://enemy_select.gd" id="2_2nnlu"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ombb5"]
+font_size = 26
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_c6wmq"]
+font_size = 12
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_c2u3w"]
+font_size = 70
+outline_size = 15
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_2nnlu"]
+font_size = 60
+outline_size = 15
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 10
+shadow_color = Color(0.95, 0.15200002, 0.8303, 0.9882353)
+shadow_offset = Vector2(5, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_x8s7t"]
+font_size = 40
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 5
+shadow_color = Color(0.9215, 0.09500002, 0.95, 0.99215686)
+shadow_offset = Vector2(4, 4)
+
+[sub_resource type="LabelSettings" id="LabelSettings_ouk6g"]
+font_size = 80
+font_color = Color(0.6901961, 0.16470589, 0.16470589, 1)
+outline_size = 20
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_aofit"]
+font_size = 40
+font_color = Color(0.69, 0.1656, 0.1656, 1)
+outline_size = 15
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_mre0n"]
+font_size = 140
+font_color = Color(0.28601465, 0.043486625, 0.044129446, 1)
+outline_size = 25
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 30
+shadow_color = Color(0.58, 0.058000013, 0.058000013, 1)
+shadow_offset = Vector2(10, 10)
+
+[sub_resource type="LabelSettings" id="LabelSettings_8wuvy"]
+font_size = 80
+font_color = Color(1, 0.99, 0.99, 1)
+outline_size = 20
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_e3l3c"]
+font_size = 40
+outline_size = 15
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_muxml"]
+font_size = 120
+outline_size = 20
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 15
+shadow_color = Color(0.9215, 0.09500002, 0.95, 0.99215686)
+shadow_offset = Vector2(8, 8)
+
+[sub_resource type="LabelSettings" id="LabelSettings_efc4x"]
+font_size = 80
+outline_size = 20
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 15
+shadow_color = Color(0.9215, 0.09500002, 0.95, 0.99215686)
+shadow_offset = Vector2(8, 8)
+
+[sub_resource type="LabelSettings" id="LabelSettings_cv253"]
+font_size = 30
+font_color = Color(1, 0.91733336, 0.38, 1)
+outline_size = 10
+outline_color = Color(0.46, 0.3588, 0.1564, 1)
+
+[node name="EndlessSurvivalMode" type="Node2D" unique_id=1380732344]
+script = ExtResource("1_c2u3w")
+
+[node name="ActiveCurses" type="Node" parent="." unique_id=368783521]
+
+[node name="CursePool" type="Node" parent="." unique_id=2024482031]
+
+[node name="EnemySelect" type="Node" parent="." unique_id=242494627]
+script = ExtResource("2_2nnlu")
+
+[node name="Selections" type="Node" parent="EnemySelect" unique_id=1825529959]
+
+[node name="C1" type="CanvasLayer" parent="EnemySelect/Selections" unique_id=1640569570]
+visible = false
+
+[node name="Choice1" type="Button" parent="EnemySelect/Selections/C1" unique_id=671104918]
+anchors_preset = -1
+anchor_left = 0.25
+anchor_top = 0.7
+anchor_right = 0.25
+anchor_bottom = 0.7
+offset_left = -75.0
+offset_top = -100.0
+offset_right = 75.0
+offset_bottom = 99.99997
+
+[node name="Title" type="Label" parent="EnemySelect/Selections/C1/Choice1" unique_id=20161828]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -75.0
+offset_right = 75.0
+offset_bottom = 50.0
+grow_horizontal = 2
+text = "Artillery"
+label_settings = SubResource("LabelSettings_ombb5")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="Label" parent="EnemySelect/Selections/C1/Choice1" unique_id=1683930991]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -75.0
+offset_top = -100.0
+offset_right = 75.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Shoot a blast that follows blah blah blah"
+label_settings = SubResource("LabelSettings_c6wmq")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="C2" type="CanvasLayer" parent="EnemySelect/Selections" unique_id=1932206729]
+visible = false
+
+[node name="Choice2" type="Button" parent="EnemySelect/Selections/C2" unique_id=659822632]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.7
+anchor_right = 0.5
+anchor_bottom = 0.7
+offset_left = -75.0
+offset_top = -100.0
+offset_right = 75.0
+offset_bottom = 99.99997
+
+[node name="Title" type="Label" parent="EnemySelect/Selections/C2/Choice2" unique_id=1799353186]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -75.0
+offset_right = 75.0
+offset_bottom = 50.0
+grow_horizontal = 2
+text = "Artillery"
+label_settings = SubResource("LabelSettings_ombb5")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="Label" parent="EnemySelect/Selections/C2/Choice2" unique_id=1718281163]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -75.0
+offset_top = -100.0
+offset_right = 75.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Shoot a blast that follows blah blah blah"
+label_settings = SubResource("LabelSettings_c6wmq")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="C3" type="CanvasLayer" parent="EnemySelect/Selections" unique_id=1259889962]
+visible = false
+
+[node name="Choice3" type="Button" parent="EnemySelect/Selections/C3" unique_id=1211243868]
+anchors_preset = -1
+anchor_left = 0.75
+anchor_top = 0.7
+anchor_right = 0.75
+anchor_bottom = 0.7
+offset_left = -75.0
+offset_top = -100.0
+offset_right = 75.0
+offset_bottom = 99.99997
+
+[node name="Title" type="Label" parent="EnemySelect/Selections/C3/Choice3" unique_id=374216956]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -75.0
+offset_right = 75.0
+offset_bottom = 50.0
+grow_horizontal = 2
+text = "Artillery"
+label_settings = SubResource("LabelSettings_ombb5")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="Label" parent="EnemySelect/Selections/C3/Choice3" unique_id=1527158127]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -75.0
+offset_top = -100.0
+offset_right = 75.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Shoot a blast that follows blah blah blah"
+label_settings = SubResource("LabelSettings_c6wmq")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="SelectionText" type="Label" parent="EnemySelect/Selections" unique_id=799188622]
+visible = false
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.2
+anchor_right = 0.5
+anchor_bottom = 0.2
+offset_left = -200.0
+offset_right = 200.0
+offset_bottom = 200.0
+grow_horizontal = 2
+text = "Select an Enemy"
+label_settings = SubResource("LabelSettings_c2u3w")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WinScreen" type="CanvasLayer" parent="." unique_id=531925352]
+visible = false
+
+[node name="LevelComplete" type="Label" parent="WinScreen" unique_id=679107131]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -50.0
+offset_right = 100.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Level Complete!"
+label_settings = SubResource("LabelSettings_2nnlu")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ExtraLife" type="Label" parent="WinScreen" unique_id=482349404]
+visible = false
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.65
+anchor_right = 0.5
+anchor_bottom = 0.65
+offset_left = -150.0
+offset_top = -50.0
+offset_right = 150.0
+offset_bottom = 50.0
+text = "+1 Extra Life!"
+label_settings = SubResource("LabelSettings_x8s7t")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BossScreen" type="CanvasLayer" parent="." unique_id=791061756]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="BossScreen" unique_id=2005773911]
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.47, 0.0282, 0.0282, 1)
+
+[node name="LevelNumber" type="Label" parent="BossScreen" unique_id=1923874586]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.4
+anchor_right = 0.5
+anchor_bottom = 0.4
+offset_left = -300.0
+offset_top = -100.0
+offset_right = 300.0
+offset_bottom = 100.0
+text = "Level 67"
+label_settings = SubResource("LabelSettings_ouk6g")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LiveCount" type="Label" parent="BossScreen" unique_id=1557509465]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.55
+anchor_right = 0.5
+anchor_bottom = 0.55
+offset_left = -200.0
+offset_top = -50.0
+offset_right = 200.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Lives: 420"
+label_settings = SubResource("LabelSettings_aofit")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BossLabel" type="Label" parent="BossScreen" unique_id=1595728801]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.05
+anchor_right = 0.5
+anchor_bottom = 0.05
+offset_left = -178.0
+offset_right = 178.0
+offset_bottom = 192.0
+grow_horizontal = 2
+text = "BOSS"
+label_settings = SubResource("LabelSettings_mre0n")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LevelScreen" type="CanvasLayer" parent="." unique_id=650878191]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="LevelScreen" unique_id=1365592369]
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.6784314, 0.50980395, 0.039215688, 1)
+
+[node name="LevelNumber" type="Label" parent="LevelScreen" unique_id=360683966]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.4
+anchor_right = 0.5
+anchor_bottom = 0.4
+offset_left = -300.0
+offset_top = -100.0
+offset_right = 300.0
+offset_bottom = 100.0
+text = "Level 67"
+label_settings = SubResource("LabelSettings_8wuvy")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LiveCount" type="Label" parent="LevelScreen" unique_id=3179204]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.55
+anchor_right = 0.5
+anchor_bottom = 0.55
+offset_left = -200.0
+offset_top = -50.0
+offset_right = 200.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Lives: 420"
+label_settings = SubResource("LabelSettings_e3l3c")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DeathScreen" type="CanvasLayer" parent="." unique_id=2106825837]
+visible = false
+
+[node name="Label" type="Label" parent="DeathScreen" unique_id=1118453872]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -100.0
+offset_right = 250.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "You Died..."
+label_settings = SubResource("LabelSettings_muxml")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GameOverScreen" type="CanvasLayer" parent="." unique_id=821497259]
+visible = false
+
+[node name="Label" type="Label" parent="GameOverScreen" unique_id=1845181507]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.3
+anchor_right = 0.5
+anchor_bottom = 0.3
+offset_left = -250.0
+offset_top = -100.0
+offset_right = 250.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Out of Lives!"
+label_settings = SubResource("LabelSettings_muxml")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="GameOverScreen" unique_id=1500738043]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -100.0
+offset_right = 250.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Total Score: 69420"
+label_settings = SubResource("LabelSettings_efc4x")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RestartButton" type="Button" parent="GameOverScreen" unique_id=1504875443]
+visible = false
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.7
+anchor_right = 0.5
+anchor_bottom = 0.7
+offset_left = -100.0
+offset_top = -50.0
+offset_right = 100.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Restart"
+
+[node name="ObjectiveLayer" type="CanvasLayer" parent="." unique_id=658692197]
+visible = false
+
+[node name="ObjectiveLabel" type="Label" parent="ObjectiveLayer" unique_id=479484472]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -200.0
+offset_right = 200.0
+offset_bottom = 100.0
+grow_horizontal = 2
+text = "Destroy???"
+label_settings = SubResource("LabelSettings_cv253")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="EnemySelect/Selections/C1/Choice1" to="EnemySelect" method="_on_choice_1_pressed"]
+[connection signal="pressed" from="EnemySelect/Selections/C2/Choice2" to="EnemySelect" method="_on_choice_2_pressed"]
+[connection signal="pressed" from="EnemySelect/Selections/C3/Choice3" to="EnemySelect" method="_on_choice_3_pressed"]

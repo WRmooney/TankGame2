@@ -22,9 +22,7 @@ func _ready() -> void:
 		
 	
 func _process(delta: float) -> void:
-	parent.sees_player = (LOSChecker.can_see_player() and 
-						parent.position.distance_to(player.position) < 600) # can replace 1000 with "sharpness" stat later
-	
+	parent.sees_player = LOSChecker.can_see_player() # can replace 1000 with "sharpness" stat later
 	if current_state:
 		current_state.on_process()
 

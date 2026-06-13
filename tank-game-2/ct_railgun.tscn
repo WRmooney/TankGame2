@@ -1,0 +1,125 @@
+[gd_scene format=3 uid="uid://b28efwg23wbs2"]
+
+[ext_resource type="Script" uid="uid://xjcv0dxx3pug" path="res://default_tank.gd" id="1_ro6eq"]
+[ext_resource type="Texture2D" uid="uid://bun4jqri5glxx" path="res://turrettopwhite.png" id="2_toqic"]
+[ext_resource type="Script" uid="uid://dr6yhp4haanqr" path="res://state_machine.gd" id="3_jkq6i"]
+[ext_resource type="Script" uid="uid://bdaqbjcayyqov" path="res://idle.gd" id="4_l2jyx"]
+[ext_resource type="Script" uid="uid://d3xteoe8fbdj8" path="res://attack.gd" id="5_ke18n"]
+[ext_resource type="Script" uid="uid://b1oax86rjgknj" path="res://search.gd" id="6_by8ig"]
+[ext_resource type="Script" uid="uid://pxw1k2eawrnj" path="res://ct_railgun_movement.gd" id="7_ro6eq"]
+[ext_resource type="Script" uid="uid://dayulwkj021ta" path="res://vision_component.gd" id="8_se51m"]
+[ext_resource type="Script" uid="uid://0ul2nf824qyn" path="res://ct_railgun_shooting.gd" id="10_sa08f"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bx5ho"]
+
+[sub_resource type="Gradient" id="Gradient_rypu6"]
+offsets = PackedFloat32Array(0.5338078)
+colors = PackedColorArray(0.63601995, 0.98, 0.18620001, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dpkcn"]
+gradient = SubResource("Gradient_rypu6")
+width = 38
+height = 38
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[node name="CT_Railgun" type="CharacterBody2D" unique_id=586316251]
+z_index = 1
+collision_layer = 4
+collision_mask = 4
+motion_mode = 1
+wall_min_slide_angle = 0.0
+script = ExtResource("1_ro6eq")
+maxhealth = 1000.0
+speed = 100
+turn_speed = 20
+max_bullets = 5
+fire_rate = 1.0
+range = 1000
+bounces = 1
+bullet_speed = 800.0
+cursed_tank = true
+color = Color(0.63529414, 0.98039216, 0.18431373, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=586860767]
+scale = Vector2(1.5, 1.5)
+shape = SubResource("RectangleShape2D_bx5ho")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=46334775]
+scale = Vector2(0.8, 0.8)
+texture = SubResource("GradientTexture2D_dpkcn")
+
+[node name="Turret" type="Sprite2D" parent="." unique_id=1424094878]
+texture = ExtResource("2_toqic")
+
+[node name="StateMachine" type="Node" parent="." unique_id=1601003323 node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_jkq6i")
+initial_state = NodePath("Attack")
+
+[node name="Idle" type="Node" parent="StateMachine" unique_id=320851133]
+script = ExtResource("4_l2jyx")
+
+[node name="PathNearPlayer" type="Timer" parent="StateMachine/Idle" unique_id=2118271566]
+wait_time = 15.0
+one_shot = true
+
+[node name="Attack" type="Node" parent="StateMachine" unique_id=864357237]
+script = ExtResource("5_ke18n")
+
+[node name="LostPlayer" type="Timer" parent="StateMachine/Attack" unique_id=789559191]
+wait_time = 5.0
+one_shot = true
+
+[node name="Search" type="Node" parent="StateMachine" unique_id=1164085516]
+script = ExtResource("6_by8ig")
+
+[node name="SearchTime" type="Timer" parent="StateMachine/Search" unique_id=1392995714]
+wait_time = 30.0
+
+[node name="enemy_movement_component" type="Node2D" parent="." unique_id=626775412]
+script = ExtResource("7_ro6eq")
+
+[node name="vision_component" type="Node" parent="." unique_id=286284342]
+script = ExtResource("8_se51m")
+
+[node name="enemy_shooting_component" type="Node" parent="." unique_id=1144513627]
+script = ExtResource("10_sa08f")
+
+[node name="TurretTurningTimer" type="Timer" parent="enemy_shooting_component" unique_id=51059293]
+
+[node name="ShootingTimer" type="Timer" parent="enemy_shooting_component" unique_id=542306486]
+one_shot = true
+
+[node name="BulletContainer" type="Node" parent="enemy_shooting_component" unique_id=2065221680]
+
+[node name="Ricochet" type="RayCast2D" parent="enemy_shooting_component" unique_id=1205664213]
+collision_mask = 2147483649
+collide_with_areas = true
+
+[node name="Line2D" type="Line2D" parent="enemy_shooting_component" unique_id=1582753340]
+visible = false
+
+[node name="RayCast2D" type="RayCast2D" parent="." unique_id=740316403]
+target_position = Vector2(0, 0)
+
+[node name="PathingTimer" type="Timer" parent="." unique_id=677604365]
+wait_time = 0.5
+autostart = true
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=981007089]
+target_desired_distance = 20.0
+path_max_distance = 1000.0
+path_postprocessing = 1
+radius = 20.0
+time_horizon_agents = 0.2
+max_speed = 1000.0
+avoidance_priority = 0.1
+
+[connection signal="timeout" from="StateMachine/Idle/PathNearPlayer" to="StateMachine/Idle" method="_on_path_near_player_timeout"]
+[connection signal="timeout" from="StateMachine/Attack/LostPlayer" to="StateMachine/Attack" method="_on_lost_player_timeout"]
+[connection signal="timeout" from="StateMachine/Search/SearchTime" to="StateMachine/Search" method="_on_search_time_timeout"]
+[connection signal="timeout" from="enemy_shooting_component/TurretTurningTimer" to="enemy_shooting_component" method="_on_turret_turning_timer_timeout"]
+[connection signal="timeout" from="enemy_shooting_component/ShootingTimer" to="enemy_shooting_component" method="_on_shooting_timer_timeout"]
+[connection signal="timeout" from="PathingTimer" to="StateMachine" method="_on_pathing_timer_timeout"]
+[connection signal="target_reached" from="NavigationAgent2D" to="StateMachine" method="_on_navigation_agent_2d_target_reached"]
+[connection signal="velocity_computed" from="NavigationAgent2D" to="enemy_movement_component" method="_on_navigation_agent_2d_velocity_computed"]

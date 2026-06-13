@@ -17,6 +17,8 @@ extends CharacterBody2D
 var WUIon = false
 var LUIon = false
 
+signal player_died()
+
 func _ready() -> void:
 	health = max_health
 	randomize()
@@ -25,18 +27,16 @@ func _ready() -> void:
 	add_to_group("hurtable")
 	add_to_group("player")
 
+func _enter_tree() -> void:
+	$StatsUI.visible = true
+
 func hit(damage: float) -> void:
 	$health_component.hit(damage)
 
-func _process(delta: float) -> void:
-	if enemy_container.get_child_count() <= 0 and not WUIon and not LUIon:
+func _process(_delta: float) -> void:
+	if enemy_container.get_child_count() <= 0 and not LUIon:
 		return
-		WUIon = true
-		if $WinningUI:
-			for UIElement in $WinningUI.get_children():
-				print(get_viewport().position.x)
-				UIElement.global_position = Vector2(get_viewport().size.x/2 - UIElement.size.x/2,get_viewport().size.y/2 - UIElement.size.y/2)
-				UIElement.visible = true
+		
 
 func pick_up_xp(xp_node: Area2D):
 	$xp_component.pick_up_xp(xp_node)
@@ -45,3 +45,6 @@ func heal(amount: float):
 	health += amount
 	if health > max_health:
 		health = max_health
+		
+func death() -> void:
+	emit_signal("player_died")

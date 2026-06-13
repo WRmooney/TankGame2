@@ -28,11 +28,16 @@ func spawn_upgrades() -> void:
 	get_tree().paused = true
 	var upgrades = stackable_presets.get_children()
 	var upg_1 = upgrades.pick_random().duplicate()
-	upgrades.erase(upg_1)
-	var upg_2 = upgrades.pick_random().duplicate()
-	upgrades.erase(upg_2)
-	var upg_3 = upgrades.pick_random().duplicate()
-	upgrades.erase(upg_3)
+	var upg_2
+	while true:
+		upg_2 = upgrades.pick_random().duplicate()
+		if upg_2.name.to_lower() != upg_1.name.to_lower():
+			break
+	var upg_3
+	while true:
+		upg_3 = upgrades.pick_random().duplicate()
+		if upg_3.name.to_lower() != upg_1.name.to_lower() and upg_3.name.to_lower() != upg_2.name.to_lower():
+			break
 	
 	upg_1.offset = Vector2(376,373)
 	upg_1.player = parent

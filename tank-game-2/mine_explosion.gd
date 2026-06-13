@@ -25,7 +25,7 @@ func _ready() -> void:
 	col_off.start(col_end)
 	emitting = true
 	
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	#print(area.get_overlapping_bodies())
 	if not emitting:
 		queue_free()

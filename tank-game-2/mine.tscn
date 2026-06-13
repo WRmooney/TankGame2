@@ -45,14 +45,14 @@ sprite_frames = SubResource("SpriteFrames_i6hay")
 animation = &"mineframes"
 
 [node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=564250815]
-radius = 75.0
+radius = 25.0
 affect_navigation_mesh = true
 carve_navigation_mesh = true
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1755758861]
+collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=186760673]
 shape = SubResource("CircleShape2D_w3yfb")
 
 [connection signal="timeout" from="timer_component/MineTimer" to="timer_component" method="_on_mine_timer_timeout"]
-[connection signal="body_entered" from="Area2D" to="timer_component" method="_on_area_2d_body_entered"]

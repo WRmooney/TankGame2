@@ -51,12 +51,17 @@ shadow_color = Color(0.87, 0.1044, 0.84448004, 1)
 shadow_offset = Vector2(10, 10)
 
 [node name="Player_tank" type="CharacterBody2D" unique_id=1198161332 groups=["player"]]
+collision_layer = 7
+collision_mask = 7
 motion_mode = 1
 wall_min_slide_angle = 0.0
 platform_on_leave = 2
 script = ExtResource("1_n5f8l")
 max_bullets = 10
 max_secondary = 3
+mine_radius = 3.0
+bullet_speed = 230
+mine_damage = 1.0
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=338251651]
 scale = Vector2(0.25, 0.25)
@@ -91,8 +96,10 @@ position_smoothing_enabled = true
 [node name="SecondaryContainer" type="Node" parent="." unique_id=122439246]
 
 [node name="StatsUI" type="CanvasLayer" parent="." unique_id=1956557960]
+visible = false
 
 [node name="HealthLabel" type="Label" parent="StatsUI" unique_id=1170438300]
+visible = false
 z_index = 1
 offset_left = -550.0
 offset_top = -300.0
@@ -104,6 +111,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ColorRect" type="ColorRect" parent="StatsUI" unique_id=721049005]
+visible = false
 offset_left = -550.0
 offset_top = -300.0
 offset_right = -150.0

@@ -59,7 +59,7 @@ func turn_in_dir(dir: int) -> void:
 			turret.rotation_degrees -= 0.02
 
 func _on_turret_turning_timer_timeout() -> void:
-	var dir = randi_range(1,3)
+	var dir = randi_range(-1,1)
 	rand_angle = dir
 	timer.start(randf_range(1.0,5.0))
 	
@@ -71,16 +71,17 @@ func _on_shooting_timer_timeout() -> void:
 	if parent.sees_player and absf(ang_to_player - turret.rotation_degrees) < 3:
 		var shoot_chance = randi_range(1,4)
 		var ang_offset = deg_to_rad(randf_range(-5,5))
-		print(shoot_chance)
-		if shoot_chance <= 3 and $BulletContainer.get_child_count() < parent.max_bullets:
+		if shoot_chance <= 3:
 			var instance = BULLET.instantiate()
 			instance.position = parent.position
 			instance.dir_vector = Vector2(cos(turret.rotation), sin(turret.rotation)).normalized().rotated(ang_offset)
 			instance.damage = parent.damage
 			instance.parent = parent
-			$BulletContainer.add_child(instance)
+			get_battlefield().bullet_container.add_child(instance)
 	elif not parent.sees_player:
-		var shoot_chance = randi_range(1,10)
+		pass
+		"""
+		var shoot_chance = randi_range(1,20)
 		var ang_offset = deg_to_rad(randf_range(-5,5))
 		if shoot_chance == 1 and $BulletContainer.get_child_count() < parent.max_bullets:
 			var instance = BULLET.instantiate()
@@ -88,9 +89,15 @@ func _on_shooting_timer_timeout() -> void:
 			instance.dir_vector = Vector2(cos(turret.rotation), sin(turret.rotation)).normalized().rotated(ang_offset)
 			instance.damage = parent.damage
 			instance.parent = parent
+			instance.bounces = parent.bounces
+			instance.speed = parent.bullet_speed
 			$BulletContainer.add_child(instance)
+		"""
 	timer.start(parent.fire_rate)
 			
-			
-			
+func get_battlefield() -> Node2D:
+	var par = get_parent()
+	while par and par is not Battlefield:
+		par = par.get_parent()
+	return par
 			

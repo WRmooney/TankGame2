@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://ddov1q63jutp"]
+
+[ext_resource type="Script" uid="uid://cry6dfo1sw7wd" path="res://shell.gd" id="1_6fuaf"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_et3vo"]
+radius = 100.0
+
+[sub_resource type="Gradient" id="Gradient_2e587"]
+offsets = PackedFloat32Array(0.225, 0.4125, 0.6125, 0.90625, 1)
+colors = PackedColorArray(0.92, 0.7268001, 0.09200002, 0.11764706, 0.92, 0.7268001, 0.09200002, 0.27450982, 0.92, 0.7268001, 0.09200002, 0.43137255, 0.92, 0.7268001, 0.09200002, 0.5882353, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_tw874"]
+gradient = SubResource("Gradient_2e587")
+width = 250
+height = 250
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.8, 0.2)
+
+[sub_resource type="Gradient" id="Gradient_6fuaf"]
+offsets = PackedFloat32Array(0.225, 0.4125, 0.6125, 0.90625, 1)
+colors = PackedColorArray(0.92, 0.09200002, 0.09200002, 0.11764706, 0.92, 0.09200002, 0.09200002, 0.27450982, 0.92, 0.09200002, 0.09200002, 0.43137255, 0.92, 0.09200002, 0.09200002, 0.5882353, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6fuaf"]
+gradient = SubResource("Gradient_6fuaf")
+width = 250
+height = 250
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.8, 0.2)
+
+[node name="Shell" type="CharacterBody2D" unique_id=417321333]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_6fuaf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=513316515]
+shape = SubResource("CircleShape2D_et3vo")
+
+[node name="FollowingSprite" type="Sprite2D" parent="." unique_id=1119637019]
+texture = SubResource("GradientTexture2D_tw874")
+
+[node name="StoppedSprite" type="Sprite2D" parent="." unique_id=1574719131]
+visible = false
+texture = SubResource("GradientTexture2D_6fuaf")
+
+[node name="FollowTimer" type="Timer" parent="." unique_id=261057617]
+one_shot = true
+
+[node name="ExplosionTimer" type="Timer" parent="." unique_id=985056842]
+one_shot = true
+
+[connection signal="timeout" from="FollowTimer" to="." method="_on_follow_timer_timeout"]
+[connection signal="timeout" from="ExplosionTimer" to="." method="_on_explosion_timer_timeout"]

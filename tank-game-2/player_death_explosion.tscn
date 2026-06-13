@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cutshicojckwb"]
 
-[ext_resource type="Script" uid="uid://bl2uhrp3uf1wr" path="res://player_death_explosion.gd" id="1_o2fbo"]
+[ext_resource type="Script" uid="uid://h8e1elxkmc22" path="res://player_death_explosion.gd" id="1_o2fbo"]
 
 [sub_resource type="Gradient" id="Gradient_c2th1"]
 offsets = PackedFloat32Array(0, 0.63272727, 1)
@@ -13,7 +13,7 @@ fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.89316237, 0.13675214)
 
 [sub_resource type="Gradient" id="Gradient_o2fbo"]
-colors = PackedColorArray(1, 1, 1, 1, 1, 0, 0.9333334, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 0.8666667, 0, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_o8gg7"]
 gradient = SubResource("Gradient_o2fbo")
@@ -46,6 +46,7 @@ color = Color(1, 0.98333335, 0, 1)
 color_ramp = SubResource("GradientTexture1D_o8gg7")
 
 [node name="GPUParticles2D" type="GPUParticles2D" unique_id=1720958241]
+process_mode = 3
 z_index = 20
 emitting = false
 amount = 1000

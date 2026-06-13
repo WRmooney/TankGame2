@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://bwgxeqqhkj8u0"]
+
+[ext_resource type="Script" uid="uid://xjcv0dxx3pug" path="res://default_tank.gd" id="1_idn42"]
+[ext_resource type="Texture2D" uid="uid://sa37o5730xqh" path="res://HeliBlades.png" id="2_wm1ts"]
+[ext_resource type="Script" uid="uid://cxdq2i1w34nmj" path="res://ct_heli_movement.gd" id="3_cf0s8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bx5ho"]
+
+[sub_resource type="Gradient" id="Gradient_rypu6"]
+offsets = PackedFloat32Array(0.5338078)
+colors = PackedColorArray(0.023099978, 0.63306826, 0.77, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_dpkcn"]
+gradient = SubResource("Gradient_rypu6")
+width = 38
+height = 38
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cf0s8"]
+radius = 18.0
+
+[node name="CT_Heli" type="CharacterBody2D" unique_id=586316251]
+z_index = 1
+collision_layer = 16
+collision_mask = 16
+motion_mode = 1
+wall_min_slide_angle = 0.0
+script = ExtResource("1_idn42")
+maxhealth = 1000.0
+speed = 50
+turn_speed = 20
+max_bullets = 5
+fire_rate = 1.0
+damage = 1.0
+range = 1000
+bounces = 4
+bullet_speed = 800.0
+cursed_tank = true
+color = Color(0.023099978, 0.63306826, 0.77, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=586860767]
+scale = Vector2(1.5, 1.5)
+shape = SubResource("RectangleShape2D_bx5ho")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=46334775]
+scale = Vector2(0.8, 0.8)
+texture = SubResource("GradientTexture2D_dpkcn")
+
+[node name="HeliBlades" type="Sprite2D" parent="." unique_id=1424094878]
+scale = Vector2(1.4, 1.4)
+texture = ExtResource("2_wm1ts")
+
+[node name="enemy_movement_component" type="Node2D" parent="." unique_id=626775412]
+script = ExtResource("3_cf0s8")
+
+[node name="Area2D" type="Area2D" parent="enemy_movement_component" unique_id=977556895]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_movement_component/Area2D" unique_id=340769403]
+shape = SubResource("CircleShape2D_cf0s8")
+
+[connection signal="body_entered" from="enemy_movement_component/Area2D" to="enemy_movement_component" method="_on_area_2d_body_entered"]

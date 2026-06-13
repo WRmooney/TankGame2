@@ -27,7 +27,7 @@ func get_new_target() -> void:
 	# path to player if within distance and in LOS
 	if parent.sees_player:
 		$LostPlayer.stop()
-		nav_agent.target_position = player.position + Vector2(200,0).rotated(randf_range(-180,180))
+		nav_agent.target_position = player.position + Vector2(randf_range(200,600),0).rotated(randf_range(-180,180))
 	# path to where player was last seen
 	else:
 		if $LostPlayer.is_stopped():

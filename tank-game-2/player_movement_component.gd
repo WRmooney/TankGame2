@@ -4,7 +4,7 @@ var speed = 0
 var x_vel = 0
 var y_vel = 0
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if get_parent().health <= 0:
 		return
 	speed = get_parent().speed

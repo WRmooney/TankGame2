@@ -21,8 +21,9 @@ func check_early_detonate() -> void:
 	var bodies = $"../Area2D".get_overlapping_bodies()
 	var valid = false
 	for body in bodies:
-		if body.is_in_group("tanks") and not body.is_in_group("player"):
-			valid = true
+		if body is EnemyTank:
+			if not body.cursed_tank:
+				valid = true
 		elif body.is_in_group("player"):
 			valid = false
 			break
@@ -36,8 +37,14 @@ func _on_mine_timer_timeout() -> void:
 	instance.damage = parent.damage
 	instance.length = 1
 	instance.ex_radius = parent.explosion_radius
-	get_tree().current_scene.call_deferred("add_child",instance)
+	get_battlefield().bullet_container.call_deferred("add_child",instance)
 	parent.queue_free()
 
 func hit() -> void:
 	_on_mine_timer_timeout()
+
+func get_battlefield() -> Node2D:
+	var par = get_parent()
+	while par and par is not Battlefield:
+		par = par.get_parent()
+	return par

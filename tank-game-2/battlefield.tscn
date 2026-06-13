@@ -6,14 +6,22 @@
 [ext_resource type="Script" uid="uid://bbn2qj2w6strb" path="res://enemy_container.gd" id="4_tkjg1"]
 [ext_resource type="PackedScene" uid="uid://2v26uh3qsfnv" path="res://map_generation_presets.tscn" id="8_ki6g1"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_tkjg1"]
+font_size = 30
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
 [node name="Battlefield" type="Node2D" unique_id=593888957]
 script = ExtResource("1_4eiu0")
-level_width = 10
-level_height = 10
-player_maxhealth = 10.0
+level_width = 2
+level_height = 2
+player_maxhealth = 1.0
 player_speed = 200.0
 player_max_bullets = 10
 player_max_secondary = 3
+spawn_cap = 100
+mode = "destroy"
+orb_percent = 0.8
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1919255553 groups=["bounceable"]]
 tile_set = ExtResource("2_y8d5v")
@@ -23,9 +31,61 @@ script = ExtResource("3_vsh2u")
 [node name="Enemy_Container" type="Node" parent="." unique_id=128872803]
 script = ExtResource("4_tkjg1")
 
+[node name="BulletContainer" type="Node" parent="." unique_id=13330516]
+
 [node name="MapGenerationPresets" parent="." unique_id=1804707453 instance=ExtResource("8_ki6g1")]
 
 [node name="EnemySpawnTimer" type="Timer" parent="." unique_id=1892583425]
 wait_time = 30.0
+one_shot = true
+
+[node name="OrbLayer" type="TileMapLayer" parent="." unique_id=1566844781]
+
+[node name="OrbContainer" type="Node" parent="." unique_id=1725532275]
+
+[node name="BaseContainer" type="Node" parent="." unique_id=1710156866]
+
+[node name="PermEnemies" type="Node" parent="." unique_id=19328097]
+
+[node name="CounterContainer" type="CanvasLayer" parent="." unique_id=1285827240]
+
+[node name="OrbsCollected" type="CanvasLayer" parent="CounterContainer" unique_id=1205699325]
+visible = false
+
+[node name="OrbCount" type="Label" parent="CounterContainer/OrbsCollected" unique_id=475491963]
+offset_left = -100.0
+offset_top = -50.0
+offset_right = 100.0
+offset_bottom = 50.0
+text = "10/10"
+label_settings = SubResource("LabelSettings_tkjg1")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BasesDestroyed" type="CanvasLayer" parent="CounterContainer" unique_id=553908175]
+visible = false
+
+[node name="BaseCount" type="Label" parent="CounterContainer/BasesDestroyed" unique_id=795278004]
+offset_left = -100.0
+offset_top = -50.0
+offset_right = 100.0
+offset_bottom = 50.0
+text = "10/10"
+label_settings = SubResource("LabelSettings_tkjg1")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EnemiesKilled" type="CanvasLayer" parent="CounterContainer" unique_id=1277923734]
+visible = false
+
+[node name="KillCount" type="Label" parent="CounterContainer/EnemiesKilled" unique_id=722107133]
+offset_left = -100.0
+offset_top = -50.0
+offset_right = 100.0
+offset_bottom = 50.0
+text = "10/10"
+label_settings = SubResource("LabelSettings_tkjg1")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="timeout" from="EnemySpawnTimer" to="." method="_on_enemy_spawn_timer_timeout"]

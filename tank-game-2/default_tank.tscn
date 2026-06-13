@@ -17,21 +17,39 @@
 offsets = PackedFloat32Array(0.5338078)
 colors = PackedColorArray(0.5294118, 0, 0, 1)
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_dpkcn"]
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_r258f"]
+resource_local_to_scene = true
 gradient = SubResource("Gradient_rypu6")
 width = 38
 height = 38
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
+[sub_resource type="Gradient" id="Gradient_r258f"]
+offsets = PackedFloat32Array(0.6, 0.775, 0.8875)
+colors = PackedColorArray(0, 0, 0, 0, 1, 1, 0.53, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_j33sn"]
+gradient = SubResource("Gradient_r258f")
+fill = 2
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.2, 0.8)
+
 [node name="Enemy_tank" type="CharacterBody2D" unique_id=586316251]
+collision_layer = 2
 motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_bpe4v")
-maxhealth = 10.0
+maxhealth = 1.0
 speed = 100
 turn_speed = 10
 max_bullets = 5
+fire_rate = 2.0
+damage = 1.0
+range = 600
+bounces = 1
+bullet_speed = 200.0
+color = Color(0.5294118, 0, 0, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=586860767]
 scale = Vector2(1.5, 1.5)
@@ -39,7 +57,11 @@ shape = SubResource("RectangleShape2D_bx5ho")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=46334775]
 scale = Vector2(0.8, 0.8)
-texture = SubResource("GradientTexture2D_dpkcn")
+texture = SubResource("GradientTexture2D_r258f")
+
+[node name="Highlight" type="Sprite2D" parent="." unique_id=68985067]
+visible = false
+texture = SubResource("GradientTexture2D_j33sn")
 
 [node name="Turret" type="Sprite2D" parent="." unique_id=1424094878]
 texture = ExtResource("2_7o4ld")
@@ -78,6 +100,7 @@ script = ExtResource("7_7o4ld")
 script = ExtResource("8_u62d1")
 
 [node name="HealthBar" type="ColorRect" parent="enemy_health_component" unique_id=466823455]
+visible = false
 z_index = 10
 offset_left = -25.0
 offset_top = 20.0
@@ -102,8 +125,7 @@ wait_time = 0.5
 autostart = true
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=981007089]
-path_desired_distance = 50.0
-target_desired_distance = 30.0
+target_desired_distance = 20.0
 path_max_distance = 1000.0
 path_postprocessing = 1
 avoidance_enabled = true
