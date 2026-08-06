@@ -36,7 +36,13 @@ func hit(damage: float) -> void:
 func _process(_delta: float) -> void:
 	if enemy_container.get_child_count() <= 0 and not LUIon:
 		return
-		
+	
+	# rotate turret top
+	var mouse_pos_diff_x = get_viewport().get_mouse_position().x - get_global_transform_with_canvas().get_origin().x
+	var mouse_pos_diff_y = get_viewport().get_mouse_position().y - get_global_transform_with_canvas().get_origin().y
+	$Turret.rotation = atan2(mouse_pos_diff_y, mouse_pos_diff_x)
+	
+	
 
 func pick_up_xp(xp_node: Area2D):
 	$xp_component.pick_up_xp(xp_node)

@@ -10,7 +10,8 @@ func _ready() -> void:
 	add_to_group("bullets")
 	add_to_group("destroy_on_bullet_collide")
 	tankref = get_parent().parent
-	parent.add_collision_exception_with(tankref)
+	if tankref:
+		parent.add_collision_exception_with(tankref)
 
 func _physics_process(delta: float) -> void:
 	var cur_speed = parent.speed
@@ -28,7 +29,8 @@ func _physics_process(delta: float) -> void:
 		if collider.is_in_group("bounceable") and parent.bounces > 0:
 			parent.dir_vector = vector.bounce(collision.get_normal()).normalized()
 			parent.bounces -= 1
-			parent.remove_collision_exception_with(tankref)
+			if tankref:
+				parent.remove_collision_exception_with(tankref)
 			if parent.test_move(parent.transform, Vector2.ZERO, tankref):
 				parent.queue_free()
 
@@ -36,5 +38,12 @@ func _physics_process(delta: float) -> void:
 			collider.hit(parent.damage)
 			parent.queue_free()
 
+		elif collider.is_in_group("ball"):
+			collider.hit(parent)
+			parent.queue_free()
+		
 		elif collider.is_in_group("destroy_on_bullet_collide") or parent.bounces <= 0:
 			parent.queue_free()
+		
+		
+			

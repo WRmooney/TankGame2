@@ -4,6 +4,9 @@ extends Node2D
 @onready var nav_agent := $"../NavigationAgent2D" as NavigationAgent2D
 
 func _physics_process(delta: float) -> void:
+	if parent.disabled:
+		parent.velocity = Vector2(0,0)
+		return
 	var dir = to_local(nav_agent.get_next_path_position()).normalized()
 	 
 	if nav_agent.avoidance_enabled:
@@ -13,5 +16,7 @@ func _physics_process(delta: float) -> void:
 
 
 func _on_navigation_agent_2d_velocity_computed(safe_velocity: Vector2) -> void:
+	if parent.disabled:
+		return
 	parent.velocity = safe_velocity.normalized() * parent.speed
 	parent.move_and_slide()

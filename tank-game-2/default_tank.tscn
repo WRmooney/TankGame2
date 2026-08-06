@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://xjcv0dxx3pug" path="res://default_tank.gd" id="1_bpe4v"]
 [ext_resource type="Texture2D" uid="uid://bun4jqri5glxx" path="res://turrettopwhite.png" id="2_7o4ld"]
+[ext_resource type="Texture2D" uid="uid://cpoviyry2bg" path="res://HighlightArrow.png" id="2_j33sn"]
 [ext_resource type="Script" uid="uid://dr6yhp4haanqr" path="res://state_machine.gd" id="2_tachv"]
 [ext_resource type="Script" uid="uid://bdaqbjcayyqov" path="res://idle.gd" id="3_2bw51"]
 [ext_resource type="Script" uid="uid://bnvacctdmk0hi" path="res://enemy_movement_component.gd" id="4_asy6k"]
@@ -26,8 +27,8 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="Gradient" id="Gradient_r258f"]
-offsets = PackedFloat32Array(0.6, 0.775, 0.8875)
-colors = PackedColorArray(0, 0, 0, 0, 1, 1, 0.53, 1, 1, 1, 1, 0)
+offsets = PackedFloat32Array(0, 0.31875, 0.6375, 0.93125)
+colors = PackedColorArray(0, 0, 0, 0, 0.52, 0.52, 0.17679998, 0.47058824, 1, 1, 0.33999997, 1, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_j33sn"]
 gradient = SubResource("Gradient_r258f")
@@ -62,6 +63,12 @@ texture = SubResource("GradientTexture2D_r258f")
 [node name="Highlight" type="Sprite2D" parent="." unique_id=68985067]
 visible = false
 texture = SubResource("GradientTexture2D_j33sn")
+
+[node name="HighlightArrow" type="Sprite2D" parent="." unique_id=2018695234]
+visible = false
+scale = Vector2(1.5, 2)
+texture = ExtResource("2_j33sn")
+offset = Vector2(0, -18)
 
 [node name="Turret" type="Sprite2D" parent="." unique_id=1424094878]
 texture = ExtResource("2_7o4ld")

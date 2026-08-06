@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://cps3lpguu2lob" path="res://bullet.gd" id="1_v8qja"]
 [ext_resource type="Script" uid="uid://bjm5u751rwhux" path="res://bullet_movement_component.gd" id="2_t4vbm"]
 [ext_resource type="Script" uid="uid://dxuj2jlucsoem" path="res://prediction_obstacle.gd" id="3_t4vbm"]
+[ext_resource type="AudioStream" uid="uid://c0t5reyrp6fxr" path="res://BulletShoot.wav" id="4_2b2rl"]
 
 [sub_resource type="Gradient" id="Gradient_b7duk"]
 interpolation_mode = 1
@@ -18,8 +19,8 @@ fill_from = Vector2(0.5, 0.5)
 radius = 7.071068
 
 [node name="Bullet" type="CharacterBody2D" unique_id=968395164 groups=["bullets", "destroy_on_bullet_collide"]]
-collision_layer = 3
-collision_mask = 3
+collision_layer = 35
+collision_mask = 35
 script = ExtResource("1_v8qja")
 speed = 200
 bounces = 1
@@ -45,3 +46,8 @@ avoidance_layers = 15
 vertices = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0)
 avoidance_layers = 15
 script = ExtResource("3_t4vbm")
+
+[node name="BulletSound" type="AudioStreamPlayer" parent="." unique_id=514454543]
+stream = ExtResource("4_2b2rl")
+volume_db = -2.0
+autoplay = true

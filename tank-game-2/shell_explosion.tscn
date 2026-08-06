@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://do1lllt6arnwr" path="res://shell_explosion.gd" id="1_x03cb"]
 [ext_resource type="Script" uid="uid://c7xpfuf84oul2" path="res://shell_explosion_area.gd" id="2_7p5ue"]
+[ext_resource type="AudioStream" uid="uid://drt67xuav7cdi" path="res://MineExplode.wav" id="3_7p5ue"]
 
 [sub_resource type="Gradient" id="Gradient_fgtiq"]
 offsets = PackedFloat32Array(0.06875, 0.32, 0.49454546)
@@ -9,8 +10,8 @@ colors = PackedColorArray(0.93, 0.31806, 0.055800002, 1, 0.96, 0.66880006, 0.086
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_sp1n0"]
 gradient = SubResource("Gradient_fgtiq")
-width = 256
-height = 256
+width = 250
+height = 250
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
@@ -57,6 +58,11 @@ script = ExtResource("2_7p5ue")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=2142857652]
 shape = SubResource("CircleShape2D_f8ti5")
 disabled = true
+
+[node name="Explosion" type="AudioStreamPlayer" parent="." unique_id=1046666860]
+stream = ExtResource("3_7p5ue")
+pitch_scale = 0.8
+autoplay = true
 
 [connection signal="finished" from="." to="." method="_on_finished"]
 [connection signal="timeout" from="Col_on" to="." method="_on_col_on_timeout"]

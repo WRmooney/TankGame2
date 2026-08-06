@@ -9,6 +9,11 @@
 [ext_resource type="Script" uid="uid://pxw1k2eawrnj" path="res://ct_railgun_movement.gd" id="7_ro6eq"]
 [ext_resource type="Script" uid="uid://dayulwkj021ta" path="res://vision_component.gd" id="8_se51m"]
 [ext_resource type="Script" uid="uid://0ul2nf824qyn" path="res://ct_railgun_shooting.gd" id="10_sa08f"]
+[ext_resource type="Script" uid="uid://dy2pitkoxbrjg" path="res://ct_enemy_health_component.gd" id="10_toqic"]
+[ext_resource type="PackedScene" uid="uid://dxbyj6bw23n6e" path="res://ct_smoke_fx.tscn" id="11_jkq6i"]
+[ext_resource type="Script" uid="uid://dhwluw3g0kema" path="res://curse_modifications.gd" id="12_jkq6i"]
+[ext_resource type="AudioStream" uid="uid://cyvusvdlrevt" path="res://DisabledCT.wav" id="12_ke18n"]
+[ext_resource type="Script" uid="uid://cekfbv0knop6d" path="res://valid_curse_pool.gd" id="13_l2jyx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bx5ho"]
 
@@ -25,12 +30,12 @@ fill_from = Vector2(0.5, 0.5)
 
 [node name="CT_Railgun" type="CharacterBody2D" unique_id=586316251]
 z_index = 1
-collision_layer = 4
-collision_mask = 4
+collision_layer = 36
+collision_mask = 36
 motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_ro6eq")
-maxhealth = 1000.0
+maxhealth = 10.0
 speed = 100
 turn_speed = 20
 max_bullets = 5
@@ -115,6 +120,37 @@ time_horizon_agents = 0.2
 max_speed = 1000.0
 avoidance_priority = 0.1
 
+[node name="ct_enemy_health_component" type="Node" parent="." unique_id=1072991922]
+process_mode = 3
+script = ExtResource("10_toqic")
+disable_time = 15.0
+
+[node name="HealthBar" type="ColorRect" parent="ct_enemy_health_component" unique_id=1519977743]
+z_index = 10
+offset_left = -25.0
+offset_top = 20.0
+offset_right = 25.0
+offset_bottom = 25.0
+color = Color(0.8509804, 0, 0.11372549, 1)
+
+[node name="CT_Smoke" parent="ct_enemy_health_component" unique_id=1183973401 instance=ExtResource("11_jkq6i")]
+
+[node name="DisableTimer" type="Timer" parent="ct_enemy_health_component" unique_id=625616958]
+one_shot = true
+
+[node name="WarningTimer" type="Timer" parent="ct_enemy_health_component" unique_id=1865195134]
+one_shot = true
+
+[node name="DisabledCT" type="AudioStreamPlayer" parent="ct_enemy_health_component" unique_id=699546892]
+stream = ExtResource("12_ke18n")
+
+[node name="CurseModifications" type="Node" parent="." unique_id=1410777695]
+script = ExtResource("12_jkq6i")
+
+[node name="ValidCursePool" type="Node" parent="." unique_id=1476732007]
+script = ExtResource("13_l2jyx")
+valid_curse_names = Array[String](["Lasting Lasers", "Wide Lasers"])
+
 [connection signal="timeout" from="StateMachine/Idle/PathNearPlayer" to="StateMachine/Idle" method="_on_path_near_player_timeout"]
 [connection signal="timeout" from="StateMachine/Attack/LostPlayer" to="StateMachine/Attack" method="_on_lost_player_timeout"]
 [connection signal="timeout" from="StateMachine/Search/SearchTime" to="StateMachine/Search" method="_on_search_time_timeout"]
@@ -123,3 +159,5 @@ avoidance_priority = 0.1
 [connection signal="timeout" from="PathingTimer" to="StateMachine" method="_on_pathing_timer_timeout"]
 [connection signal="target_reached" from="NavigationAgent2D" to="StateMachine" method="_on_navigation_agent_2d_target_reached"]
 [connection signal="velocity_computed" from="NavigationAgent2D" to="enemy_movement_component" method="_on_navigation_agent_2d_velocity_computed"]
+[connection signal="timeout" from="ct_enemy_health_component/DisableTimer" to="ct_enemy_health_component" method="_on_disable_timer_timeout"]
+[connection signal="timeout" from="ct_enemy_health_component/WarningTimer" to="ct_enemy_health_component" method="_on_warning_timer_timeout"]

@@ -15,6 +15,7 @@ func _ready() -> void:
 
 func _on_hit_box_timer_timeout() -> void:
 	$HitBoxTimer.stop()
+	$LaserSound.play()
 	for i in range(len($Line2D.points) - 1):
 		var shape = ConvexPolygonShape2D.new()
 		var angle = atan2($Line2D.points[i+1].y - $Line2D.points[i].y, $Line2D.points[i+1].x - $Line2D.points[i].x)

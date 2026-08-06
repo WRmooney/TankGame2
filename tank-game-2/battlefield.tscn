@@ -4,12 +4,63 @@
 [ext_resource type="TileSet" uid="uid://2s2tgby7gknw" path="res://level_tiles.tres" id="2_y8d5v"]
 [ext_resource type="Script" uid="uid://gefucfacvxaj" path="res://tile_map_layer.gd" id="3_vsh2u"]
 [ext_resource type="Script" uid="uid://bbn2qj2w6strb" path="res://enemy_container.gd" id="4_tkjg1"]
+[ext_resource type="Script" uid="uid://cptah1xvwmhj0" path="res://screen_effects_events.gd" id="6_y8d5v"]
 [ext_resource type="PackedScene" uid="uid://2v26uh3qsfnv" path="res://map_generation_presets.tscn" id="8_ki6g1"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_tkjg1"]
 font_size = 30
 outline_size = 5
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Gradient" id="Gradient_y8d5v"]
+offsets = PackedFloat32Array(0, 0.3, 0.9)
+colors = PackedColorArray(0, 0, 0, 0.47058824, 0, 0, 0, 0.8235294, 0, 0, 0, 0.9411765)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_y8rib"]
+gradient = SubResource("Gradient_y8d5v")
+width = 500
+height = 500
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_y8rib"]
+offsets = PackedFloat32Array(0, 0.1, 0.3, 0.8)
+colors = PackedColorArray(0, 0, 0, 0.98039216, 0, 0, 0, 0.9607843, 0, 0, 0, 0.8627451, 0, 0, 0, 0.47058824)
+metadata/_snap_enabled = true
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4eiu0"]
+gradient = SubResource("Gradient_y8rib")
+width = 500
+height = 500
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+
+[sub_resource type="Gradient" id="Gradient_4eiu0"]
+offsets = PackedFloat32Array(0.525, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ki6g1"]
+gradient = SubResource("Gradient_4eiu0")
+width = 128
+height = 128
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.8, 0.2)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qd1yl"]
+particle_flag_disable_z = true
+emission_shape_offset = Vector3(570, -100, 0)
+emission_shape_scale = Vector3(58, 1, 1)
+emission_shape = 3
+emission_box_extents = Vector3(10, 1, 1)
+direction = Vector3(0, 1, 0)
+spread = 20.0
+initial_velocity_min = 120.0
+initial_velocity_max = 200.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.5
+scale_max = 1.1999999
 
 [node name="Battlefield" type="Node2D" unique_id=593888957]
 script = ExtResource("1_4eiu0")
@@ -21,7 +72,7 @@ player_max_bullets = 10
 player_max_secondary = 3
 spawn_cap = 100
 mode = "destroy"
-orb_percent = 0.8
+orb_percent = 0.5
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1919255553 groups=["bounceable"]]
 tile_set = ExtResource("2_y8d5v")
@@ -44,6 +95,10 @@ one_shot = true
 [node name="OrbContainer" type="Node" parent="." unique_id=1725532275]
 
 [node name="BaseContainer" type="Node" parent="." unique_id=1710156866]
+
+[node name="GolfContainer" type="Node" parent="." unique_id=1290951907]
+
+[node name="BallContainer" type="Node" parent="GolfContainer" unique_id=1690697890]
 
 [node name="PermEnemies" type="Node" parent="." unique_id=19328097]
 
@@ -87,5 +142,56 @@ text = "10/10"
 label_settings = SubResource("LabelSettings_tkjg1")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="BallsScored" type="CanvasLayer" parent="CounterContainer" unique_id=344899788]
+visible = false
+
+[node name="ScoreCount" type="Label" parent="CounterContainer/BallsScored" unique_id=135799160]
+offset_left = -100.0
+offset_top = -50.0
+offset_right = 100.0
+offset_bottom = 50.0
+text = "10/10"
+label_settings = SubResource("LabelSettings_tkjg1")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScreenEffectsEvents" type="Node" parent="." unique_id=1654032908]
+script = ExtResource("6_y8d5v")
+
+[node name="NearSight" type="CanvasLayer" parent="ScreenEffectsEvents" unique_id=86909918]
+visible = false
+
+[node name="NearSightFilter" type="TextureRect" parent="ScreenEffectsEvents/NearSight" unique_id=215043309]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -252.0
+offset_bottom = 252.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_y8rib")
+expand_mode = 4
+
+[node name="FarSight" type="CanvasLayer" parent="ScreenEffectsEvents" unique_id=359970091]
+visible = false
+
+[node name="FarSightFilter" type="TextureRect" parent="ScreenEffectsEvents/FarSight" unique_id=1707370939]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_4eiu0")
+expand_mode = 4
+
+[node name="SnowEffect" type="CanvasLayer" parent="ScreenEffectsEvents" unique_id=491764962]
+visible = false
+
+[node name="SnowParticles" type="GPUParticles2D" parent="ScreenEffectsEvents/SnowEffect" unique_id=719494355]
+amount = 100
+texture = SubResource("GradientTexture2D_ki6g1")
+lifetime = 15.0
+process_material = SubResource("ParticleProcessMaterial_qd1yl")
 
 [connection signal="timeout" from="EnemySpawnTimer" to="." method="_on_enemy_spawn_timer_timeout"]

@@ -1,12 +1,21 @@
 [gd_scene format=3 uid="uid://cgpy1t8nxtt64"]
 
 [ext_resource type="Script" uid="uid://c67ukmk1o447f" path="res://player_tank.gd" id="1_n5f8l"]
-[ext_resource type="Texture2D" uid="uid://iw36stixn77l" path="res://icon.svg" id="2_1jnsx"]
+[ext_resource type="Texture2D" uid="uid://v0tl6mtyxti6" path="res://turrettopblue.png" id="2_w85wn"]
 [ext_resource type="Script" uid="uid://bg3wn21urexh7" path="res://player_movement_component.gd" id="3_4ab8g"]
 [ext_resource type="Script" uid="uid://bsoda1gn0b6i4" path="res://shooting_component.gd" id="4_w85wn"]
 [ext_resource type="Script" uid="uid://du2gieyivvbtr" path="res://health_component.gd" id="5_1jnsx"]
 [ext_resource type="Script" uid="uid://cnlyxgictprtw" path="res://xp_component.gd" id="6_4ab8g"]
 [ext_resource type="PackedScene" uid="uid://dqaj80548ygcg" path="res://upgrade_presets.tscn" id="7_w85wn"]
+
+[sub_resource type="Gradient" id="Gradient_4ab8g"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(0.2620658, 0.4789974, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_w85wn"]
+gradient = SubResource("Gradient_4ab8g")
+width = 29
+height = 29
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1ealj"]
 size = Vector2(19.060402, 19.060402)
@@ -63,9 +72,13 @@ mine_radius = 3.0
 bullet_speed = 230
 mine_damage = 1.0
 
+[node name="Turret" type="Sprite2D" parent="." unique_id=1724804025]
+z_index = 1
+scale = Vector2(1.4, 1.4)
+texture = ExtResource("2_w85wn")
+
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=338251651]
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("2_1jnsx")
+texture = SubResource("GradientTexture2D_w85wn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=672815603]
 position = Vector2(-1.1920929e-07, 1.1920929e-07)

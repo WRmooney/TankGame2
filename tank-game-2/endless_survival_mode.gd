@@ -7,9 +7,12 @@ var level_width: int = 2
 var level_height: int = 2
 var score: int = 0
 
-var enemies: Array[String] = []
+@export var enemies: Array[String] = []
+var curses: Array[String] = []
 
-var modes: Array[String] = ["kill", "destroy", "collect"]
+var modes: Array[String] = ["kill", "destroy", "collect","golf"]
+var events: Array[String] = ["Nearsighted","Farsighted","Low Ammo","Snow"] # Sawblades, idk what else bruh
+var cur_event: String = "none"
 
 var intermission: bool = true
 
@@ -18,6 +21,8 @@ var cur_level: Node2D
 const BATTLEFIELD = preload("res://battlefield.tscn")
 
 """
+GOLF MODE?????
+
 LEVEL ORDER:
 1: Kill Enemies (100?)
 2: Destroy Bases
@@ -54,8 +59,8 @@ etc...
 
 func _ready() -> void:
 	# Connect signals to selections
-	$EnemySelect.selected.connect(add_enemy)
-	
+	$EnemySelect.EnemySelected.connect(add_enemy)
+	$CurseSelect.CurseSelected.connect(add_curse)
 	
 	# Initialize game
 	start_game()
@@ -67,20 +72,35 @@ func start_game() -> void:
 func select_enemy() -> void:
 	$EnemySelect.select()
 
+func select_curse() -> void:
+	$CurseSelect.enemies = enemies
+	$CurseSelect.select()
+
 func add_enemy(enemy_name: String) -> void:
 	enemies.append(enemy_name)
 	continue_to_level()
 
+func add_curse(curse_name: String) -> void:
+	curses.append(curse_name)
+	continue_to_level()
+
 func continue_to_level() -> void:
 	intermission = false
+	cur_event = "none"
 	if level % 10 == 0:
 		boss_transition_screen()
 	else:
+		var event_chance = randi_range(1,5)
+		print(event_chance)
+		if event_chance == 1:
+			cur_event = events.pick_random()
 		level_transition_screen()
 	var battlefield = BATTLEFIELD.instantiate()
+	battlefield.event = cur_event
 	battlefield.level_width = level_width
 	battlefield.level_height = level_height
 	battlefield.ct_enemies = enemies
+	battlefield.curses = curses
 	
 	match (level % 10):
 		1: 
@@ -90,17 +110,17 @@ func continue_to_level() -> void:
 		3: 
 			battlefield = set_mode(battlefield, "collect")
 		4: 
-			battlefield = set_mode(battlefield, "kill")
+			battlefield = set_mode(battlefield, "golf")
 		5: 
-			battlefield = set_mode(battlefield, "destroy")
-		6: 
-			battlefield = set_mode(battlefield, "collect")
-		7: 
 			battlefield = set_mode(battlefield, "kill")
-		8: 
+		6: 
 			battlefield = set_mode(battlefield, "destroy")
-		9: 
+		7: 
 			battlefield = set_mode(battlefield, "collect")
+		8: 
+			battlefield = set_mode(battlefield, "golf")
+		9: 
+			battlefield = set_mode(battlefield, "kill")
 		0: 
 			battlefield = set_mode(battlefield, "random")
 		
@@ -134,6 +154,11 @@ func set_mode(battlefield: Node2D, mode: String) -> Node2D:
 				battlefield.orb_percent = 1.0
 				battlefield.level_width += 1
 				battlefield.level_height += 1
+		"golf":
+			$ObjectiveLayer/ObjectiveLabel.text = "Push the Balls into the Hole!"
+			if random:
+				battlefield.level_width += 1
+				battlefield.level_height += 1
 	
 	return battlefield
 	
@@ -155,22 +180,22 @@ func level_complete() -> void:
 			select_enemy()
 		2:
 			level_width += 1
-			continue_to_level()
+			select_curse()
 		3:
-			select_enemy()
+			select_curse()
 		4:
-			continue_to_level()
-		5:
 			select_enemy()
+		5:
+			select_curse()
 		6:
 			level_height += 1
-			continue_to_level()
+			select_curse()
 		7:
 			select_enemy()
 		8:
-			continue_to_level()
+			select_curse()
 		9:
-			select_enemy()
+			select_curse()
 		0:
 			continue_to_level() #BOSS!!!
 
@@ -234,11 +259,15 @@ func level_transition_screen() -> void:
 	$LevelScreen/LevelNumber.text = "Level " + str(level)
 	$LevelScreen/LiveCount.text = "Lives: " + str(lives)
 	$LevelScreen/ColorRect.size = get_viewport().size
+	if cur_event != "none":
+		$LevelScreen/EventText.text = "Special Event: " + cur_event
+		$LevelScreen/EventText.visible = true
 	$LevelScreen.visible = true
 	$ObjectiveLayer.visible = false
 	get_tree().paused = true
 	await get_tree().create_timer(3.0).timeout
 	get_tree().paused = false
+	$LevelScreen/EventText.visible = false
 	$LevelScreen.visible = false
 	$ObjectiveLayer.visible = true
 	

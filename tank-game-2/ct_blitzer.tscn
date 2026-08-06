@@ -2,6 +2,13 @@
 
 [ext_resource type="Script" uid="uid://xjcv0dxx3pug" path="res://default_tank.gd" id="1_wmxbe"]
 [ext_resource type="Script" uid="uid://jtvurufea71w" path="res://ct_blitzer_movement.gd" id="2_1cjks"]
+[ext_resource type="AudioStream" uid="uid://bahk27dndtbmx" path="res://BlitzerDash.wav" id="3_sx4dj"]
+[ext_resource type="Script" uid="uid://dy2pitkoxbrjg" path="res://ct_enemy_health_component.gd" id="3_uln4j"]
+[ext_resource type="PackedScene" uid="uid://dxbyj6bw23n6e" path="res://ct_smoke_fx.tscn" id="4_aa5i8"]
+[ext_resource type="Script" uid="uid://dhwluw3g0kema" path="res://curse_modifications.gd" id="5_aa5i8"]
+[ext_resource type="AudioStream" uid="uid://cyvusvdlrevt" path="res://DisabledCT.wav" id="6_o6pby"]
+[ext_resource type="Script" uid="uid://cekfbv0knop6d" path="res://valid_curse_pool.gd" id="6_w6hnp"]
+[ext_resource type="Script" uid="uid://kmdm5yll0hgo" path="res://bullet_trail.gd" id="7_rg8ph"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bx5ho"]
 
@@ -27,7 +34,7 @@ colors = PackedColorArray(0, 0, 0, 0)
 gradient = SubResource("Gradient_wmxbe")
 
 [sub_resource type="Gradient" id="Gradient_cqj7p"]
-offsets = PackedFloat32Array(0.083333336, 0.5, 0.9166667)
+offsets = PackedFloat32Array(0.08333331, 0.5, 0.9166667)
 colors = PackedColorArray(1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0)
 metadata/_snap_count = 12
 metadata/_snap_enabled = true
@@ -36,17 +43,24 @@ metadata/_snap_enabled = true
 gradient = SubResource("Gradient_cqj7p")
 width = 300
 height = 10
-fill_to = Vector2(0.1, 0)
+fill_to = Vector2(0.05, 0)
 repeat = 1
+
+[sub_resource type="Curve" id="Curve_rg8ph"]
+_data = [Vector2(0, 1), 0.0, -1.0, 0, 1, Vector2(1, 0), -1.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_sx4dj"]
+colors = PackedColorArray(0.76862746, 0.47058824, 0.023529412, 1, 1, 0, 0, 0)
 
 [node name="CT_Blitzer" type="CharacterBody2D" unique_id=586316251]
 z_index = 1
-collision_layer = 0
+collision_layer = 32
 collision_mask = 0
 motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_wmxbe")
-maxhealth = 1000.0
+maxhealth = 10.0
 speed = 500
 turn_speed = 20
 max_bullets = 5
@@ -88,6 +102,51 @@ texture = SubResource("GradientTexture2D_uln4j")
 position = Vector2(170, 0)
 texture = SubResource("GradientTexture2D_1cjks")
 
+[node name="AttackSound" type="AudioStreamPlayer" parent="enemy_movement_component" unique_id=61057718]
+stream = ExtResource("3_sx4dj")
+volume_db = 5.0
+
+[node name="ct_enemy_health_component" type="Node" parent="." unique_id=985156232]
+process_mode = 3
+script = ExtResource("3_uln4j")
+disable_time = 15.0
+
+[node name="HealthBar" type="ColorRect" parent="ct_enemy_health_component" unique_id=1748823791]
+z_index = 10
+offset_left = -25.0
+offset_top = 20.0
+offset_right = 25.0
+offset_bottom = 25.0
+color = Color(0.8509804, 0, 0.11372549, 1)
+
+[node name="CT_Smoke" parent="ct_enemy_health_component" unique_id=1183973401 instance=ExtResource("4_aa5i8")]
+
+[node name="DisableTimer" type="Timer" parent="ct_enemy_health_component" unique_id=1241033964]
+one_shot = true
+
+[node name="WarningTimer" type="Timer" parent="ct_enemy_health_component" unique_id=700223575]
+one_shot = true
+
+[node name="DisabledCT" type="AudioStreamPlayer" parent="ct_enemy_health_component" unique_id=1933205956]
+stream = ExtResource("6_o6pby")
+
+[node name="CurseModifications" type="Node" parent="." unique_id=1307720013]
+script = ExtResource("5_aa5i8")
+
+[node name="ValidCursePool" type="Node" parent="." unique_id=1589660834]
+script = ExtResource("6_w6hnp")
+valid_curse_names = Array[String](["Farther Dash", "Quicker Dash"])
+
+[node name="BlitzerTrail" type="Line2D" parent="." unique_id=571681455]
+z_index = -1
+width = 30.0
+width_curve = SubResource("Curve_rg8ph")
+gradient = SubResource("Gradient_sx4dj")
+script = ExtResource("7_rg8ph")
+max_length = 100
+
 [connection signal="timeout" from="enemy_movement_component/Cooldown" to="enemy_movement_component" method="_on_cooldown_timeout"]
 [connection signal="timeout" from="enemy_movement_component/Windup" to="enemy_movement_component" method="_on_windup_timeout"]
 [connection signal="body_entered" from="enemy_movement_component/Area2D" to="enemy_movement_component" method="_on_area_2d_body_entered"]
+[connection signal="timeout" from="ct_enemy_health_component/DisableTimer" to="ct_enemy_health_component" method="_on_disable_timer_timeout"]
+[connection signal="timeout" from="ct_enemy_health_component/WarningTimer" to="ct_enemy_health_component" method="_on_warning_timer_timeout"]

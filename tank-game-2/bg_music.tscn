@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://ba6a4als1qfk7"]
+
+[ext_resource type="AudioStream" uid="uid://ci5odvsmj26dm" path="res://JOSHBREAKER_MAX.mp3" id="1_p1osb"]
+
+[node name="BGMusic" type="AudioStreamPlayer" unique_id=850875970]
+process_mode = 3
+stream = ExtResource("1_p1osb")
+volume_db = -10.0
+autoplay = true
+parameters/looping = true

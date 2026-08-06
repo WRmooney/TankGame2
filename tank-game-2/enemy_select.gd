@@ -20,7 +20,7 @@ var descriptions: Dictionary = {
 @onready var title3 = $Selections/C3/Choice3/Title
 @onready var desc3 = $Selections/C3/Choice3/Description
 
-signal selected(enemy_name: String)
+signal EnemySelected(enemy_name: String)
 
 func _ready() -> void:
 	turn_off_selections()
@@ -39,17 +39,17 @@ func select() -> void:
 
 
 func _on_choice_1_pressed() -> void:
-	emit_signal("selected", title1.text.to_lower())
+	emit_signal("EnemySelected", title1.text.to_lower())
 	turn_off_selections()
 
 
 func _on_choice_2_pressed() -> void:
-	emit_signal("selected", title2.text.to_lower())
+	emit_signal("EnemySelected", title2.text.to_lower())
 	turn_off_selections()
 
 
 func _on_choice_3_pressed() -> void:
-	emit_signal("selected", title3.text.to_lower())
+	emit_signal("EnemySelected", title3.text.to_lower())
 	turn_off_selections()
 	
 func turn_on_selections() -> void:

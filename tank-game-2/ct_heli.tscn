@@ -3,6 +3,11 @@
 [ext_resource type="Script" uid="uid://xjcv0dxx3pug" path="res://default_tank.gd" id="1_idn42"]
 [ext_resource type="Texture2D" uid="uid://sa37o5730xqh" path="res://HeliBlades.png" id="2_wm1ts"]
 [ext_resource type="Script" uid="uid://cxdq2i1w34nmj" path="res://ct_heli_movement.gd" id="3_cf0s8"]
+[ext_resource type="Script" uid="uid://dy2pitkoxbrjg" path="res://ct_enemy_health_component.gd" id="4_vx88q"]
+[ext_resource type="PackedScene" uid="uid://dxbyj6bw23n6e" path="res://ct_smoke_fx.tscn" id="5_vy7x8"]
+[ext_resource type="AudioStream" uid="uid://cyvusvdlrevt" path="res://DisabledCT.wav" id="6_54e0u"]
+[ext_resource type="Script" uid="uid://dhwluw3g0kema" path="res://curse_modifications.gd" id="6_vy7x8"]
+[ext_resource type="Script" uid="uid://cekfbv0knop6d" path="res://valid_curse_pool.gd" id="7_2e1fo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bx5ho"]
 
@@ -18,16 +23,16 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_cf0s8"]
-radius = 18.0
+radius = 20.0
 
 [node name="CT_Heli" type="CharacterBody2D" unique_id=586316251]
 z_index = 1
-collision_layer = 16
-collision_mask = 16
+collision_layer = 48
+collision_mask = 48
 motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_idn42")
-maxhealth = 1000.0
+maxhealth = 10.0
 speed = 50
 turn_speed = 20
 max_bullets = 5
@@ -59,4 +64,37 @@ script = ExtResource("3_cf0s8")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="enemy_movement_component/Area2D" unique_id=340769403]
 shape = SubResource("CircleShape2D_cf0s8")
 
+[node name="ct_enemy_health_component" type="Node" parent="." unique_id=1760583101]
+process_mode = 3
+script = ExtResource("4_vx88q")
+disable_time = 15.0
+
+[node name="HealthBar" type="ColorRect" parent="ct_enemy_health_component" unique_id=540300277]
+z_index = 10
+offset_left = -25.0
+offset_top = 20.0
+offset_right = 25.0
+offset_bottom = 25.0
+color = Color(0.8509804, 0, 0.11372549, 1)
+
+[node name="CT_Smoke" parent="ct_enemy_health_component" unique_id=1183973401 instance=ExtResource("5_vy7x8")]
+
+[node name="DisableTimer" type="Timer" parent="ct_enemy_health_component" unique_id=328106679]
+one_shot = true
+
+[node name="WarningTimer" type="Timer" parent="ct_enemy_health_component" unique_id=1983634914]
+one_shot = true
+
+[node name="DisabledCT" type="AudioStreamPlayer" parent="ct_enemy_health_component" unique_id=36922056]
+stream = ExtResource("6_54e0u")
+
+[node name="CurseModifications" type="Node" parent="." unique_id=1893696862]
+script = ExtResource("6_vy7x8")
+
+[node name="ValidCursePool" type="Node" parent="." unique_id=12414016]
+script = ExtResource("7_2e1fo")
+valid_curse_names = Array[String](["Faster Heli", "Longer Blades"])
+
 [connection signal="body_entered" from="enemy_movement_component/Area2D" to="enemy_movement_component" method="_on_area_2d_body_entered"]
+[connection signal="timeout" from="ct_enemy_health_component/DisableTimer" to="ct_enemy_health_component" method="_on_disable_timer_timeout"]
+[connection signal="timeout" from="ct_enemy_health_component/WarningTimer" to="ct_enemy_health_component" method="_on_warning_timer_timeout"]

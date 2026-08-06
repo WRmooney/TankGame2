@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cgubihet3bmem" path="res://endless_survival_mode.gd" id="1_c2u3w"]
 [ext_resource type="Script" uid="uid://qm1gp8t4c07w" path="res://enemy_select.gd" id="2_2nnlu"]
+[ext_resource type="Script" uid="uid://cb73607ftma5x" path="res://curse_select.gd" id="2_x8s7t"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ombb5"]
 font_size = 26
@@ -15,6 +16,16 @@ outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_c2u3w"]
 font_size = 70
+outline_size = 15
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_1kswr"]
+font_size = 25
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_has1a"]
+font_size = 20
 outline_size = 15
 outline_color = Color(0, 0, 0, 1)
 
@@ -66,6 +77,11 @@ font_size = 40
 outline_size = 15
 outline_color = Color(0, 0, 0, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_vblr5"]
+font_size = 40
+font_color = Color(0, 0, 0, 1)
+outline_size = 15
+
 [sub_resource type="LabelSettings" id="LabelSettings_muxml"]
 font_size = 120
 outline_size = 20
@@ -83,17 +99,187 @@ shadow_color = Color(0.9215, 0.09500002, 0.95, 0.99215686)
 shadow_offset = Vector2(8, 8)
 
 [sub_resource type="LabelSettings" id="LabelSettings_cv253"]
-font_size = 30
+font_size = 40
 font_color = Color(1, 0.91733336, 0.38, 1)
 outline_size = 10
-outline_color = Color(0.46, 0.3588, 0.1564, 1)
+outline_color = Color(0.47, 0.36659998, 0.1598, 1)
 
 [node name="EndlessSurvivalMode" type="Node2D" unique_id=1380732344]
 script = ExtResource("1_c2u3w")
 
-[node name="ActiveCurses" type="Node" parent="." unique_id=368783521]
+[node name="CurseSelect" type="Node" parent="." unique_id=368783521]
+script = ExtResource("2_x8s7t")
 
-[node name="CursePool" type="Node" parent="." unique_id=2024482031]
+[node name="Selections" type="Node" parent="CurseSelect" unique_id=1234612589]
+
+[node name="C1" type="CanvasLayer" parent="CurseSelect/Selections" unique_id=1334490557]
+visible = false
+
+[node name="Choice1" type="Button" parent="CurseSelect/Selections/C1" unique_id=411913673]
+anchors_preset = -1
+anchor_left = 0.25
+anchor_top = 0.7
+anchor_right = 0.25
+anchor_bottom = 0.7
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 99.99997
+
+[node name="Title" type="Label" parent="CurseSelect/Selections/C1/Choice1" unique_id=971276489]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -75.0
+offset_right = 75.0
+offset_bottom = 50.0
+grow_horizontal = 2
+text = "Artillery"
+label_settings = SubResource("LabelSettings_ombb5")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="Label" parent="CurseSelect/Selections/C1/Choice1" unique_id=340932474]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -75.0
+offset_top = -100.0
+offset_right = 75.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Shoot a blast that follows blah blah blah"
+label_settings = SubResource("LabelSettings_c6wmq")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="C2" type="CanvasLayer" parent="CurseSelect/Selections" unique_id=140292549]
+visible = false
+
+[node name="Choice2" type="Button" parent="CurseSelect/Selections/C2" unique_id=853143312]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.7
+anchor_right = 0.5
+anchor_bottom = 0.7
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 99.99997
+
+[node name="Title" type="Label" parent="CurseSelect/Selections/C2/Choice2" unique_id=1315288349]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -75.0
+offset_right = 75.0
+offset_bottom = 50.0
+grow_horizontal = 2
+text = "Artillery"
+label_settings = SubResource("LabelSettings_ombb5")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="Label" parent="CurseSelect/Selections/C2/Choice2" unique_id=1254930248]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -75.0
+offset_top = -100.0
+offset_right = 75.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Shoot a blast that follows blah blah blah"
+label_settings = SubResource("LabelSettings_c6wmq")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="C3" type="CanvasLayer" parent="CurseSelect/Selections" unique_id=1680138300]
+visible = false
+
+[node name="Choice3" type="Button" parent="CurseSelect/Selections/C3" unique_id=1037735114]
+anchors_preset = -1
+anchor_left = 0.75
+anchor_top = 0.7
+anchor_right = 0.75
+anchor_bottom = 0.7
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 99.99997
+
+[node name="Title" type="Label" parent="CurseSelect/Selections/C3/Choice3" unique_id=1207715637]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -75.0
+offset_right = 75.0
+offset_bottom = 50.0
+grow_horizontal = 2
+text = "Artillery"
+label_settings = SubResource("LabelSettings_ombb5")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Description" type="Label" parent="CurseSelect/Selections/C3/Choice3" unique_id=1005269495]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -75.0
+offset_top = -100.0
+offset_right = 75.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Shoot a blast that follows blah blah blah"
+label_settings = SubResource("LabelSettings_c6wmq")
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="SelectionText" type="Label" parent="CurseSelect/Selections" unique_id=1199224064]
+visible = false
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.2
+anchor_right = 0.5
+anchor_bottom = 0.2
+offset_left = -200.0
+offset_right = 200.0
+offset_bottom = 200.0
+grow_horizontal = 2
+text = "Select a Curse"
+label_settings = SubResource("LabelSettings_c2u3w")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SelectionDesc" type="Label" parent="CurseSelect/Selections" unique_id=854251026]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -171.0
+offset_top = -44.0
+offset_right = 171.0
+offset_bottom = -9.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Curses Amplify the Difficulty"
+label_settings = SubResource("LabelSettings_1kswr")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="EnemySelect" type="Node" parent="." unique_id=242494627]
 script = ExtResource("2_2nnlu")
@@ -242,16 +428,35 @@ anchor_left = 0.5
 anchor_top = 0.2
 anchor_right = 0.5
 anchor_bottom = 0.2
-offset_left = -200.0
-offset_right = 200.0
-offset_bottom = 200.0
+offset_left = -275.0
+offset_top = -29.600006
+offset_right = 275.0
+offset_bottom = 170.4
 grow_horizontal = 2
 text = "Select an Enemy"
 label_settings = SubResource("LabelSettings_c2u3w")
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="SelectionDesc" type="Label" parent="EnemySelect/Selections" unique_id=532701390]
+visible = false
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.2
+anchor_right = 0.5
+anchor_bottom = 0.2
+offset_left = -332.5
+offset_top = 35.399994
+offset_right = 332.5
+offset_bottom = 235.4
+grow_horizontal = 2
+text = "These Enemies are permanent and cannot be killed."
+label_settings = SubResource("LabelSettings_has1a")
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="WinScreen" type="CanvasLayer" parent="." unique_id=531925352]
+layer = 2
 visible = false
 
 [node name="LevelComplete" type="Label" parent="WinScreen" unique_id=679107131]
@@ -288,6 +493,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="BossScreen" type="CanvasLayer" parent="." unique_id=791061756]
+layer = 3
 visible = false
 
 [node name="ColorRect" type="ColorRect" parent="BossScreen" unique_id=2005773911]
@@ -343,6 +549,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="LevelScreen" type="CanvasLayer" parent="." unique_id=650878191]
+layer = 3
 visible = false
 
 [node name="ColorRect" type="ColorRect" parent="LevelScreen" unique_id=1365592369]
@@ -379,6 +586,24 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Lives: 420"
 label_settings = SubResource("LabelSettings_e3l3c")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="EventText" type="Label" parent="LevelScreen" unique_id=1841626768]
+visible = false
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.55
+anchor_right = 0.5
+anchor_bottom = 0.55
+offset_left = -255.5
+offset_top = 43.600006
+offset_right = 255.5
+offset_bottom = 143.6
+grow_horizontal = 2
+grow_vertical = 2
+text = "Special Event: Nearsighted"
+label_settings = SubResource("LabelSettings_vblr5")
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -470,6 +695,9 @@ label_settings = SubResource("LabelSettings_cv253")
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[connection signal="pressed" from="CurseSelect/Selections/C1/Choice1" to="CurseSelect" method="_on_choice_1_pressed"]
+[connection signal="pressed" from="CurseSelect/Selections/C2/Choice2" to="CurseSelect" method="_on_choice_2_pressed"]
+[connection signal="pressed" from="CurseSelect/Selections/C3/Choice3" to="CurseSelect" method="_on_choice_3_pressed"]
 [connection signal="pressed" from="EnemySelect/Selections/C1/Choice1" to="EnemySelect" method="_on_choice_1_pressed"]
 [connection signal="pressed" from="EnemySelect/Selections/C2/Choice2" to="EnemySelect" method="_on_choice_2_pressed"]
 [connection signal="pressed" from="EnemySelect/Selections/C3/Choice3" to="EnemySelect" method="_on_choice_3_pressed"]

@@ -2,6 +2,7 @@ extends Node
 
 @onready var parent = get_parent()
 @onready var healthbar = $HealthBar
+@onready var bullet_cont = $"../enemy_shooting_component/BulletContainer"
 
 const explosion = preload("res://enemy_explosion.tscn")
 const XP = preload("res://xp.tscn")
@@ -24,6 +25,11 @@ func hit(damage: float):
 		var instance = explosion.instantiate()
 		instance.position = get_parent().position
 		get_battlefield().bullet_container.add_child(instance)
+		# Add live bullets to global bullet container to prevent them from disappearing
+		if bullet_cont.get_child_count() != 0:
+			for bullet in bullet_cont.get_children():
+				get_battlefield().bullet_container.add_child(bullet)
+				bullet.tankref = get_battlefield().bullet_container
 		"""
 		# drop xp or other
 		var drop_chance = randi_range(1,1000)

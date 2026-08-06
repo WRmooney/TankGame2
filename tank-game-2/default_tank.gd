@@ -14,10 +14,13 @@ class_name EnemyTank extends CharacterBody2D
 @export var cursed_tank: bool = false
 @export var color: Color
 
+var disabled: bool = false
+
 @export var enemy_container: Node
 
 @onready var nav_agent:= $NavigationAgent2D as NavigationAgent2D
 
+var curses: Array[String] = []
 
 var sees_player: bool
 
@@ -28,15 +31,24 @@ func _ready() -> void:
 	$Sprite2D.texture = $Sprite2D.texture.duplicate(true)
 	$Sprite2D.texture.gradient.colors = [color]
 	add_to_group("tanks")
+	add_to_group("hurtable")
 	if not cursed_tank:
 		add_to_group("destroy_on_bullet_collide")
-		add_to_group("hurtable")
+	if cursed_tank:
+		apply_curses(curses)
+		
+func apply_curses(curses: Array[String]) -> void:
+	if cursed_tank:
+		curses = $ValidCursePool.filter_curses(curses)
+		$CurseModifications.apply_curses(curses)
+		
 
 func activate_highlight() -> void:
 	$Highlight.visible = true
+	$HighlightArrow.visible = true
 
 func hit(damage: float) -> void:
 	if cursed_tank:
-		return
+		$ct_enemy_health_component.hit(damage)
 	else:
 		$enemy_health_component.hit(damage)

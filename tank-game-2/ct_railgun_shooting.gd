@@ -12,11 +12,16 @@ var attacking = false
 var rand_angle = 1
 var can_shoot: bool = false
 
+var laser_width_mod: float = 1.0
+var laser_duration_mod: float = 1.0
+
 func _ready() -> void:
 	$ShootingTimer.start(parent.fire_rate)
 	raycast.add_exception(parent)
 
 func _physics_process(delta: float) -> void:
+	if parent.disabled:
+		return
 	if timer.is_stopped():
 		rand_angle = 0
 		timer.start(randf_range(1.0,5.0))
@@ -25,6 +30,8 @@ func _physics_process(delta: float) -> void:
 	
 	if can_shoot:
 		check_angles()
+	
+	
 	
 func check_angles() -> void:
 	var ang_to_check = turret.rotation_degrees
@@ -48,6 +55,7 @@ func hits_player(ang_to_check: float) -> bool: #angle in degrees
 		raycast.force_raycast_update()
 		
 		if raycast.is_colliding():
+			
 			var hit_point = raycast.get_collision_point()
 			var hit_normal = raycast.get_collision_normal()
 			var collider = raycast.get_collider()
@@ -69,6 +77,8 @@ func hits_player(ang_to_check: float) -> bool: #angle in degrees
 	return hits
 	
 func turn_in_dir(dir: int) -> void:
+	if parent.disabled:
+		return
 	for i in range(parent.turn_speed):
 		if dir <= 0:
 			turret.rotation_degrees += 0.02
@@ -89,14 +99,16 @@ func _on_shooting_timer_timeout() -> void:
 		$ShootingTimer.start(parent.fire_rate)
 
 func shoot(angle: float) -> void:
+	if parent.disabled:
+		return
 	if not can_shoot:
 		return
 	can_shoot = false
 	var instance = LASER.instantiate()
 	instance.line_points = $Line2D.points
 	instance.wait_time = 1
-	instance.duration = .5
-	instance.width = 4
+	instance.duration = .5 * laser_duration_mod
+	instance.width = 4 * laser_width_mod
 	#instance.damage = parent.damage
 	#instance.parent = parent
 	$BulletContainer.add_child(instance)

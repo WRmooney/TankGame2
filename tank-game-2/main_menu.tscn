@@ -1,0 +1,159 @@
+[gd_scene format=3 uid="uid://5wtsvtbjeam0"]
+
+[ext_resource type="FontFile" uid="uid://bewdnb8qu0p2v" path="res://addons/Font Pack/PakenhamBl.ttf" id="1_06t4h"]
+[ext_resource type="Script" uid="uid://cbbbkrs3cm0oy" path="res://main_menu.gd" id="1_7vrkn"]
+
+[sub_resource type="FontVariation" id="FontVariation_7vrkn"]
+base_font = ExtResource("1_06t4h")
+
+[sub_resource type="LabelSettings" id="LabelSettings_fu7sn"]
+font = SubResource("FontVariation_7vrkn")
+font_size = 100
+outline_size = 40
+outline_color = Color(0.58, 0.36627, 0.19139999, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_jix8l"]
+font = SubResource("FontVariation_7vrkn")
+font_size = 70
+outline_size = 30
+outline_color = Color(0.58, 0.36627, 0.19139999, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_7vrkn"]
+font = SubResource("FontVariation_7vrkn")
+font_size = 40
+outline_size = 30
+outline_color = Color(0.58, 0.36627, 0.19139999, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_glbon"]
+font = SubResource("FontVariation_7vrkn")
+font_size = 50
+outline_size = 30
+outline_color = Color(0.58, 0.36627, 0.19139999, 1)
+
+[node name="MainMenu" type="Control" unique_id=1008719108]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7vrkn")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1362905172]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2000.0
+offset_top = -1000.0
+offset_right = 2000.0
+offset_bottom = 1000.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.76571125, 0.4757763, 0.30175665, 1)
+
+[node name="Title" type="Label" parent="." unique_id=523099725]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -265.5
+offset_top = -224.0
+offset_right = 265.5
+offset_bottom = -103.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "TANK GAME 2"
+label_settings = SubResource("LabelSettings_fu7sn")
+
+[node name="JohnTank" type="Label" parent="." unique_id=40707723]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -265.5
+offset_top = -104.0
+offset_right = 265.5
+offset_bottom = 17.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "By John Tank"
+label_settings = SubResource("LabelSettings_jix8l")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VolumeLabel" type="Label" parent="." unique_id=279491746]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -265.5
+offset_top = -168.0
+offset_right = 265.5
+offset_bottom = -47.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "BGM Volume"
+label_settings = SubResource("LabelSettings_7vrkn")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BGMVolume" type="HSlider" parent="." unique_id=1932984416]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -68.0
+offset_right = 300.0
+offset_bottom = -38.0
+grow_horizontal = 2
+grow_vertical = 0
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="PlayButton" type="Button" parent="." unique_id=1286530826]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = 36.0
+offset_right = 100.0
+offset_bottom = 136.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlayLabel" type="Label" parent="PlayButton" unique_id=406250745]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -271.0
+offset_top = -61.0
+offset_right = 260.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "PLAY"
+label_settings = SubResource("LabelSettings_glbon")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="value_changed" from="BGMVolume" to="." method="_on_bgm_volume_value_changed"]
+[connection signal="pressed" from="PlayButton" to="." method="_on_play_button_pressed"]

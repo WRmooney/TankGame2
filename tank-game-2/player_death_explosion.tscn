@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cutshicojckwb"]
 
 [ext_resource type="Script" uid="uid://h8e1elxkmc22" path="res://player_death_explosion.gd" id="1_o2fbo"]
+[ext_resource type="AudioStream" uid="uid://0ps7o4khj1h0" path="res://PlayerDie.wav" id="2_o8gg7"]
 
 [sub_resource type="Gradient" id="Gradient_c2th1"]
 offsets = PackedFloat32Array(0, 0.63272727, 1)
@@ -56,3 +57,8 @@ one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_1xkwg")
 script = ExtResource("1_o2fbo")
+
+[node name="DeathExplosionSound" type="AudioStreamPlayer" parent="." unique_id=1277615543]
+stream = ExtResource("2_o8gg7")
+volume_db = 4.0
+autoplay = true

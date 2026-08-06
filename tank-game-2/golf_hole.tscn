@@ -1,0 +1,90 @@
+[gd_scene format=3 uid="uid://dm07ntuomwh8m"]
+
+[ext_resource type="Script" uid="uid://cgttb21bfda4f" path="res://golf_hole.gd" id="1_4ijui"]
+[ext_resource type="AudioStream" uid="uid://br88kqgtyx6m0" path="res://GolfScored.wav" id="2_fqwtj"]
+[ext_resource type="Texture2D" uid="uid://unbg8ah73elc" path="res://TrackingArrowDark.png" id="3_128hw"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rt1ux"]
+radius = 20.0
+
+[sub_resource type="Gradient" id="Gradient_rt1ux"]
+offsets = PackedFloat32Array(0.5625, 0.73125, 0.7875)
+colors = PackedColorArray(0, 0, 0, 0.9607843, 0.55, 0.55, 0.55, 0.9843137, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4ijui"]
+gradient = SubResource("Gradient_rt1ux")
+width = 100
+height = 100
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.8, 0.2)
+
+[node name="GolfHole" type="Node2D" unique_id=92398270]
+script = ExtResource("1_4ijui")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1724443415]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=777398199]
+shape = SubResource("CircleShape2D_rt1ux")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=996609168]
+texture = SubResource("GradientTexture2D_4ijui")
+
+[node name="GolfScored" type="AudioStreamPlayer" parent="." unique_id=437286088]
+stream = ExtResource("2_fqwtj")
+volume_db = -5.0
+pitch_scale = 0.7
+
+[node name="TrackingArrow" type="CanvasLayer" parent="." unique_id=702379602]
+
+[node name="Container" type="Control" parent="TrackingArrow" unique_id=353296064]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -150.0
+offset_right = 150.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="TrackingArrow/Container" unique_id=464659299]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -170.0
+offset_top = -20.0
+offset_right = 80.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+pivot_offset = Vector2(20, 20)
+color = Color(1, 1, 1, 0)
+
+[node name="TextureRect" type="TextureRect" parent="TrackingArrow/Container/ColorRect" unique_id=1324673021]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -30.0
+offset_bottom = 30.0
+grow_horizontal = 0
+grow_vertical = 2
+rotation = -1.5707964
+pivot_offset = Vector2(30, 30)
+texture = ExtResource("3_128hw")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=739043991]
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

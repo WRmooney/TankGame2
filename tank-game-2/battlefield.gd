@@ -7,6 +7,9 @@ const ENEMY = preload("res://default_tank.tscn")
 const ORB = preload("res://orb.tscn")
 const BASE = preload("res://enemy_base.tscn")
 
+const GOLFHOLE = preload("res://golf_hole.tscn")
+const GOLFBALL = preload("res://golf_ball.tscn")
+
 const RAILGUN = preload("res://ct_railgun.tscn")
 const ARTILLERY = preload("res://ct_artillery.tscn")
 const HELI = preload("res://ct_heli.tscn")
@@ -23,6 +26,8 @@ const BLITZER = preload("res://ct_blitzer.tscn")
 @onready var bullet_container = $BulletContainer
 @onready var enemies_killed = $CounterContainer/EnemiesKilled
 @onready var kill_count = $CounterContainer/EnemiesKilled/KillCount
+@onready var balls_scored = $CounterContainer/BallsScored
+@onready var score_count = $CounterContainer/BallsScored/ScoreCount
 
 @export var level_width: int = 6
 @export var level_height: int = 6
@@ -39,6 +44,10 @@ const BLITZER = preload("res://ct_blitzer.tscn")
 @export var orb_percent: float
 @export var extra_base_num: int = 0
 
+var curses: Array[String] = []
+
+var event: String = "none"
+
 var ct_enemies: Array[String] = []
 var spawn_tile = Vector2i(0,0)
 
@@ -50,6 +59,7 @@ var enemy_damage = 1
 var orb_max: int = -1
 var base_max: int = -1
 var kill_max: int = 10
+var balls_to_spawn: int = 0
 
 signal level_complete()
 signal player_died()
@@ -67,7 +77,16 @@ func _ready() -> void:
 			spawn_bases()
 		"kill":
 			enemies_killed.visible = true
+		"golf":
+			balls_scored.visible = true
+			spawn_golf()
 	spawn_ct_enemies()
+	if event == "Nearsighted":
+		$ScreenEffectsEvents.apply_nearsight()
+	elif event == "Farsighted":
+		$ScreenEffectsEvents.apply_farsight()
+	elif event == "Snow":
+		$ScreenEffectsEvents.apply_snow()
 	$EnemySpawnTimer.start(3)
 
 
@@ -80,7 +99,6 @@ func _process(delta: float) -> void:
 			orb_count.text = str(orb_max - $OrbContainer.get_child_count()) + " / " + str(orb_max)
 			orb_count.global_position = Vector2(get_viewport().size.x / 2 - 100, get_viewport().size.y - 100)
 			if $OrbContainer.get_child_count() == 0:
-				
 				emit_signal("level_complete")
 		"destroy":
 			base_count.text = str(base_max - $BaseContainer.get_child_count()) + " / " + str(base_max)
@@ -90,7 +108,12 @@ func _process(delta: float) -> void:
 		"kill":
 			kill_count.text = str(enemy_container.kills) + " / " + str(kill_max)
 			kill_count.global_position = Vector2(get_viewport().size.x / 2 - 100, get_viewport().size.y - 100)
-			if enemy_container.kills == kill_max:
+			if enemy_container.kills >= kill_max:
+				emit_signal("level_complete")
+		"golf":
+			score_count.text = str(balls_to_spawn - $GolfContainer/BallContainer.get_child_count()) + " / " + str(balls_to_spawn)
+			score_count.global_position = Vector2(get_viewport().size.x / 2 - 100, get_viewport().size.y - 100)
+			if $GolfContainer/BallContainer.get_child_count() == 0:
 				emit_signal("level_complete")
 	
 func print_map(tile: Vector2i) -> void:
@@ -327,6 +350,26 @@ func spawn_bases() -> void:
 			base_node.add_child(instance)
 		$BaseContainer.add_child(base_node)
 
+func spawn_golf() -> void:
+	#spawn hole
+	var open_cells = tilemap.get_used_cells_by_id(2,Vector2i(0,0))
+	open_cells.erase(spawn_tile)
+	var hole_spawn = open_cells.pick_random()
+	open_cells.erase(hole_spawn)
+	
+	var instance = GOLFHOLE.instantiate()
+	instance.position = Vector2(hole_spawn.x * 64 + 32, hole_spawn.y * 64 + 32)
+	$GolfContainer.add_child(instance)
+	
+	# spawn balls
+	balls_to_spawn = ceil((level_width + level_height) / 2)
+	for i in range(balls_to_spawn):
+		var ball_spawn = open_cells.pick_random()
+		var ball_instance = GOLFBALL.instantiate()
+		ball_instance.position = Vector2(ball_spawn.x * 64 + 32, ball_spawn.y * 64 + 32)
+		$GolfContainer/BallContainer.add_child(ball_instance)
+
+
 func is_in_player_chunk(chunk_to_check: Vector2i):
 	var player_chunk = Vector2i(floor(spawn_tile.x/10.0), floor(spawn_tile.y/10))
 	if player_chunk == chunk_to_check:
@@ -346,8 +389,12 @@ func spawn_player() -> void:
 			
 	instance.max_health = player_maxhealth
 	instance.speed = player_speed
-	instance.max_bullets = player_max_bullets
-	instance.max_secondary = player_max_secondary
+	if event == "Low Ammo":
+		instance.max_bullets = 5
+		instance.max_secondary = 2
+	else:
+		instance.max_bullets = player_max_bullets
+		instance.max_secondary = player_max_secondary
 	instance.enemy_container = enemy_container
 	instance.xp = 0
 	instance.level_threshold = 6
@@ -359,6 +406,7 @@ func death() -> void:
 
 func spawn_ct_enemies() -> void:
 	print(ct_enemies)
+	print(curses)
 	for enemy in ct_enemies:
 		match enemy:
 			"artillery":
@@ -372,7 +420,9 @@ func spawn_ct_enemies() -> void:
 				instance.position = Vector2(player_tile.x * 64 + 32, player_tile.y * 64 + 32)
 				instance.player = $Player_tank
 				instance.enemy_container = enemy_container
+				instance.curses = curses
 				enemy_container.add_child(instance)
+				
 			"railgun":
 				var instance = RAILGUN.instantiate()
 				tilemap.update_internals()
@@ -384,6 +434,7 @@ func spawn_ct_enemies() -> void:
 				instance.position = Vector2(player_tile.x * 64 + 32, player_tile.y * 64 + 32)
 				instance.player = $Player_tank
 				instance.enemy_container = enemy_container
+				instance.curses = curses
 				enemy_container.add_child(instance)
 			"heli":
 				var instance = HELI.instantiate()
@@ -396,6 +447,7 @@ func spawn_ct_enemies() -> void:
 				instance.position = Vector2(player_tile.x * 64 + 32, player_tile.y * 64 + 32)
 				instance.player = $Player_tank
 				instance.enemy_container = enemy_container
+				instance.curses = curses
 				enemy_container.add_child(instance)
 			"blitzer":
 				var instance = BLITZER.instantiate()
@@ -408,6 +460,7 @@ func spawn_ct_enemies() -> void:
 				instance.position = Vector2(player_tile.x * 64 + 32, player_tile.y * 64 + 32)
 				instance.player = $Player_tank
 				instance.enemy_container = enemy_container
+				instance.curses = curses
 				enemy_container.add_child(instance)
 
 func _on_enemy_spawn_timer_timeout() -> void:
@@ -438,8 +491,12 @@ func _on_enemy_spawn_timer_timeout() -> void:
 	enemy_container.add_child(instance)
 	if mode == "kill":
 		$EnemySpawnTimer.start(enemy_spawn_time)
-	else:
+	elif mode == "destroy":
 		$EnemySpawnTimer.start(enemy_spawn_time * 2)
+	elif mode == "collect":
+		$EnemySpawnTimer.start(enemy_spawn_time * 4)
+	elif mode == "golf":
+		$EnemySpawnTimer.start(enemy_spawn_time * 5)
 
 func pause_on_complete() -> void:
 	$Player_tank.process_mode = Node.PROCESS_MODE_DISABLED
@@ -448,11 +505,13 @@ func pause_on_complete() -> void:
 func get_score() -> int:
 	match mode:
 		"kill":
-			return enemy_container.kills
+			return enemy_container.kills * 10
 		"destroy":
-			return (base_max - $BaseContainer.get_child_count()) * 20 + ceil(enemy_container.kills / 4.0)
+			return (base_max - $BaseContainer.get_child_count()) * 50 + ceil(enemy_container.kills * 3)
 		"collect":
-			return (orb_max - $OrbContainer.get_child_count()) + ceil(enemy_container.kills / 4.0)
+			return (orb_max - $OrbContainer.get_child_count()) + ceil(enemy_container.kills * 3)
+		"golf":
+			return (balls_to_spawn - $GolfContainer/BallContainer.get_child_count()) * 30 + ceil(enemy_container.kills * 3)
 		_:
 			return 0
 		

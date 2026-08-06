@@ -18,6 +18,7 @@ func hit(damage: float) -> void:
 		var instance = player_death.instantiate()
 		parent.add_child(instance)
 		$"../Sprite2D".queue_free()
+		$"../Turret".queue_free()
 		$"../CollisionShape2D".queue_free()
 		$"../NavigationObstacle2D".queue_free()
 		parent.death()

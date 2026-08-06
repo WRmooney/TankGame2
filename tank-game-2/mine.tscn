@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://boaqydemory2y" path="res://mine_collision.gd" id="2_w3yfb"]
 [ext_resource type="Texture2D" uid="uid://up7cy7iuhshf" path="res://mine_normal.tres" id="3_vanlv"]
 [ext_resource type="Texture2D" uid="uid://0h710hn0tul0" path="res://mine_flicker.tres" id="4_w3yfb"]
+[ext_resource type="AudioStream" uid="uid://qr6gpfwxicux" path="res://MinePlaced.wav" id="6_2wuje"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_i6hay"]
 radius = 8.0
@@ -54,5 +55,9 @@ collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=186760673]
 shape = SubResource("CircleShape2D_w3yfb")
+
+[node name="MinePlaced" type="AudioStreamPlayer" parent="." unique_id=609982106]
+stream = ExtResource("6_2wuje")
+autoplay = true
 
 [connection signal="timeout" from="timer_component/MineTimer" to="timer_component" method="_on_mine_timer_timeout"]

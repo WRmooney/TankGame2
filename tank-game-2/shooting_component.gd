@@ -24,6 +24,7 @@ func primary_shoot():
 	var instance = BULLET.instantiate()
 	instance.position = get_parent().position
 	instance.dir_vector = Vector2(mouse_pos_diff_x, mouse_pos_diff_y).normalized()
+	instance.position += instance.dir_vector * 20
 	instance.damage = get_parent().bullet_damage
 	instance.speed = get_parent().bullet_speed
 	instance.parent = get_parent()
