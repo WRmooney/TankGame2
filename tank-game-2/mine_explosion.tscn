@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://fsq07lybxybf"]
 
-[ext_resource type="Script" uid="uid://rrq45r45f128" path="res://mine_explosion.gd" id="1_f8ti5"]
-[ext_resource type="Script" uid="uid://bswsxt1dwj0uo" path="res://mine_explosion_area.gd" id="2_fgtiq"]
+[ext_resource type="Script" uid="uid://rrq45r45f128" path="res://mine_explosion.gd" id="1_sp1n0"]
+[ext_resource type="Script" uid="uid://bswsxt1dwj0uo" path="res://mine_explosion_area.gd" id="2_28tef"]
 [ext_resource type="AudioStream" uid="uid://drt67xuav7cdi" path="res://MineExplode.wav" id="3_sp1n0"]
 
 [sub_resource type="Gradient" id="Gradient_fgtiq"]
@@ -44,12 +44,12 @@ one_shot = true
 explosiveness = 1.0
 randomness = 1.0
 process_material = SubResource("ParticleProcessMaterial_okcqs")
-script = ExtResource("1_f8ti5")
+script = ExtResource("1_sp1n0")
 length = 1.5
 
 [node name="Area2D" type="Area2D" parent="." unique_id=393544565]
 collision_mask = 3
-script = ExtResource("2_fgtiq")
+script = ExtResource("2_28tef")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=2142857652]
 shape = SubResource("CircleShape2D_f8ti5")

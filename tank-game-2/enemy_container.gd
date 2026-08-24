@@ -14,6 +14,10 @@ func _ready() -> void:
 		scaling_threshold = 30
 	
 
+func freeze_enemies(time: float, freeze_bullets: bool = false):
+	for enemy in get_children():
+		enemy.freeze(time, freeze_bullets)
+
 func enemy_killed() -> void:
 	kills += 1
 	if kills % scaling_threshold == 0:

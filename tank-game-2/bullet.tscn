@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://wke5ai7laija"]
 
-[ext_resource type="Script" uid="uid://cps3lpguu2lob" path="res://bullet.gd" id="1_v8qja"]
-[ext_resource type="Script" uid="uid://bjm5u751rwhux" path="res://bullet_movement_component.gd" id="2_t4vbm"]
-[ext_resource type="Script" uid="uid://dxuj2jlucsoem" path="res://prediction_obstacle.gd" id="3_t4vbm"]
+[ext_resource type="Script" uid="uid://cps3lpguu2lob" path="res://bullet.gd" id="1_2b2rl"]
+[ext_resource type="Script" uid="uid://bjm5u751rwhux" path="res://bullet_movement_component.gd" id="2_b7duk"]
+[ext_resource type="Script" uid="uid://dxuj2jlucsoem" path="res://prediction_obstacle.gd" id="3_t2bd8"]
 [ext_resource type="AudioStream" uid="uid://c0t5reyrp6fxr" path="res://BulletShoot.wav" id="4_2b2rl"]
 
 [sub_resource type="Gradient" id="Gradient_b7duk"]
@@ -21,7 +21,7 @@ radius = 7.071068
 [node name="Bullet" type="CharacterBody2D" unique_id=968395164 groups=["bullets", "destroy_on_bullet_collide"]]
 collision_layer = 35
 collision_mask = 35
-script = ExtResource("1_v8qja")
+script = ExtResource("1_2b2rl")
 speed = 200
 bounces = 1
 
@@ -33,8 +33,14 @@ z_index = 10
 shape = SubResource("CircleShape2D_2b2rl")
 debug_color = Color(0.9014762, 0.17861408, 0.6276487, 1)
 
+[node name="FreezeTimer" type="Timer" parent="." unique_id=536353087]
+one_shot = true
+
 [node name="movement_component" type="Node" parent="." unique_id=887341812]
-script = ExtResource("2_t4vbm")
+script = ExtResource("2_b7duk")
+
+[node name="TempBoost" type="Timer" parent="movement_component" unique_id=137153169]
+one_shot = true
 
 [node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=2048208839]
 radius = 25.0
@@ -45,9 +51,11 @@ avoidance_layers = 15
 [node name="PredictionObstacle" type="NavigationObstacle2D" parent="." unique_id=245199030]
 vertices = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0)
 avoidance_layers = 15
-script = ExtResource("3_t4vbm")
+script = ExtResource("3_t2bd8")
 
 [node name="BulletSound" type="AudioStreamPlayer" parent="." unique_id=514454543]
 stream = ExtResource("4_2b2rl")
 volume_db = -2.0
 autoplay = true
+
+[connection signal="timeout" from="movement_component/TempBoost" to="movement_component" method="_on_temp_boost_timeout"]

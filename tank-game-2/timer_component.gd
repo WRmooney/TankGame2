@@ -6,10 +6,17 @@ extends Node
 @onready var explosion = preload("res://mine_explosion.tscn")
 
 var detonate_early = false
+var been_hit = false
 
 func _ready() -> void:
 	sprite.frame = 0
 	timer.start(parent.timer_length)
+	
+
+func pause(time:float):
+	$MineTimer.paused = true
+	sprite.pause()
+	$PauseTimer.start(time)
 
 func _process(delta: float) -> void:
 	if timer.time_left < (timer.wait_time / 3) or detonate_early:
@@ -41,6 +48,8 @@ func _on_mine_timer_timeout() -> void:
 	parent.queue_free()
 
 func hit() -> void:
+	if parent.disabled:
+		been_hit = true
 	_on_mine_timer_timeout()
 
 func get_battlefield() -> Node2D:
@@ -48,3 +57,11 @@ func get_battlefield() -> Node2D:
 	while par and par is not Battlefield:
 		par = par.get_parent()
 	return par
+
+
+func _on_pause_timer_timeout() -> void:
+	if been_hit:
+		_on_mine_timer_timeout()
+	$MineTimer.paused = false
+	parent.disabled = false
+	

@@ -25,9 +25,9 @@ fill_from = Vector2(0.5, 0.5)
 [sub_resource type="CircleShape2D" id="CircleShape2D_cf0s8"]
 radius = 20.0
 
-[node name="CT_Heli" type="CharacterBody2D" unique_id=586316251]
+[node name="CT_Heli" type="CharacterBody2D" unique_id=586316251 groups=["cursed_tanks"]]
 z_index = 1
-collision_layer = 48
+collision_layer = 50
 collision_mask = 48
 motion_mode = 1
 wall_min_slide_angle = 0.0
@@ -88,6 +88,9 @@ one_shot = true
 [node name="DisabledCT" type="AudioStreamPlayer" parent="ct_enemy_health_component" unique_id=36922056]
 stream = ExtResource("6_54e0u")
 
+[node name="FreezeTimer" type="Timer" parent="ct_enemy_health_component" unique_id=492491498]
+one_shot = true
+
 [node name="CurseModifications" type="Node" parent="." unique_id=1893696862]
 script = ExtResource("6_vy7x8")
 
@@ -98,3 +101,4 @@ valid_curse_names = Array[String](["Faster Heli", "Longer Blades"])
 [connection signal="body_entered" from="enemy_movement_component/Area2D" to="enemy_movement_component" method="_on_area_2d_body_entered"]
 [connection signal="timeout" from="ct_enemy_health_component/DisableTimer" to="ct_enemy_health_component" method="_on_disable_timer_timeout"]
 [connection signal="timeout" from="ct_enemy_health_component/WarningTimer" to="ct_enemy_health_component" method="_on_warning_timer_timeout"]
+[connection signal="timeout" from="ct_enemy_health_component/FreezeTimer" to="ct_enemy_health_component" method="_on_freeze_timer_timeout"]

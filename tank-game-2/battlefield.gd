@@ -61,13 +61,19 @@ var base_max: int = -1
 var kill_max: int = 10
 var balls_to_spawn: int = 0
 
+var base_chunks: Array[Vector2i] = []
+
+var enemies_frozen = false
+
 signal level_complete()
 signal player_died()
 
 func _ready() -> void:
+	base_max = ceil(level_height * level_width / 10.0) + extra_base_num
 	generate_level(level_width,level_height)
 	tilemap.update_internals()
 	spawn_player()
+
 	match mode:
 		"collect":
 			orbs_collected.visible = true
@@ -126,10 +132,21 @@ func print_map(tile: Vector2i) -> void:
 func generate_level(width_chunks: int, height_chunks: int) -> void: # chunk dimensions are 10x10
 	# generate maze to base chunks off of, in order to prevent chunks from being cut off
 	var maze = generate_maze(level_width, level_height)
+	base_chunks = []
+	if mode == "destroy":
+		while len(base_chunks) < base_max:
+			var base_to_add = Vector2i(randi_range(0,width_chunks-1),randi_range(0,height_chunks-1))
+			if base_to_add not in base_chunks:
+				base_chunks.append(base_to_add)
+			else:
+				continue
 	# fill area with chunks
 	for chunk_x in range(width_chunks):
 		for chunk_y in range(height_chunks):
-			place_random_chunk(chunk_x, chunk_y, maze)
+			if Vector2i(chunk_x,chunk_y) in base_chunks:
+				fill_with_floor(chunk_x, chunk_y)
+			else:
+				place_random_chunk(chunk_x, chunk_y, maze)
 
 			
 	# create outline
@@ -137,25 +154,26 @@ func generate_level(width_chunks: int, height_chunks: int) -> void: # chunk dime
 	
 	# prevent navigation bugs
 	var cur_used = tilemap.get_used_cells()
+	var added_tiles = []
 	while true:
 		for x_val in range(width_chunks * 10 - 1):
 			for y_val in range(height_chunks * 10 - 1):
 				# floor tiles are 2, wall tiles are changed to 0
-				var cur: int = tilemap.get_cell_source_id(Vector2(x_val, y_val)) if tilemap.get_cell_atlas_coords(Vector2(x_val, y_val)) == Vector2i(0,0) else 0
-				var right: int = tilemap.get_cell_source_id(Vector2(x_val + 1, y_val)) if tilemap.get_cell_atlas_coords(Vector2(x_val + 1, y_val)) == Vector2i(0,0) else 0
-				var down: int = tilemap.get_cell_source_id(Vector2(x_val, y_val + 1)) if tilemap.get_cell_atlas_coords(Vector2(x_val, y_val + 1)) == Vector2i(0,0) else 0
-				var diag: int = tilemap.get_cell_source_id(Vector2(x_val + 1, y_val + 1)) if tilemap.get_cell_atlas_coords(Vector2(x_val + 1, y_val + 1)) == Vector2i(0,0) else 0
+				var cur: int = tilemap.get_cell_source_id(Vector2(x_val, y_val))
+				var right: int = tilemap.get_cell_source_id(Vector2(x_val + 1, y_val))
+				var down: int = tilemap.get_cell_source_id(Vector2(x_val, y_val + 1))
+				var diag: int = tilemap.get_cell_source_id(Vector2(x_val + 1, y_val + 1))
 				var pattern: Array[int] = [cur, right, down, diag]
-				
 				if not is_valid(pattern):
-					tilemap.set_cell(Vector2(x_val, y_val), 2, Vector2(0,1))
-					tilemap.set_cell(Vector2(x_val + 1, y_val), 2, Vector2(0,1))
-					tilemap.set_cell(Vector2(x_val, y_val + 1), 2, Vector2(0,1))
-					tilemap.set_cell(Vector2(x_val + 1, y_val + 1), 2, Vector2(0,1))
+					added_tiles.append(Vector2(x_val, y_val))
+					added_tiles.append(Vector2(x_val + 1, y_val))
+					added_tiles.append(Vector2(x_val, y_val + 1))
+					added_tiles.append(Vector2(x_val + 1, y_val + 1))
 		if cur_used == tilemap.get_used_cells():
 			break
 		else:
 			cur_used = tilemap.get_used_cells()
+	tilemap.set_cells_terrain_connect(added_tiles,0,0)
 	
 func place_random_chunk(chunk_x: int, chunk_y: int, mazeref):
 	var maze_walls_dict = mazeref[Vector2i(chunk_x, chunk_y)]
@@ -205,36 +223,141 @@ func place_random_chunk(chunk_x: int, chunk_y: int, mazeref):
 		if valid:
 			break
 	
+	var wall_cells_to_paint: Array[Vector2i] = []
+	var diagonals_to_paint: Array[Vector2i] = []
+	var cracked_tiles_to_add: Array[Vector2i] = []
+	var floors_to_add: Array[Vector2i] = []
+	
 	for cell_pos in used_cells:
 		var src_id = chunk.get_cell_source_id(cell_pos)
 		var atlas_pos = chunk.get_cell_atlas_coords(cell_pos)
 		var alt_id = chunk.get_cell_alternative_tile(cell_pos)
-		tilemap.set_cell(cell_pos + Vector2i(chunk_x*10, chunk_y*10),src_id, atlas_pos, alt_id)
+		
+		tilemap.set_cell(cell_pos + Vector2i(chunk_x * 10, chunk_y * 10),src_id,atlas_pos,alt_id)
+		
+		"""
+		if src_id == 4:
+			print(chunk.name)
+			print(cell_pos)
+			print(src_id)
+			print(alt_id)
+		
+		
+		#0 = regular, bottom left
+		#12288 = top right
+		#24576 = bottom right
+		#20480 = top left
+		
+		
+		if src_id == 2 and atlas_pos == Vector2i(0,0):
+			#src_id = 0
+			floors_to_add.append(cell_pos)
+		elif src_id == 2 and atlas_pos == Vector2i(0,1):
+			#src_id = 1
+			wall_cells_to_paint.append(cell_pos)
+		elif src_id == 1:
+			#src_id = 3
+			cracked_tiles_to_add.append(cell_pos)
+		elif src_id == 4:
+			#src_id = 2
+			wall_cells_to_paint.append(cell_pos)
+			diagonals_to_paint.append(cell_pos)
+		
+	
+		
+		
+	#tilemap.set_cell(cell_pos + Vector2i(chunk_x*10, chunk_y*10),src_id, atlas_pos, alt_id)
+	var global_wall_coords = []
+	for coord in wall_cells_to_paint:
+		global_wall_coords.append(coord + Vector2i(chunk_x*10, chunk_y*10))
+
+	tilemap.set_cells_terrain_connect(global_wall_coords, 0, 0) # add walls
+	for cell_pos in floors_to_add: # add floors
+		tilemap.set_cell(cell_pos + Vector2i(chunk_x*10, chunk_y*10),0, Vector2i(randi_range(0,2),0))
+	for diagonal_pos in diagonals_to_paint: # add diagonals manually turned
+		match chunk.get_cell_alternative_tile(diagonal_pos):
+			0: # bottom left
+				if are_walls_or_diagonals(chunk, diagonal_pos, [Vector2i(-1,0), Vector2i(-1,1),Vector2i(0,1)]):
+					tilemap.set_cell(diagonal_pos + Vector2i(chunk_x*10, chunk_y*10),2,Vector2i(0,0))
+				elif are_walls_or_diagonals(chunk, diagonal_pos, [Vector2i(-1,0), Vector2i(0,1)]):
+					tilemap.set_cell(diagonal_pos + Vector2i(chunk_x*10, chunk_y*10),2,Vector2i(1,0))
+				elif are_walls_or_diagonals(chunk, diagonal_pos, [Vector2i(0,1)]):
+					tilemap.set_cell(diagonal_pos + Vector2i(chunk_x*10, chunk_y*10),2,Vector2i(2,0))
+				elif are_walls_or_diagonals(chunk,diagonal_pos, [Vector2i(-1,0)]):
+					tilemap.set_cell(diagonal_pos + Vector2i(chunk_x*10, chunk_y*10),2,Vector2i(3,0))
+			12288: # top right
+				if are_walls_or_diagonals(chunk, diagonal_pos, [Vector2i(1,0), Vector2i(1,-1),Vector2i(0,-1)]):
+					tilemap.set_cell(diagonal_pos + Vector2i(chunk_x*10, chunk_y*10),2,Vector2i(0,3))
+				elif are_walls_or_diagonals(chunk, diagonal_pos, [Vector2i(1,0), Vector2i(0,-1)]):
+					tilemap.set_cell(diagonal_pos + Vector2i(chunk_x*10, chunk_y*10),2,Vector2i(1,3))
+				elif are_walls_or_diagonals(chunk, diagonal_pos, [Vector2i(0,-1)]):
+					tilemap.set_cell(diagonal_pos + Vector2i(chunk_x*10, chunk_y*10),2,Vector2i(2,3))
+				elif are_walls_or_diagonals(chunk,diagonal_pos, [Vector2i(1,0)]):
+					tilemap.set_cell(diagonal_pos + Vector2i(chunk_x*10, chunk_y*10),2,Vector2i(3,3))
+			20480: # top left
+				if are_walls_or_diagonals(chunk, diagonal_pos, [Vector2i(-1,0), Vector2i(-1,-1),Vector2i(0,-1)]):
+					tilemap.set_cell(diagonal_pos + Vector2i(chunk_x*10, chunk_y*10),2,Vector2i(0,2))
+				elif are_walls_or_diagonals(chunk, diagonal_pos, [Vector2i(-1,0), Vector2i(0,-1)]):
+					tilemap.set_cell(diagonal_pos + Vector2i(chunk_x*10, chunk_y*10),2,Vector2i(1,2))
+				elif are_walls_or_diagonals(chunk, diagonal_pos, [Vector2i(0,-1)]):
+					tilemap.set_cell(diagonal_pos + Vector2i(chunk_x*10, chunk_y*10),2,Vector2i(2,2))
+				elif are_walls_or_diagonals(chunk,diagonal_pos, [Vector2i(-0,0)]):
+					tilemap.set_cell(diagonal_pos + Vector2i(chunk_x*10, chunk_y*10),2,Vector2i(3,2))
+			24576: # bottom right
+				if are_walls_or_diagonals(chunk, diagonal_pos, [Vector2i(1,0), Vector2i(1,1),Vector2i(0,1)]):
+					tilemap.set_cell(diagonal_pos + Vector2i(chunk_x*10, chunk_y*10),2,Vector2i(1,1))
+				elif are_walls_or_diagonals(chunk, diagonal_pos, [Vector2i(1,0), Vector2i(0,1)]):
+					tilemap.set_cell(diagonal_pos + Vector2i(chunk_x*10, chunk_y*10),2,Vector2i(2,1))
+				elif are_walls_or_diagonals(chunk, diagonal_pos, [Vector2i(0,1)]):
+					tilemap.set_cell(diagonal_pos + Vector2i(chunk_x*10, chunk_y*10),2,Vector2i(3,1))
+				elif are_walls_or_diagonals(chunk,diagonal_pos, [Vector2i(1,0)]):
+					tilemap.set_cell(diagonal_pos + Vector2i(chunk_x*10, chunk_y*10),2,Vector2i(0,1))
+	print(cracked_tiles_to_add)
+	for cracked_pos in cracked_tiles_to_add: # add crates
+		tilemap.set_cell(cracked_pos + Vector2i(chunk_x*10, chunk_y*10),3, Vector2i(0,0))
+	"""
+	
+	#tilemap.set_cells_terrain_connect()
 	
 	if mode == "collect": # spawn orbs
 		for cell_pos in orb_cells:
 			orblayer.set_cell(cell_pos + Vector2i(chunk_x*10, chunk_y*10), 0, Vector2i(0,0))
 
+func fill_with_floor(chunk_x: int, chunk_y: int):
+	for i in range(10):
+		for j in range(10):
+			tilemap.set_cell(Vector2i(chunk_x*10 + i, chunk_y*10 + j),0,Vector2i(randi_range(0,2),0))
+
+func are_walls_or_diagonals(chunk, diagonal_pos, rel_coords_to_check) -> bool:
+	for coord in rel_coords_to_check:
+		if chunk.get_cell_source_id(diagonal_pos) != 2 and chunk.get_cell_source_id(diagonal_pos) != 4:
+			return false
+		elif chunk.get_cell_source_id(diagonal_pos) == 2 and chunk.get_cell_atlas_pos(diagonal_pos) == Vector2i(0,0):
+			return false
+	return true
+
 func create_outline(width_chunks: int, height_chunks: int):
 	for x_val in range(width_chunks * 10):
-		tilemap.set_cell(Vector2(x_val, -1), 2, Vector2(0,1))
-		tilemap.set_cell(Vector2(x_val, height_chunks * 10), 2, Vector2(0,1))
+		tilemap.set_cell(Vector2(x_val, -1), 1, Vector2(1,0))
+		tilemap.set_cell(Vector2(x_val, height_chunks * 10), 1, Vector2(1,0))
 	for y_val in range(height_chunks * 10):
-		tilemap.set_cell(Vector2(-1, y_val), 2, Vector2(0,1))
-		tilemap.set_cell(Vector2(width_chunks*10, y_val), 2, Vector2(0,1))
-	tilemap.set_cell(Vector2(-1,-1), 2, Vector2(0,1))
-	tilemap.set_cell(Vector2(width_chunks*10,-1), 2, Vector2(0,1))
-	tilemap.set_cell(Vector2(-1,height_chunks*10), 2, Vector2(0,1))
-	tilemap.set_cell(Vector2(width_chunks*10,height_chunks*10), 2, Vector2(0,1))
-
+		tilemap.set_cell(Vector2(-1, y_val), 1, Vector2(3,5))
+		tilemap.set_cell(Vector2(width_chunks*10, y_val), 1, Vector2(3,5))
+	tilemap.set_cell(Vector2(-1,-1), 1, Vector2(5,7))
+	tilemap.set_cell(Vector2(width_chunks*10,-1), 1, Vector2(0,8))
+	tilemap.set_cell(Vector2(-1,height_chunks*10), 1, Vector2(5,6))
+	tilemap.set_cell(Vector2(width_chunks*10,height_chunks*10), 1, Vector2(0,7))
+	
 func is_valid(pattern: Array[int]):
-	if pattern.count(0) == 2 and pattern.count(4) == 0: # Exactly 2 walls and no diagonals
-		if (pattern[0] == 0 and pattern[3] == 0) or (pattern[1] == 0 and pattern[2] == 0):
+	if pattern.count(1) == 2 and pattern.count(2) == 0: # Exactly 2 walls and no diagonals
+		if (pattern[0] == 1 and pattern[3] == 1) or (pattern[1] == 1 and pattern[2] == 1):
 			return false # exactly 2 walls diagonal from each other
-	if pattern.count(2) == 2 and pattern.count(4) != 2: # Exactly 2 floors
-		if (pattern[0] == 2 and pattern[3] == 2) or (pattern[1] == 2 and pattern[2] == 2):
+	if pattern.count(0) == 2 and pattern.count(2) != 2: # Exactly 2 floors
+		if (pattern[0] == 0 and pattern[3] == 0) or (pattern[1] == 0 and pattern[2] == 0):
 			return false # exactly 2 floors diagonal from each other
 	return true
+	
+
 
 func generate_maze(maze_width: int, maze_height: int) -> Dictionary:
 	var width = maze_width
@@ -297,46 +420,40 @@ func spawn_orbs() -> void:
 	orb_max = $OrbContainer.get_child_count()
 
 func spawn_bases() -> void:
-	var base_positions = []
-	base_max = ceil(level_height * level_width / 10.0) + extra_base_num
-	while len(base_positions) < base_max:
+	for base_pos in base_chunks:
 		# Pick random chunk
-		var chunk_to_spawn = Vector2i(randi_range(0, level_width-1), randi_range(0, level_height-1))
-		if chunk_to_spawn in base_positions or is_in_player_chunk(chunk_to_spawn):
-			continue
-		base_positions.append(chunk_to_spawn)
-		var top_corner_pos = chunk_to_spawn*10
+		var top_corner_pos = base_pos*10
 		# replace chunk with base
 		for i in range(10):
-			tilemap.set_cell(top_corner_pos +Vector2i(i,0),2,Vector2i(0,0))
-			tilemap.set_cell(top_corner_pos +Vector2i(i,9),2,Vector2i(0,0))
-			tilemap.set_cell(top_corner_pos +Vector2i(0,i),2,Vector2i(0,0))
-			tilemap.set_cell(top_corner_pos +Vector2i(9,i),2,Vector2i(0,0))
+			tilemap.set_cell(top_corner_pos +Vector2i(i,0),0,Vector2i(randi_range(0,2),0))
+			tilemap.set_cell(top_corner_pos +Vector2i(i,9),0,Vector2i(randi_range(0,2),0))
+			tilemap.set_cell(top_corner_pos +Vector2i(0,i),0,Vector2i(randi_range(0,2),0))
+			tilemap.set_cell(top_corner_pos +Vector2i(9,i),0,Vector2i(randi_range(0,2),0))
 		
 		for i in range(8):
-			tilemap.set_cell(top_corner_pos +Vector2i(i+1,1),1,Vector2i(0,0))
-			tilemap.set_cell(top_corner_pos +Vector2i(i+1,8),1,Vector2i(0,0))
-			tilemap.set_cell(top_corner_pos +Vector2i(1,i+1),1,Vector2i(0,0))
-			tilemap.set_cell(top_corner_pos +Vector2i(8,i+1),1,Vector2i(0,0))
+			tilemap.set_cell(top_corner_pos +Vector2i(i+1,1),3,Vector2i(0,0))
+			tilemap.set_cell(top_corner_pos +Vector2i(i+1,8),3,Vector2i(0,0))
+			tilemap.set_cell(top_corner_pos +Vector2i(1,i+1),3,Vector2i(0,0))
+			tilemap.set_cell(top_corner_pos +Vector2i(8,i+1),3,Vector2i(0,0))
 
 		for i in range(6):
-			tilemap.set_cell(top_corner_pos +Vector2i(i+2,2),2,Vector2i(0,0))
-			tilemap.set_cell(top_corner_pos +Vector2i(i+2,7),2,Vector2i(0,0))
-			tilemap.set_cell(top_corner_pos +Vector2i(2,i+2),2,Vector2i(0,0))
-			tilemap.set_cell(top_corner_pos +Vector2i(7,i+2),2,Vector2i(0,0))
+			tilemap.set_cell(top_corner_pos +Vector2i(i+2,2),0,Vector2i(randi_range(0,2),0))
+			tilemap.set_cell(top_corner_pos +Vector2i(i+2,7),0,Vector2i(randi_range(0,2),0))
+			tilemap.set_cell(top_corner_pos +Vector2i(2,i+2),0,Vector2i(randi_range(0,2),0))
+			tilemap.set_cell(top_corner_pos +Vector2i(7,i+2),0,Vector2i(randi_range(0,2),0))
 		for i in range(4):
-			tilemap.set_cell(top_corner_pos +Vector2i(i+3,3),1,Vector2i(0,0))
-			tilemap.set_cell(top_corner_pos +Vector2i(i+3,6),1,Vector2i(0,0))
-			tilemap.set_cell(top_corner_pos +Vector2i(3,i+3),1,Vector2i(0,0))
-			tilemap.set_cell(top_corner_pos +Vector2i(6,i+3),1,Vector2i(0,0))
-		tilemap.set_cell(top_corner_pos +Vector2i(4,4),2,Vector2i(0,0))
-		tilemap.set_cell(top_corner_pos +Vector2i(4,5),2,Vector2i(0,0))
-		tilemap.set_cell(top_corner_pos +Vector2i(5,4),2,Vector2i(0,0))
-		tilemap.set_cell(top_corner_pos +Vector2i(5,5),2,Vector2i(0,0))
+			tilemap.set_cell(top_corner_pos +Vector2i(i+3,3),3,Vector2i(0,0))
+			tilemap.set_cell(top_corner_pos +Vector2i(i+3,6),3,Vector2i(0,0))
+			tilemap.set_cell(top_corner_pos +Vector2i(3,i+3),3,Vector2i(0,0))
+			tilemap.set_cell(top_corner_pos +Vector2i(6,i+3),3,Vector2i(0,0))
+		tilemap.set_cell(top_corner_pos +Vector2i(4,4),0,Vector2i(randi_range(0,2),0))
+		tilemap.set_cell(top_corner_pos +Vector2i(4,5),0,Vector2i(randi_range(0,2),0))
+		tilemap.set_cell(top_corner_pos +Vector2i(5,4),0,Vector2i(randi_range(0,2),0))
+		tilemap.set_cell(top_corner_pos +Vector2i(5,5),0,Vector2i(randi_range(0,2),0))
 
 		
 	# spawn enemies and add node
-	for base_pos in base_positions:
+	for base_pos in base_chunks:
 		var base_node = BASE.instantiate()
 		var top_corner_pos = base_pos*10
 		var enemy_spawns = [Vector2(4,2),Vector2(5,2),Vector2(2,4),Vector2(2,5),Vector2(4,7),Vector2(5,7),Vector2(7,4),Vector2(7,5),Vector2(4,4),Vector2(4,5),Vector2(5,4),Vector2(5,5)]
@@ -352,7 +469,7 @@ func spawn_bases() -> void:
 
 func spawn_golf() -> void:
 	#spawn hole
-	var open_cells = tilemap.get_used_cells_by_id(2,Vector2i(0,0))
+	var open_cells = tilemap.get_used_cells_by_id(0)
 	open_cells.erase(spawn_tile)
 	var hole_spawn = open_cells.pick_random()
 	open_cells.erase(hole_spawn)
@@ -381,7 +498,7 @@ func spawn_player() -> void:
 	tilemap.update_internals()
 	while true:
 		var tile = Vector2i(randi_range(1,level_width*10), randi_range(1, level_height*10)+1)
-		if tilemap.get_cell_source_id(tile) == 2 and tilemap.get_cell_atlas_coords(tile) == Vector2i(0,0):
+		if tilemap.get_cell_source_id(tile) == 0:
 			instance.position = Vector2(tile.x * 64 + 32, tile.y * 64 + 32)
 			spawn_tile = tile
 			#print_map(tile)
@@ -407,6 +524,8 @@ func death() -> void:
 func spawn_ct_enemies() -> void:
 	print(ct_enemies)
 	print(curses)
+	var open_cells = tilemap.get_used_cells_by_id(0)
+	open_cells.erase(spawn_tile)
 	for enemy in ct_enemies:
 		match enemy:
 			"artillery":
@@ -414,9 +533,8 @@ func spawn_ct_enemies() -> void:
 				tilemap.update_internals()
 				#while true:
 				var player = get_child(get_children().find(CharacterBody2D))
-				var player_tile = tilemap.local_to_map(to_local(player.position + Vector2(randi_range(300,800),0).rotated(randf_range(0,2*PI))))
-				while tilemap.get_cell_source_id(player_tile) != 2 or tilemap.get_cell_atlas_coords(player_tile) != Vector2i(0,0):
-					player_tile = tilemap.local_to_map(to_local(player.position + Vector2(randi_range(300,800),0).rotated(randf_range(0,2*PI))))
+				var player_tile = open_cells.pick_random()
+				open_cells.erase(player_tile)
 				instance.position = Vector2(player_tile.x * 64 + 32, player_tile.y * 64 + 32)
 				instance.player = $Player_tank
 				instance.enemy_container = enemy_container
@@ -428,9 +546,8 @@ func spawn_ct_enemies() -> void:
 				tilemap.update_internals()
 				#while true:
 				var player = get_child(get_children().find(CharacterBody2D))
-				var player_tile = tilemap.local_to_map(to_local(player.position + Vector2(randi_range(300,800),0).rotated(randf_range(0,2*PI))))
-				while tilemap.get_cell_source_id(player_tile) != 2 or tilemap.get_cell_atlas_coords(player_tile) != Vector2i(0,0):
-					player_tile = tilemap.local_to_map(to_local(player.position + Vector2(randi_range(300,800),0).rotated(randf_range(0,2*PI))))
+				var player_tile = open_cells.pick_random()
+				open_cells.erase(player_tile)
 				instance.position = Vector2(player_tile.x * 64 + 32, player_tile.y * 64 + 32)
 				instance.player = $Player_tank
 				instance.enemy_container = enemy_container
@@ -441,9 +558,8 @@ func spawn_ct_enemies() -> void:
 				tilemap.update_internals()
 				#while true:
 				var player = get_child(get_children().find(CharacterBody2D))
-				var player_tile = tilemap.local_to_map(to_local(player.position + Vector2(randi_range(300,800),0).rotated(randf_range(0,2*PI))))
-				while tilemap.get_cell_source_id(player_tile) != 2 or tilemap.get_cell_atlas_coords(player_tile) != Vector2i(0,0):
-					player_tile = tilemap.local_to_map(to_local(player.position + Vector2(randi_range(300,800),0).rotated(randf_range(0,2*PI))))
+				var player_tile = open_cells.pick_random()
+				open_cells.erase(player_tile)
 				instance.position = Vector2(player_tile.x * 64 + 32, player_tile.y * 64 + 32)
 				instance.player = $Player_tank
 				instance.enemy_container = enemy_container
@@ -454,16 +570,27 @@ func spawn_ct_enemies() -> void:
 				tilemap.update_internals()
 				#while true:
 				var player = get_child(get_children().find(CharacterBody2D))
-				var player_tile = tilemap.local_to_map(to_local(player.position + Vector2(randi_range(300,800),0).rotated(randf_range(0,2*PI))))
-				while tilemap.get_cell_source_id(player_tile) != 2 or tilemap.get_cell_atlas_coords(player_tile) != Vector2i(0,0):
-					player_tile = tilemap.local_to_map(to_local(player.position + Vector2(randi_range(300,800),0).rotated(randf_range(0,2*PI))))
+				var player_tile = open_cells.pick_random()
+				open_cells.erase(player_tile)
 				instance.position = Vector2(player_tile.x * 64 + 32, player_tile.y * 64 + 32)
 				instance.player = $Player_tank
 				instance.enemy_container = enemy_container
 				instance.curses = curses
 				enemy_container.add_child(instance)
 
+
+func freeze_enemies(time:float,freeze_bullets:bool=false):
+	enemies_frozen = true
+	$FreezeTimer.start(time)
+	for bullet in $BulletContainer.get_children():
+		if bullet is not GPUParticles2D:
+			bullet.freeze(time)
+	$Enemy_Container.freeze_enemies(time,freeze_bullets)
+
 func _on_enemy_spawn_timer_timeout() -> void:
+	if enemies_frozen:
+		$EnemySpawnTimer.start(enemy_spawn_time)
+		return
 	if enemy_container.get_child_count() >= spawn_cap:
 		$EnemySpawnTimer.start(enemy_spawn_time)
 		return
@@ -471,13 +598,13 @@ func _on_enemy_spawn_timer_timeout() -> void:
 	tilemap.update_internals()
 	#while true:
 	var player = get_child(get_children().find(CharacterBody2D))
-	var player_tile = tilemap.local_to_map(to_local(player.position + Vector2(randi_range(500,800),0).rotated(randf_range(0,2*PI))))
+	var player_tile = tilemap.local_to_map(to_local(player.position + Vector2(randi_range(300,800),0).rotated(randf_range(0,2*PI))))
 	var attempts = 0
-	while tilemap.get_cell_source_id(player_tile) != 2 or tilemap.get_cell_atlas_coords(player_tile) != Vector2i(0,0):
+	while tilemap.get_cell_source_id(player_tile) != 0:
 		attempts += 1
 		if attempts > 100:
 			return
-		player_tile = tilemap.local_to_map(to_local(player.position + Vector2(randi_range(500,800),0).rotated(randf_range(0,2*PI))))
+		player_tile = tilemap.local_to_map(to_local(player.position + Vector2(randi_range(300,800),0).rotated(randf_range(0,2*PI))))
 	
 	instance.position = Vector2(player_tile.x * 64 + 32, player_tile.y * 64 + 32)
 	instance.maxhealth = enemy_health
@@ -494,7 +621,7 @@ func _on_enemy_spawn_timer_timeout() -> void:
 	elif mode == "destroy":
 		$EnemySpawnTimer.start(enemy_spawn_time * 2)
 	elif mode == "collect":
-		$EnemySpawnTimer.start(enemy_spawn_time * 4)
+		$EnemySpawnTimer.start(1) # CHANGE BACKKK
 	elif mode == "golf":
 		$EnemySpawnTimer.start(enemy_spawn_time * 5)
 
@@ -514,8 +641,8 @@ func get_score() -> int:
 			return (balls_to_spawn - $GolfContainer/BallContainer.get_child_count()) * 30 + ceil(enemy_container.kills * 3)
 		_:
 			return 0
-		
-		
-		
-		
-		
+
+
+
+func _on_freeze_timer_timeout() -> void:
+	enemies_frozen = false

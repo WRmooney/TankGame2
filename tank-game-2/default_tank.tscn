@@ -1,16 +1,16 @@
 [gd_scene format=3 uid="uid://cbfocjb6yqa3r"]
 
-[ext_resource type="Script" uid="uid://xjcv0dxx3pug" path="res://default_tank.gd" id="1_bpe4v"]
+[ext_resource type="Script" uid="uid://xjcv0dxx3pug" path="res://default_tank.gd" id="1_j33sn"]
 [ext_resource type="Texture2D" uid="uid://bun4jqri5glxx" path="res://turrettopwhite.png" id="2_7o4ld"]
 [ext_resource type="Texture2D" uid="uid://cpoviyry2bg" path="res://HighlightArrow.png" id="2_j33sn"]
-[ext_resource type="Script" uid="uid://dr6yhp4haanqr" path="res://state_machine.gd" id="2_tachv"]
-[ext_resource type="Script" uid="uid://bdaqbjcayyqov" path="res://idle.gd" id="3_2bw51"]
-[ext_resource type="Script" uid="uid://bnvacctdmk0hi" path="res://enemy_movement_component.gd" id="4_asy6k"]
-[ext_resource type="Script" uid="uid://d3xteoe8fbdj8" path="res://attack.gd" id="4_qek8i"]
-[ext_resource type="Script" uid="uid://b1oax86rjgknj" path="res://search.gd" id="5_u62d1"]
-[ext_resource type="Script" uid="uid://dayulwkj021ta" path="res://vision_component.gd" id="7_7o4ld"]
-[ext_resource type="Script" uid="uid://bptc7uv7xo0wi" path="res://enemy_health_component.gd" id="8_u62d1"]
-[ext_resource type="Script" uid="uid://2qx30ht8gxjh" path="res://enemy_shooting_component.gd" id="10_r258f"]
+[ext_resource type="Script" uid="uid://dr6yhp4haanqr" path="res://state_machine.gd" id="4_trqja"]
+[ext_resource type="Script" uid="uid://bdaqbjcayyqov" path="res://idle.gd" id="5_xdkn8"]
+[ext_resource type="Script" uid="uid://d3xteoe8fbdj8" path="res://attack.gd" id="6_41b00"]
+[ext_resource type="Script" uid="uid://b1oax86rjgknj" path="res://search.gd" id="7_rt7m0"]
+[ext_resource type="Script" uid="uid://bnvacctdmk0hi" path="res://enemy_movement_component.gd" id="8_2ugx2"]
+[ext_resource type="Script" uid="uid://dayulwkj021ta" path="res://vision_component.gd" id="9_mq2xr"]
+[ext_resource type="Script" uid="uid://bptc7uv7xo0wi" path="res://enemy_health_component.gd" id="10_cw4p8"]
+[ext_resource type="Script" uid="uid://2qx30ht8gxjh" path="res://enemy_shooting_component.gd" id="11_403ar"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bx5ho"]
 
@@ -26,12 +26,12 @@ height = 38
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
-[sub_resource type="Gradient" id="Gradient_r258f"]
+[sub_resource type="Gradient" id="Gradient_j33sn"]
 offsets = PackedFloat32Array(0, 0.31875, 0.6375, 0.93125)
 colors = PackedColorArray(0, 0, 0, 0, 0.52, 0.52, 0.17679998, 0.47058824, 1, 1, 0.33999997, 1, 1, 1, 1, 0)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_j33sn"]
-gradient = SubResource("Gradient_r258f")
+gradient = SubResource("Gradient_j33sn")
 fill = 2
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.2, 0.8)
@@ -40,7 +40,7 @@ fill_to = Vector2(0.2, 0.8)
 collision_layer = 2
 motion_mode = 1
 wall_min_slide_angle = 0.0
-script = ExtResource("1_bpe4v")
+script = ExtResource("1_j33sn")
 maxhealth = 1.0
 speed = 100
 turn_speed = 10
@@ -73,38 +73,41 @@ offset = Vector2(0, -18)
 [node name="Turret" type="Sprite2D" parent="." unique_id=1424094878]
 texture = ExtResource("2_7o4ld")
 
+[node name="FreezeTimer" type="Timer" parent="." unique_id=855202749]
+one_shot = true
+
 [node name="StateMachine" type="Node" parent="." unique_id=1601003323 node_paths=PackedStringArray("initial_state")]
-script = ExtResource("2_tachv")
+script = ExtResource("4_trqja")
 initial_state = NodePath("Idle")
 
 [node name="Idle" type="Node" parent="StateMachine" unique_id=320851133]
-script = ExtResource("3_2bw51")
+script = ExtResource("5_xdkn8")
 
 [node name="PathNearPlayer" type="Timer" parent="StateMachine/Idle" unique_id=2118271566]
 wait_time = 15.0
 one_shot = true
 
 [node name="Attack" type="Node" parent="StateMachine" unique_id=864357237]
-script = ExtResource("4_qek8i")
+script = ExtResource("6_41b00")
 
 [node name="LostPlayer" type="Timer" parent="StateMachine/Attack" unique_id=789559191]
 wait_time = 5.0
 one_shot = true
 
 [node name="Search" type="Node" parent="StateMachine" unique_id=1164085516]
-script = ExtResource("5_u62d1")
+script = ExtResource("7_rt7m0")
 
 [node name="SearchTime" type="Timer" parent="StateMachine/Search" unique_id=1392995714]
 wait_time = 30.0
 
 [node name="enemy_movement_component" type="Node2D" parent="." unique_id=626775412]
-script = ExtResource("4_asy6k")
+script = ExtResource("8_2ugx2")
 
 [node name="vision_component" type="Node" parent="." unique_id=286284342]
-script = ExtResource("7_7o4ld")
+script = ExtResource("9_mq2xr")
 
 [node name="enemy_health_component" type="Node" parent="." unique_id=898658593]
-script = ExtResource("8_u62d1")
+script = ExtResource("10_cw4p8")
 
 [node name="HealthBar" type="ColorRect" parent="enemy_health_component" unique_id=466823455]
 visible = false
@@ -116,7 +119,7 @@ offset_bottom = 25.0
 color = Color(0.8509804, 0, 0.11372549, 1)
 
 [node name="enemy_shooting_component" type="Node" parent="." unique_id=1144513627]
-script = ExtResource("10_r258f")
+script = ExtResource("11_403ar")
 
 [node name="TurretTurningTimer" type="Timer" parent="enemy_shooting_component" unique_id=51059293]
 
@@ -141,6 +144,7 @@ time_horizon_agents = 0.2
 max_speed = 1000.0
 avoidance_priority = 0.1
 
+[connection signal="timeout" from="FreezeTimer" to="." method="_on_freeze_timer_timeout"]
 [connection signal="timeout" from="StateMachine/Idle/PathNearPlayer" to="StateMachine/Idle" method="_on_path_near_player_timeout"]
 [connection signal="timeout" from="StateMachine/Attack/LostPlayer" to="StateMachine/Attack" method="_on_lost_player_timeout"]
 [connection signal="timeout" from="StateMachine/Search/SearchTime" to="StateMachine/Search" method="_on_search_time_timeout"]

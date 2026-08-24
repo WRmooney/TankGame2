@@ -41,9 +41,9 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.8, 0.2)
 
-[node name="CT_Artillery" type="CharacterBody2D" unique_id=586316251]
+[node name="CT_Artillery" type="CharacterBody2D" unique_id=586316251 groups=["cursed_tanks"]]
 z_index = 1
-collision_layer = 36
+collision_layer = 38
 collision_mask = 36
 motion_mode = 1
 wall_min_slide_angle = 0.0
@@ -146,11 +146,11 @@ color = Color(0.8509804, 0, 0.11372549, 1)
 [node name="DisableTimer" type="Timer" parent="ct_enemy_health_component" unique_id=2063503920]
 one_shot = true
 
-[node name="WarningTimer" type="Timer" parent="ct_enemy_health_component" unique_id=247986850]
-one_shot = true
-
 [node name="DisabledCT" type="AudioStreamPlayer" parent="ct_enemy_health_component" unique_id=1574897703]
 stream = ExtResource("12_ufojo")
+
+[node name="FreezeTimer" type="Timer" parent="ct_enemy_health_component" unique_id=1098849073]
+one_shot = true
 
 [node name="CurseModifications" type="Node" parent="." unique_id=626664838]
 script = ExtResource("12_my2ju")
@@ -167,4 +167,4 @@ valid_curse_names = Array[String](["Larger Shells", "Faster Shells"])
 [connection signal="target_reached" from="NavigationAgent2D" to="StateMachine" method="_on_navigation_agent_2d_target_reached"]
 [connection signal="velocity_computed" from="NavigationAgent2D" to="enemy_movement_component" method="_on_navigation_agent_2d_velocity_computed"]
 [connection signal="timeout" from="ct_enemy_health_component/DisableTimer" to="ct_enemy_health_component" method="_on_disable_timer_timeout"]
-[connection signal="timeout" from="ct_enemy_health_component/WarningTimer" to="ct_enemy_health_component" method="_on_warning_timer_timeout"]
+[connection signal="timeout" from="ct_enemy_health_component/FreezeTimer" to="ct_enemy_health_component" method="_on_freeze_timer_timeout"]

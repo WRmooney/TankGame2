@@ -13,14 +13,18 @@ extends CharacterBody2D
 @export var bullet_speed: int = 200
 @export var bullet_damage: float = 1
 @export var mine_damage: float = 3
+@export var cur_special: String = "Sprint"
 
 var WUIon = false
 var LUIon = false
+
+var disabled = false
 
 signal player_died()
 
 func _ready() -> void:
 	health = max_health
+	cur_special = SaveFile.game_data["selected_ability"]
 	randomize()
 	add_to_group("destroy_on_bullet_collide")
 	add_to_group("tanks")
@@ -32,6 +36,16 @@ func _enter_tree() -> void:
 
 func hit(damage: float) -> void:
 	$health_component.hit(damage)
+
+func freeze(time:float, freeze_bullets: bool = false):
+	disabled = true
+	if freeze_bullets:
+		for bullet in $PrimaryContainer.get_children():
+			bullet.freeze(time)
+		for secondary in $SecondaryContainer.get_children():
+			secondary.freeze(time)
+	
+	$FreezeTimer.start(time)
 
 func _process(_delta: float) -> void:
 	if enemy_container.get_child_count() <= 0 and not LUIon:
@@ -54,3 +68,7 @@ func heal(amount: float):
 		
 func death() -> void:
 	emit_signal("player_died")
+
+
+func _on_freeze_timer_timeout() -> void:
+	disabled = false

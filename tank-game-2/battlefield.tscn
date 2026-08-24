@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bco57hx8pn1x6"]
 
 [ext_resource type="Script" uid="uid://c33r1dhudx6lw" path="res://battlefield.gd" id="1_4eiu0"]
-[ext_resource type="TileSet" uid="uid://2s2tgby7gknw" path="res://level_tiles.tres" id="2_y8d5v"]
+[ext_resource type="TileSet" uid="uid://chlphyd8bxnex" path="res://level_tiles_brick_dirt.tres" id="2_y8d5v"]
 [ext_resource type="Script" uid="uid://gefucfacvxaj" path="res://tile_map_layer.gd" id="3_vsh2u"]
 [ext_resource type="Script" uid="uid://bbn2qj2w6strb" path="res://enemy_container.gd" id="4_tkjg1"]
 [ext_resource type="Script" uid="uid://cptah1xvwmhj0" path="res://screen_effects_events.gd" id="6_y8d5v"]
@@ -26,7 +26,7 @@ fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="Gradient" id="Gradient_y8rib"]
 offsets = PackedFloat32Array(0, 0.1, 0.3, 0.8)
-colors = PackedColorArray(0, 0, 0, 0.98039216, 0, 0, 0, 0.9607843, 0, 0, 0, 0.8627451, 0, 0, 0, 0.47058824)
+colors = PackedColorArray(0, 0, 0, 0.9411765, 0, 0, 0, 0.8627451, 0, 0, 0, 0.78431374, 0, 0, 0, 0.5882353)
 metadata/_snap_enabled = true
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_4eiu0"]
@@ -64,13 +64,13 @@ scale_max = 1.1999999
 
 [node name="Battlefield" type="Node2D" unique_id=593888957]
 script = ExtResource("1_4eiu0")
-level_width = 2
-level_height = 2
+level_width = 5
+level_height = 5
 player_maxhealth = 1.0
 player_speed = 200.0
 player_max_bullets = 10
 player_max_secondary = 3
-spawn_cap = 100
+spawn_cap = 50
 mode = "destroy"
 orb_percent = 0.5
 
@@ -194,4 +194,8 @@ texture = SubResource("GradientTexture2D_ki6g1")
 lifetime = 15.0
 process_material = SubResource("ParticleProcessMaterial_qd1yl")
 
+[node name="FreezeTimer" type="Timer" parent="." unique_id=1191938660]
+one_shot = true
+
 [connection signal="timeout" from="EnemySpawnTimer" to="." method="_on_enemy_spawn_timer_timeout"]
+[connection signal="timeout" from="FreezeTimer" to="." method="_on_freeze_timer_timeout"]

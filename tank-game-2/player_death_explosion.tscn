@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cutshicojckwb"]
 
-[ext_resource type="Script" uid="uid://h8e1elxkmc22" path="res://player_death_explosion.gd" id="1_o2fbo"]
+[ext_resource type="Script" uid="uid://h8e1elxkmc22" path="res://player_death_explosion.gd" id="1_o8gg7"]
 [ext_resource type="AudioStream" uid="uid://0ps7o4khj1h0" path="res://PlayerDie.wav" id="2_o8gg7"]
 
 [sub_resource type="Gradient" id="Gradient_c2th1"]
@@ -56,7 +56,7 @@ lifetime = 3.0
 one_shot = true
 explosiveness = 1.0
 process_material = SubResource("ParticleProcessMaterial_1xkwg")
-script = ExtResource("1_o2fbo")
+script = ExtResource("1_o8gg7")
 
 [node name="DeathExplosionSound" type="AudioStreamPlayer" parent="." unique_id=1277615543]
 stream = ExtResource("2_o8gg7")

@@ -91,7 +91,7 @@ func continue_to_level() -> void:
 		boss_transition_screen()
 	else:
 		var event_chance = randi_range(1,5)
-		print(event_chance)
+		#print(event_chance)
 		if event_chance == 1:
 			cur_event = events.pick_random()
 		level_transition_screen()
@@ -166,6 +166,7 @@ func set_mode(battlefield: Node2D, mode: String) -> Node2D:
 
 func level_complete() -> void:
 	score += cur_level.get_score()
+	SaveFile.game_data["tankcoins"] += ceil(level / 10.0)
 	cur_level.pause_on_complete()
 	await show_win_screen()
 	delete_level()
@@ -229,6 +230,8 @@ func reset_game() -> void:
 	intermission = true
 	start_game()
 
+func get_save_data(data:Dictionary):
+	pass
 
 # UI FUNCTIONS
 
@@ -244,6 +247,8 @@ func show_win_screen() -> void:
 	$ObjectiveLayer.visible = false
 	
 func boss_transition_screen() -> void:
+	$TankCoinLayer.visible = true
+	$TankCoinLayer/TankCoinCount.text = str(int(SaveFile.game_data["tankcoins"]))
 	$BossScreen/LevelNumber.text = "Level " + str(level)
 	$BossScreen/LiveCount.text = "Lives: " + str(lives)
 	$BossScreen/ColorRect.size = get_viewport().size
@@ -254,11 +259,14 @@ func boss_transition_screen() -> void:
 	get_tree().paused = false
 	$BossScreen.visible = false
 	$ObjectiveLayer.visible = true
+	$TankCoinLayer.visible = false
 	
 func level_transition_screen() -> void:
 	$LevelScreen/LevelNumber.text = "Level " + str(level)
 	$LevelScreen/LiveCount.text = "Lives: " + str(lives)
 	$LevelScreen/ColorRect.size = get_viewport().size
+	$TankCoinLayer.visible = true
+	$TankCoinLayer/TankCoinCount.text = str(int(SaveFile.game_data["tankcoins"]))
 	if cur_event != "none":
 		$LevelScreen/EventText.text = "Special Event: " + cur_event
 		$LevelScreen/EventText.visible = true
@@ -270,6 +278,7 @@ func level_transition_screen() -> void:
 	$LevelScreen/EventText.visible = false
 	$LevelScreen.visible = false
 	$ObjectiveLayer.visible = true
+	$TankCoinLayer.visible = false
 	
 func death_screen() -> void:
 	cur_level.process_mode =Node.PROCESS_MODE_DISABLED

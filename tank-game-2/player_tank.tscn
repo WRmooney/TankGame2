@@ -5,7 +5,10 @@
 [ext_resource type="Script" uid="uid://bg3wn21urexh7" path="res://player_movement_component.gd" id="3_4ab8g"]
 [ext_resource type="Script" uid="uid://bsoda1gn0b6i4" path="res://shooting_component.gd" id="4_w85wn"]
 [ext_resource type="Script" uid="uid://du2gieyivvbtr" path="res://health_component.gd" id="5_1jnsx"]
+[ext_resource type="Texture2D" uid="uid://iw36stixn77l" path="res://icon.svg" id="5_vi4l0"]
 [ext_resource type="Script" uid="uid://cnlyxgictprtw" path="res://xp_component.gd" id="6_4ab8g"]
+[ext_resource type="Script" uid="uid://biggw55dplkua" path="res://invincibility.gd" id="6_4sbgd"]
+[ext_resource type="Script" uid="uid://bgybhd2ynuylh" path="res://sprint.gd" id="7_btr0d"]
 [ext_resource type="PackedScene" uid="uid://dqaj80548ygcg" path="res://upgrade_presets.tscn" id="7_w85wn"]
 
 [sub_resource type="Gradient" id="Gradient_4ab8g"]
@@ -17,8 +20,32 @@ gradient = SubResource("Gradient_4ab8g")
 width = 29
 height = 29
 
+[sub_resource type="Gradient" id="Gradient_r258f"]
+offsets = PackedFloat32Array(0, 0.31875, 0.6896552, 0.93125)
+colors = PackedColorArray(0, 0, 0, 0, 0.52, 0.17679998, 0.18251991, 1, 1, 0.33999997, 0.35099983, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_vi4l0"]
+gradient = SubResource("Gradient_r258f")
+fill = 2
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.2, 0.8)
+
+[sub_resource type="Gradient" id="Gradient_4sbgd"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(1, 0.33999997, 0.33999997, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_btr0d"]
+gradient = SubResource("Gradient_4sbgd")
+width = 60
+height = 5
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1ealj"]
 size = Vector2(19.060402, 19.060402)
+
+[sub_resource type="LabelSettings" id="LabelSettings_btr0d"]
+font_size = 50
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="SystemFont" id="SystemFont_1jnsx"]
 subpixel_positioning = 0
@@ -69,7 +96,7 @@ script = ExtResource("1_n5f8l")
 max_bullets = 10
 max_secondary = 3
 mine_radius = 3.0
-bullet_speed = 230
+bullet_speed = 260
 mine_damage = 1.0
 
 [node name="Turret" type="Sprite2D" parent="." unique_id=1724804025]
@@ -80,17 +107,85 @@ texture = ExtResource("2_w85wn")
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=338251651]
 texture = SubResource("GradientTexture2D_w85wn")
 
+[node name="Highlight" type="Sprite2D" parent="." unique_id=767922089]
+visible = false
+texture = SubResource("GradientTexture2D_vi4l0")
+
+[node name="InvincibilityTime" type="Sprite2D" parent="." unique_id=325124593]
+visible = false
+position = Vector2(0, 20)
+texture = SubResource("GradientTexture2D_btr0d")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=672815603]
 position = Vector2(-1.1920929e-07, 1.1920929e-07)
 scale = Vector2(1.5, 1.5)
 shape = SubResource("RectangleShape2D_1ealj")
 debug_color = Color(0.9349291, 2.0407439e-05, 0.6405946, 0.41960785)
 
+[node name="FreezeTimer" type="Timer" parent="." unique_id=988394351]
+one_shot = true
+
 [node name="movement_component" type="Node" parent="." unique_id=555221281]
 script = ExtResource("3_4ab8g")
 
 [node name="shooting_component" type="Node" parent="." unique_id=1012643861]
 script = ExtResource("4_w85wn")
+
+[node name="SpecialShootCooldown" type="Timer" parent="shooting_component" unique_id=1112580372]
+one_shot = true
+
+[node name="SpecialCooldownUI" type="CanvasLayer" parent="shooting_component" unique_id=1268795385]
+
+[node name="Container" type="Control" parent="shooting_component/SpecialCooldownUI" unique_id=389808274]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -150.0
+offset_right = 150.0
+grow_vertical = 0
+
+[node name="Icon" type="TextureRect" parent="shooting_component/SpecialCooldownUI/Container" unique_id=578048306]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -100.0
+offset_bottom = 100.0
+grow_horizontal = 0
+pivot_offset = Vector2(20, 20)
+texture = ExtResource("5_vi4l0")
+expand_mode = 1
+
+[node name="CooldownLabel" type="Label" parent="shooting_component/SpecialCooldownUI/Container/Icon" unique_id=1719596539]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -28.5
+offset_top = -34.5
+offset_right = 28.5
+offset_bottom = 34.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "90"
+label_settings = SubResource("LabelSettings_btr0d")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Invincibility" type="Node" parent="shooting_component" unique_id=1096077028]
+script = ExtResource("6_4sbgd")
+
+[node name="InvincibilityTimer" type="Timer" parent="shooting_component/Invincibility" unique_id=1163049154]
+one_shot = true
+
+[node name="Sprint" type="Node" parent="shooting_component" unique_id=1915649375]
+script = ExtResource("7_btr0d")
+
+[node name="SprintTimer" type="Timer" parent="shooting_component/Sprint" unique_id=438046239]
+one_shot = true
 
 [node name="health_component" type="Node" parent="." unique_id=488077003]
 script = ExtResource("5_1jnsx")
@@ -107,6 +202,8 @@ position_smoothing_enabled = true
 [node name="PrimaryContainer" type="Node" parent="." unique_id=2116076968]
 
 [node name="SecondaryContainer" type="Node" parent="." unique_id=122439246]
+
+[node name="SpecialContainer" type="Node" parent="." unique_id=878716646]
 
 [node name="StatsUI" type="CanvasLayer" parent="." unique_id=1956557960]
 visible = false
@@ -221,4 +318,9 @@ color = Color(0.77, 0.77, 0.77, 0.81960785)
 
 [node name="UpgradePresets" parent="." unique_id=413033068 instance=ExtResource("7_w85wn")]
 
+[connection signal="timeout" from="FreezeTimer" to="." method="_on_freeze_timer_timeout"]
+[connection signal="timeout" from="shooting_component/SpecialShootCooldown" to="shooting_component" method="_on_special_shoot_cooldown_timeout"]
+[connection signal="timeout" from="shooting_component/Invincibility/InvincibilityTimer" to="shooting_component/Invincibility" method="_on_invincibility_timer_timeout"]
+[connection signal="timeout" from="shooting_component/Invincibility/InvincibilityTimer" to="health_component" method="_on_invincibility_timer_timeout"]
+[connection signal="timeout" from="shooting_component/Sprint/SprintTimer" to="shooting_component/Sprint" method="_on_sprint_timer_timeout"]
 [connection signal="timeout" from="StatsUI/LVLUPTXT/OnScreenTimer" to="xp_component" method="_on_on_screen_timer_timeout"]

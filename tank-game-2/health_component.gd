@@ -8,9 +8,13 @@ extends Node
 @onready var second_cont = $"../SecondaryContainer"
 @onready var ammolabel2 = $"../StatsUI/AmmoLabel2"
 
+var invincible = false
+
 const player_death = preload("res://player_death_explosion.tscn")
 
 func hit(damage: float) -> void:
+	if invincible:
+		return
 	parent.health -= damage
 	if parent.health < 0:
 		parent.health = 0
@@ -40,3 +44,10 @@ func _process(delta: float) -> void:
 	ammolabel.global_position = Vector2(50,50)
 	ammolabel2.text = "Mines (RMB): " + str(parent.max_secondary - second_cont.get_child_count())
 	ammolabel2.global_position = Vector2(50,100)
+
+func start_invincibility(time:float):
+	invincible = true
+
+
+func _on_invincibility_timer_timeout() -> void:
+	invincible = false

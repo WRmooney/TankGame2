@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c6meb6bovgbb6"]
 
-[ext_resource type="Script" uid="uid://d17sei6rd0vq" path="res://golf_ball.gd" id="1_66s2f"]
+[ext_resource type="Script" uid="uid://d17sei6rd0vq" path="res://golf_ball.gd" id="1_0wkuo"]
 [ext_resource type="Texture2D" uid="uid://cpoviyry2bg" path="res://HighlightArrow.png" id="2_0wkuo"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_poua4"]
@@ -31,7 +31,7 @@ collision_mask = 3
 physics_material_override = SubResource("PhysicsMaterial_poua4")
 gravity_scale = 0.0
 linear_damp = 0.5
-script = ExtResource("1_66s2f")
+script = ExtResource("1_0wkuo")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=521536318]
 shape = SubResource("CircleShape2D_poua4")

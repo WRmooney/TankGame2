@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ncn7ko5d1qh1"]
 
-[ext_resource type="Script" uid="uid://cnn41u31vsvoc" path="res://enemy_explosion.gd" id="1_l20sh"]
+[ext_resource type="Script" uid="uid://cnn41u31vsvoc" path="res://enemy_explosion.gd" id="1_8jm0r"]
 [ext_resource type="AudioStream" uid="uid://b8glbulu3j66v" path="res://EnemyDie.wav" id="2_8jm0r"]
 
 [sub_resource type="Gradient" id="Gradient_u62d1"]
@@ -44,7 +44,7 @@ explosiveness = 1.0
 trail_sections = 4
 trail_section_subdivisions = 1
 process_material = SubResource("ParticleProcessMaterial_r258f")
-script = ExtResource("1_l20sh")
+script = ExtResource("1_8jm0r")
 
 [node name="EnemyExplosion" type="AudioStreamPlayer" parent="." unique_id=1781577276]
 stream = ExtResource("2_8jm0r")

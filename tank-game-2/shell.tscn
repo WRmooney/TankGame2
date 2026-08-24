@@ -50,5 +50,9 @@ one_shot = true
 [node name="ExplosionTimer" type="Timer" parent="." unique_id=985056842]
 one_shot = true
 
+[node name="FreezeTimer" type="Timer" parent="." unique_id=309660263]
+one_shot = true
+
 [connection signal="timeout" from="FollowTimer" to="." method="_on_follow_timer_timeout"]
 [connection signal="timeout" from="ExplosionTimer" to="." method="_on_explosion_timer_timeout"]
+[connection signal="timeout" from="FreezeTimer" to="." method="_on_freeze_timer_timeout"]

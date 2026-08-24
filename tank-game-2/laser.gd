@@ -5,17 +5,24 @@ extends Area2D
 @export var duration: float
 @export var width: float
 
+var active = false
 
 func _ready() -> void:
 	$Line2D.points = line_points
 	$Line2D.width = width *2
 	$HitBoxTimer.start(wait_time)
 
-
+func freeze(time:float):
+	if not active:
+		$HitBoxTimer.paused = true
+	else:
+		$DurationTimer.paused = true
+	$FreezeTimer.start(time)
 
 func _on_hit_box_timer_timeout() -> void:
 	$HitBoxTimer.stop()
 	$LaserSound.play()
+	active = true
 	for i in range(len($Line2D.points) - 1):
 		var shape = ConvexPolygonShape2D.new()
 		var angle = atan2($Line2D.points[i+1].y - $Line2D.points[i].y, $Line2D.points[i+1].x - $Line2D.points[i].x)
@@ -35,3 +42,10 @@ func _on_body_entered(body: Node2D) -> void:
 
 func _on_duration_timer_timeout() -> void:
 	queue_free()
+
+
+func _on_freeze_timer_timeout() -> void:
+	if not active:
+		$HitBoxTimer.paused = false
+	else:
+		$DurationTimer.paused = false

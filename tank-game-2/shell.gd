@@ -3,7 +3,7 @@ extends CharacterBody2D
 @export var player: CharacterBody2D
 
 var following: bool = true
-
+var disabled: bool = false
 var size_mod: float = 0.0
 
 const SHELL_EXPLOSION = preload("res://shell_explosion.tscn")
@@ -13,7 +13,18 @@ func _ready() -> void:
 	$StoppedSprite.scale = Vector2(1 + size_mod, 1 + size_mod)
 	$FollowTimer.start(5)
 
+func freeze(time: float):
+	disabled = true
+	$FreezeTimer.start(time)
+	if following:
+		$FollowTimer.paused = true
+	else:
+		$ExplosionTimer.paused = true
+
 func _process(delta: float) -> void:
+	if disabled:
+		velocity = Vector2.ZERO
+		return
 	if following:
 		if position.distance_to(player.position) > 10:
 			var dir_to_player = atan2(player.position.y - position.y, player.position.x - position.x)
@@ -43,3 +54,11 @@ func get_battlefield() -> Node2D:
 	while par and par is not Battlefield:
 		par = par.get_parent()
 	return par
+
+
+func _on_freeze_timer_timeout() -> void:
+	disabled = false
+	if following:
+		$FollowTimer.paused = false
+	else:
+		$ExplosionTimer.paused = false

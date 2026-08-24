@@ -25,6 +25,8 @@ func _ready() -> void:
 	col_off.start(col_end)
 	emitting = true
 	
+	#add_to_group("player_attacks")
+	
 func _process(_delta: float) -> void:
 	#print(area.get_overlapping_bodies())
 	if not emitting:

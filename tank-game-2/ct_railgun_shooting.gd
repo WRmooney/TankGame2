@@ -106,7 +106,7 @@ func shoot(angle: float) -> void:
 	can_shoot = false
 	var instance = LASER.instantiate()
 	instance.line_points = $Line2D.points
-	instance.wait_time = 1
+	instance.wait_time = 1.25
 	instance.duration = .5 * laser_duration_mod
 	instance.width = 4 * laser_width_mod
 	#instance.damage = parent.damage

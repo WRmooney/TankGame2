@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://b805iv216drvd"]
 
-[ext_resource type="Script" uid="uid://dhcjb0lssoq1e" path="res://mine.gd" id="1_i6hay"]
-[ext_resource type="Script" uid="uid://disdlsj28vjag" path="res://timer_component.gd" id="2_i213m"]
-[ext_resource type="Script" uid="uid://boaqydemory2y" path="res://mine_collision.gd" id="2_w3yfb"]
+[ext_resource type="Script" uid="uid://dhcjb0lssoq1e" path="res://mine.gd" id="1_2wuje"]
+[ext_resource type="Script" uid="uid://boaqydemory2y" path="res://mine_collision.gd" id="2_5adda"]
+[ext_resource type="Script" uid="uid://disdlsj28vjag" path="res://timer_component.gd" id="3_cjwmg"]
 [ext_resource type="Texture2D" uid="uid://up7cy7iuhshf" path="res://mine_normal.tres" id="3_vanlv"]
 [ext_resource type="Texture2D" uid="uid://0h710hn0tul0" path="res://mine_flicker.tres" id="4_w3yfb"]
 [ext_resource type="AudioStream" uid="uid://qr6gpfwxicux" path="res://MinePlaced.wav" id="6_2wuje"]
@@ -27,19 +27,24 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_w3yfb"]
 radius = 30.0
 
-[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1262470450]
-script = ExtResource("1_i6hay")
+[node name="CharacterBody2D" type="CharacterBody2D" unique_id=1262470450 groups=["mines"]]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource("1_2wuje")
 timer_length = 10.0
 explosion_radius = 20.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1035387905]
 shape = SubResource("CircleShape2D_i6hay")
-script = ExtResource("2_w3yfb")
+script = ExtResource("2_5adda")
 
 [node name="timer_component" type="Node" parent="." unique_id=1865309054]
-script = ExtResource("2_i213m")
+script = ExtResource("3_cjwmg")
 
 [node name="MineTimer" type="Timer" parent="timer_component" unique_id=1615489757]
+
+[node name="PauseTimer" type="Timer" parent="timer_component" unique_id=630607861]
+one_shot = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=194281224]
 sprite_frames = SubResource("SpriteFrames_i6hay")
@@ -61,3 +66,4 @@ stream = ExtResource("6_2wuje")
 autoplay = true
 
 [connection signal="timeout" from="timer_component/MineTimer" to="timer_component" method="_on_mine_timer_timeout"]
+[connection signal="timeout" from="timer_component/PauseTimer" to="timer_component" method="_on_pause_timer_timeout"]

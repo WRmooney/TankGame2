@@ -18,5 +18,6 @@ func _physics_process(delta: float) -> void:
 func _on_navigation_agent_2d_velocity_computed(safe_velocity: Vector2) -> void:
 	if parent.disabled:
 		return
+	
 	parent.velocity = safe_velocity.normalized() * parent.speed
 	parent.move_and_slide()

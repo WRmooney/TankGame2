@@ -1,8 +1,9 @@
 [gd_scene format=3 uid="uid://3iuiabuxxvn8"]
 
-[ext_resource type="Script" uid="uid://cgubihet3bmem" path="res://endless_survival_mode.gd" id="1_c2u3w"]
-[ext_resource type="Script" uid="uid://qm1gp8t4c07w" path="res://enemy_select.gd" id="2_2nnlu"]
+[ext_resource type="Script" uid="uid://cgubihet3bmem" path="res://endless_survival_mode.gd" id="1_2nnlu"]
 [ext_resource type="Script" uid="uid://cb73607ftma5x" path="res://curse_select.gd" id="2_x8s7t"]
+[ext_resource type="Script" uid="uid://qm1gp8t4c07w" path="res://enemy_select.gd" id="3_ouk6g"]
+[ext_resource type="Texture2D" uid="uid://cv5ptu70q6hm3" path="res://TankCoinV1.png" id="4_x8s7t"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ombb5"]
 font_size = 26
@@ -82,6 +83,11 @@ font_size = 40
 font_color = Color(0, 0, 0, 1)
 outline_size = 15
 
+[sub_resource type="LabelSettings" id="LabelSettings_glttc"]
+font_size = 40
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
+
 [sub_resource type="LabelSettings" id="LabelSettings_muxml"]
 font_size = 120
 outline_size = 20
@@ -104,8 +110,8 @@ font_color = Color(1, 0.91733336, 0.38, 1)
 outline_size = 10
 outline_color = Color(0.47, 0.36659998, 0.1598, 1)
 
-[node name="EndlessSurvivalMode" type="Node2D" unique_id=1380732344]
-script = ExtResource("1_c2u3w")
+[node name="EndlessSurvivalMode" type="Node2D" unique_id=1380732344 groups=["persist"]]
+script = ExtResource("1_2nnlu")
 
 [node name="CurseSelect" type="Node" parent="." unique_id=368783521]
 script = ExtResource("2_x8s7t")
@@ -282,7 +288,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="EnemySelect" type="Node" parent="." unique_id=242494627]
-script = ExtResource("2_2nnlu")
+script = ExtResource("3_ouk6g")
 
 [node name="Selections" type="Node" parent="EnemySelect" unique_id=1825529959]
 
@@ -604,6 +610,26 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Special Event: Nearsighted"
 label_settings = SubResource("LabelSettings_vblr5")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TankCoinLayer" type="CanvasLayer" parent="." unique_id=1075411477]
+layer = 3
+visible = false
+
+[node name="TankCoinTexture" type="TextureRect" parent="TankCoinLayer" unique_id=889889903]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 60.0
+offset_bottom = 60.0
+texture = ExtResource("4_x8s7t")
+
+[node name="TankCoinCount" type="Label" parent="TankCoinLayer" unique_id=2089436231]
+offset_left = 80.0
+offset_right = 120.0
+offset_bottom = 80.0
+text = "0"
+label_settings = SubResource("LabelSettings_glttc")
 horizontal_alignment = 1
 vertical_alignment = 1
 

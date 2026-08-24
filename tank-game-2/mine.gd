@@ -5,7 +5,7 @@ extends CharacterBody2D
 @export var damage: float
 @export var parent: CharacterBody2D
 
-
+var disabled = false
 var ignore_parent = true
 
 func _ready() -> void:
@@ -17,3 +17,7 @@ func _ready() -> void:
 	
 func hit(damage: float):
 	$timer_component.hit()
+
+func freeze(time: float):
+	disabled = true
+	$timer_component.pause(time)

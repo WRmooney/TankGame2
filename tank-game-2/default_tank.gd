@@ -20,6 +20,8 @@ var disabled: bool = false
 
 @onready var nav_agent:= $NavigationAgent2D as NavigationAgent2D
 
+@onready var freezetimer = $FreezeTimer
+
 var curses: Array[String] = []
 
 var sees_player: bool
@@ -41,7 +43,17 @@ func apply_curses(curses: Array[String]) -> void:
 	if cursed_tank:
 		curses = $ValidCursePool.filter_curses(curses)
 		$CurseModifications.apply_curses(curses)
-		
+
+func freeze(time: float, freeze_bullets: bool = false):
+	disabled = true
+	if cursed_tank:
+		$ct_enemy_health_component.freeze(time)
+	if freeze_bullets:
+		if $enemy_shooting_component/BulletContainer:
+			for bullet in $enemy_shooting_component/BulletContainer.get_children():
+				bullet.freeze(time)
+	if freezetimer:
+		freezetimer.start(time)
 
 func activate_highlight() -> void:
 	$Highlight.visible = true
@@ -52,3 +64,7 @@ func hit(damage: float) -> void:
 		$ct_enemy_health_component.hit(damage)
 	else:
 		$enemy_health_component.hit(damage)
+
+
+func _on_freeze_timer_timeout() -> void:
+	disabled = false
