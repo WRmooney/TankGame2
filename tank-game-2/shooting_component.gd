@@ -67,6 +67,7 @@ func special_shoot():
 			specialcontainer.add_child(instance)
 			get_battlefield().freeze_enemies(5.0, true)
 			get_parent().freeze(5.0, true)
+			$"../Camera2D".start_shake(5.0,5.0)
 			start_special_cooldown()
 		"Invincibility":
 			$"../health_component".start_invincibility(10)
@@ -75,6 +76,8 @@ func special_shoot():
 		"Sprint":
 			$Sprint.start(10)
 			start_special_cooldown()
+		"Flashbang":
+			pass
 
 func start_special_cooldown():
 	match get_parent().cur_special:

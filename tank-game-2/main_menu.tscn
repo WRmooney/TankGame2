@@ -126,7 +126,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="MainMenuLayer" type="CanvasLayer" parent="." unique_id=1953922528]
-visible = false
 
 [node name="Title" type="Label" parent="MainMenuLayer" unique_id=523099725]
 anchors_preset = 8
@@ -255,6 +254,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ShopLayer" type="CanvasLayer" parent="." unique_id=1668550021]
+visible = false
 script = ExtResource("4_jix8l")
 abilitybuttongroup = ExtResource("5_nlkkf")
 

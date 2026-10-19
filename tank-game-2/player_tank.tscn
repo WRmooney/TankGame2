@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://biggw55dplkua" path="res://invincibility.gd" id="6_4sbgd"]
 [ext_resource type="Script" uid="uid://bgybhd2ynuylh" path="res://sprint.gd" id="7_btr0d"]
 [ext_resource type="PackedScene" uid="uid://dqaj80548ygcg" path="res://upgrade_presets.tscn" id="7_w85wn"]
+[ext_resource type="Script" uid="uid://bxgeoowe3j3qe" path="res://player_camera.gd" id="9_wvgpw"]
 
 [sub_resource type="Gradient" id="Gradient_4ab8g"]
 offsets = PackedFloat32Array(1)
@@ -198,6 +199,10 @@ avoidance_layers = 15
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1369838070]
 position_smoothing_enabled = true
+script = ExtResource("9_wvgpw")
+
+[node name="ShakeTimer" type="Timer" parent="Camera2D" unique_id=770170142]
+one_shot = true
 
 [node name="PrimaryContainer" type="Node" parent="." unique_id=2116076968]
 

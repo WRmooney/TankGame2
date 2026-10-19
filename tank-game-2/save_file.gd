@@ -5,7 +5,8 @@ var game_data: Dictionary = {
 	"unlocked_abilities":{
 		"Sprint": false,
 		"Josh Buster": true,
-		"Invincibility": false
+		"Invincibility": false,
+		"Flashbang": true
 	},
 	"selected_ability":"Josh Buster"
 }
@@ -15,7 +16,8 @@ var default_save: Dictionary = {
 	"unlocked_abilities":{
 		"Sprint": true,
 		"Josh Buster": true,
-		"Invincibility": false
+		"Invincibility": false,
+		"Flashbang": true
 	},
 	"selected_ability":"Josh Buster"
 }
