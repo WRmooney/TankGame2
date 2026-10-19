@@ -413,7 +413,7 @@ func spawn_orbs() -> void:
 	for i in range(num_to_remove):
 		orb_cells.erase(orb_cells.pick_random())
 	for cell_pos in orb_cells:
-		if tilemap.get_cell_source_id(cell_pos) == 2 and tilemap.get_cell_atlas_coords(cell_pos) == Vector2i(0,0):
+		if tilemap.get_cell_source_id(cell_pos) == 0:
 			var instance = ORB.instantiate()
 			instance.position = Vector2(cell_pos.x * 64 + 32, cell_pos.y * 64 + 32)
 			$OrbContainer.add_child(instance)
@@ -621,7 +621,7 @@ func _on_enemy_spawn_timer_timeout() -> void:
 	elif mode == "destroy":
 		$EnemySpawnTimer.start(enemy_spawn_time * 2)
 	elif mode == "collect":
-		$EnemySpawnTimer.start(1) # CHANGE BACKKK
+		$EnemySpawnTimer.start(enemy_spawn_time * 4)
 	elif mode == "golf":
 		$EnemySpawnTimer.start(enemy_spawn_time * 5)
 

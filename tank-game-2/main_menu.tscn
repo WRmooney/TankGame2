@@ -126,6 +126,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="MainMenuLayer" type="CanvasLayer" parent="." unique_id=1953922528]
+visible = false
 
 [node name="Title" type="Label" parent="MainMenuLayer" unique_id=523099725]
 anchors_preset = 8
@@ -254,7 +255,6 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ShopLayer" type="CanvasLayer" parent="." unique_id=1668550021]
-visible = false
 script = ExtResource("4_jix8l")
 abilitybuttongroup = ExtResource("5_nlkkf")
 
@@ -298,6 +298,13 @@ text = "Back"
 label_settings = SubResource("LabelSettings_glbon")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="AbilitiesBGColor" type="ColorRect" parent="ShopLayer" unique_id=373519208]
+offset_left = 276.0
+offset_top = 180.0
+offset_right = 876.0
+offset_bottom = 480.0
+color = Color(0.3647059, 0.24705882, 0.18039216, 1)
 
 [node name="AbilityContainer" type="ScrollContainer" parent="ShopLayer" unique_id=631589649]
 anchors_preset = 8
@@ -462,6 +469,13 @@ grow_vertical = 0
 text = "Equipped"
 label_settings = SubResource("LabelSettings_iotk1")
 
+[node name="AbilityDivider" type="ColorRect" parent="ShopLayer/AbilityContainer/VBoxContainer" unique_id=1560477878]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.1, 1.1)
+color = Color(0.7647059, 0.4745098, 0.3019608, 1)
+
 [node name="Invincibility" type="Button" parent="ShopLayer/AbilityContainer/VBoxContainer" unique_id=652113217]
 custom_minimum_size = Vector2(0, 128)
 layout_mode = 2
@@ -605,6 +619,13 @@ grow_horizontal = 0
 grow_vertical = 0
 text = "Equipped"
 label_settings = SubResource("LabelSettings_iotk1")
+
+[node name="AbilityDivider2" type="ColorRect" parent="ShopLayer/AbilityContainer/VBoxContainer" unique_id=804354750]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.1, 1.1)
+color = Color(0.7647059, 0.4745098, 0.3019608, 1)
 
 [node name="Josh Buster" type="Button" parent="ShopLayer/AbilityContainer/VBoxContainer" unique_id=275608082]
 custom_minimum_size = Vector2(0, 128)

@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://c7bklcnj4xsi"]
+
+[ext_resource type="Script" uid="uid://fh56wv5cg8yc" path="res://health_pack.gd" id="1_bboee"]
+[ext_resource type="Texture2D" uid="uid://drtnrch0rpeg8" path="res://HealthPack.png" id="1_xab54"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_81fhr"]
+radius = 20.0
+
+[sub_resource type="Gradient" id="Gradient_bboee"]
+offsets = PackedFloat32Array(0.27586207, 0.6743295, 0.7586207)
+colors = PackedColorArray(0.045899987, 0.51, 0.084574945, 1, 0.08189998, 0.91, 0.15090825, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_v2cuk"]
+gradient = SubResource("Gradient_bboee")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.8, 0.2)
+
+[sub_resource type="Curve" id="Curve_irjl4"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_p8vk6"]
+curve = SubResource("Curve_irjl4")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_oxhgo"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 40.0
+initial_velocity_max = 60.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.099999994
+scale_max = 0.29999998
+scale_curve = SubResource("CurveTexture_p8vk6")
+
+[sub_resource type="Gradient" id="Gradient_m1ub2"]
+offsets = PackedFloat32Array(0.3716475, 0.7241379, 0.7624521)
+colors = PackedColorArray(0.027, 0.45, 0.062249966, 1, 0.2528, 0.79, 0.29756662, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_xf5no"]
+gradient = SubResource("Gradient_m1ub2")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.8, 0.2)
+
+[node name="HealthPack" type="Area2D" unique_id=568475664]
+script = ExtResource("1_bboee")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=54237783]
+shape = SubResource("CircleShape2D_81fhr")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=525385624]
+z_index = 1
+texture = ExtResource("1_xab54")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." unique_id=1008783456]
+amount = 20
+texture = SubResource("GradientTexture2D_v2cuk")
+lifetime = 1.5
+process_material = SubResource("ParticleProcessMaterial_oxhgo")
+
+[node name="BGGradient" type="Sprite2D" parent="." unique_id=1214706741]
+texture = SubResource("GradientTexture2D_xf5no")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

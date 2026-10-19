@@ -1,0 +1,326 @@
+[gd_scene format=3 uid="uid://cgpy1t8nxtt64"]
+
+[ext_resource type="Script" uid="uid://c67ukmk1o447f" path="res://player_tank.gd" id="1_n5f8l"]
+[ext_resource type="Texture2D" uid="uid://v0tl6mtyxti6" path="res://turrettopblue.png" id="2_w85wn"]
+[ext_resource type="Script" uid="uid://bg3wn21urexh7" path="res://player_movement_component.gd" id="3_4ab8g"]
+[ext_resource type="Script" uid="uid://bsoda1gn0b6i4" path="res://shooting_component.gd" id="4_w85wn"]
+[ext_resource type="Script" uid="uid://du2gieyivvbtr" path="res://health_component.gd" id="5_1jnsx"]
+[ext_resource type="Texture2D" uid="uid://iw36stixn77l" path="res://icon.svg" id="5_vi4l0"]
+[ext_resource type="Script" uid="uid://cnlyxgictprtw" path="res://xp_component.gd" id="6_4ab8g"]
+[ext_resource type="Script" uid="uid://biggw55dplkua" path="res://invincibility.gd" id="6_4sbgd"]
+[ext_resource type="Script" uid="uid://bgybhd2ynuylh" path="res://sprint.gd" id="7_btr0d"]
+[ext_resource type="PackedScene" uid="uid://dqaj80548ygcg" path="res://upgrade_presets.tscn" id="7_w85wn"]
+
+[sub_resource type="Gradient" id="Gradient_4ab8g"]
+offsets = PackedFloat32Array(1)
+colors = PackedColorArray(0.2620658, 0.4789974, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_w85wn"]
+gradient = SubResource("Gradient_4ab8g")
+width = 29
+height = 29
+
+[sub_resource type="Gradient" id="Gradient_r258f"]
+offsets = PackedFloat32Array(0, 0.31875, 0.6896552, 0.93125)
+colors = PackedColorArray(0, 0, 0, 0, 0.52, 0.17679998, 0.18251991, 1, 1, 0.33999997, 0.35099983, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_vi4l0"]
+gradient = SubResource("Gradient_r258f")
+fill = 2
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.2, 0.8)
+
+[sub_resource type="Gradient" id="Gradient_4sbgd"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(1, 0.33999997, 0.33999997, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_btr0d"]
+gradient = SubResource("Gradient_4sbgd")
+width = 60
+height = 5
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1ealj"]
+size = Vector2(19.060402, 19.060402)
+
+[sub_resource type="LabelSettings" id="LabelSettings_btr0d"]
+font_size = 50
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SystemFont" id="SystemFont_1jnsx"]
+subpixel_positioning = 0
+
+[sub_resource type="LabelSettings" id="LabelSettings_4ab8g"]
+font = SubResource("SystemFont_1jnsx")
+font_size = 30
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SystemFont" id="SystemFont_4ab8g"]
+subpixel_positioning = 0
+
+[sub_resource type="LabelSettings" id="LabelSettings_w85wn"]
+font = SubResource("SystemFont_4ab8g")
+font_size = 30
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SystemFont" id="SystemFont_vi4l0"]
+subpixel_positioning = 0
+
+[sub_resource type="LabelSettings" id="LabelSettings_4sbgd"]
+font = SubResource("SystemFont_vi4l0")
+font_size = 60
+outline_size = 15
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SystemFont" id="SystemFont_w85wn"]
+subpixel_positioning = 0
+
+[sub_resource type="LabelSettings" id="LabelSettings_vi4l0"]
+font = SubResource("SystemFont_w85wn")
+font_size = 80
+outline_size = 15
+outline_color = Color(0, 0, 0, 1)
+shadow_size = 5
+shadow_color = Color(0.87, 0.1044, 0.84448004, 1)
+shadow_offset = Vector2(10, 10)
+
+[node name="Player_tank" type="CharacterBody2D" unique_id=1198161332 groups=["player"]]
+collision_layer = 7
+collision_mask = 7
+motion_mode = 1
+wall_min_slide_angle = 0.0
+platform_on_leave = 2
+script = ExtResource("1_n5f8l")
+max_bullets = 10
+max_secondary = 3
+mine_radius = 3.0
+bullet_speed = 260
+mine_damage = 1.0
+
+[node name="Turret" type="Sprite2D" parent="." unique_id=1724804025]
+z_index = 1
+scale = Vector2(1.4, 1.4)
+texture = ExtResource("2_w85wn")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=338251651]
+texture = SubResource("GradientTexture2D_w85wn")
+
+[node name="Highlight" type="Sprite2D" parent="." unique_id=767922089]
+visible = false
+texture = SubResource("GradientTexture2D_vi4l0")
+
+[node name="InvincibilityTime" type="Sprite2D" parent="." unique_id=325124593]
+visible = false
+position = Vector2(0, 20)
+texture = SubResource("GradientTexture2D_btr0d")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=672815603]
+position = Vector2(-1.1920929e-07, 1.1920929e-07)
+scale = Vector2(1.5, 1.5)
+shape = SubResource("RectangleShape2D_1ealj")
+debug_color = Color(0.9349291, 2.0407439e-05, 0.6405946, 0.41960785)
+
+[node name="FreezeTimer" type="Timer" parent="." unique_id=988394351]
+one_shot = true
+
+[node name="movement_component" type="Node" parent="." unique_id=555221281]
+script = ExtResource("3_4ab8g")
+
+[node name="shooting_component" type="Node" parent="." unique_id=1012643861]
+script = ExtResource("4_w85wn")
+
+[node name="SpecialShootCooldown" type="Timer" parent="shooting_component" unique_id=1112580372]
+one_shot = true
+
+[node name="SpecialCooldownUI" type="CanvasLayer" parent="shooting_component" unique_id=1268795385]
+
+[node name="Container" type="Control" parent="shooting_component/SpecialCooldownUI" unique_id=389808274]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -150.0
+offset_right = 150.0
+grow_vertical = 0
+
+[node name="Icon" type="TextureRect" parent="shooting_component/SpecialCooldownUI/Container" unique_id=578048306]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -100.0
+offset_bottom = 100.0
+grow_horizontal = 0
+pivot_offset = Vector2(20, 20)
+texture = ExtResource("5_vi4l0")
+expand_mode = 1
+
+[node name="CooldownLabel" type="Label" parent="shooting_component/SpecialCooldownUI/Container/Icon" unique_id=1719596539]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -28.5
+offset_top = -34.5
+offset_right = 28.5
+offset_bottom = 34.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "90"
+label_settings = SubResource("LabelSettings_btr0d")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Invincibility" type="Node" parent="shooting_component" unique_id=1096077028]
+script = ExtResource("6_4sbgd")
+
+[node name="InvincibilityTimer" type="Timer" parent="shooting_component/Invincibility" unique_id=1163049154]
+one_shot = true
+
+[node name="Sprint" type="Node" parent="shooting_component" unique_id=1915649375]
+script = ExtResource("7_btr0d")
+
+[node name="SprintTimer" type="Timer" parent="shooting_component/Sprint" unique_id=438046239]
+one_shot = true
+
+[node name="health_component" type="Node" parent="." unique_id=488077003]
+script = ExtResource("5_1jnsx")
+
+[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=1341149735 groups=["hurtable"]]
+radius = 50.0
+affect_navigation_mesh = true
+carve_navigation_mesh = true
+avoidance_layers = 15
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1369838070]
+position_smoothing_enabled = true
+
+[node name="PrimaryContainer" type="Node" parent="." unique_id=2116076968]
+
+[node name="SecondaryContainer" type="Node" parent="." unique_id=122439246]
+
+[node name="SpecialContainer" type="Node" parent="." unique_id=878716646]
+
+[node name="StatsUI" type="CanvasLayer" parent="." unique_id=1956557960]
+visible = false
+
+[node name="HealthLabel" type="Label" parent="StatsUI" unique_id=1170438300]
+visible = false
+z_index = 1
+offset_left = -550.0
+offset_top = -300.0
+offset_right = -150.0
+offset_bottom = -258.0
+text = "20/20"
+label_settings = SubResource("LabelSettings_4ab8g")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="StatsUI" unique_id=721049005]
+visible = false
+offset_left = -550.0
+offset_top = -300.0
+offset_right = -150.0
+offset_bottom = -260.0
+color = Color(0.6455512, 2.5629624e-06, 4.813075e-07, 1)
+
+[node name="AmmoLabel" type="Label" parent="StatsUI" unique_id=1254816575]
+offset_left = -550.0
+offset_top = -250.0
+offset_right = -327.0
+offset_bottom = -208.0
+text = "Bullets (LMB): 5"
+label_settings = SubResource("LabelSettings_w85wn")
+
+[node name="AmmoLabel2" type="Label" parent="StatsUI" unique_id=1687843005]
+offset_left = -550.0
+offset_top = -200.0
+offset_right = -336.0
+offset_bottom = -158.0
+text = "Mines (RMB): 2"
+label_settings = SubResource("LabelSettings_w85wn")
+
+[node name="XPBar" type="ColorRect" parent="StatsUI" unique_id=1589978385]
+offset_bottom = 40.0
+color = Color(0.25046408, 0.55846304, 0.9821889, 1)
+
+[node name="LVLUPTXT" type="Label" parent="StatsUI" unique_id=114435673]
+visible = false
+offset_left = -200.0
+offset_top = -300.0
+offset_right = 200.0
+offset_bottom = -100.0
+text = "Level Up!"
+label_settings = SubResource("LabelSettings_4sbgd")
+horizontal_alignment = 1
+
+[node name="OnScreenTimer" type="Timer" parent="StatsUI/LVLUPTXT" unique_id=1330350502]
+
+[node name="LosingUI" type="CanvasLayer" parent="." unique_id=117271549]
+visible = false
+
+[node name="Label" type="Label" parent="LosingUI" unique_id=1974601965]
+offset_left = -300.0
+offset_top = -200.0
+offset_right = 300.0
+offset_bottom = 200.0
+text = "YOU LOSE!!!"
+label_settings = SubResource("LabelSettings_vi4l0")
+horizontal_alignment = 1
+
+[node name="FinalScore" type="Label" parent="LosingUI" unique_id=1120960363]
+offset_left = -300.0
+offset_top = -200.0
+offset_right = 300.0
+offset_bottom = 200.0
+text = "Kills: 0"
+label_settings = SubResource("LabelSettings_vi4l0")
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="WinningUI" type="CanvasLayer" parent="." unique_id=372388518]
+visible = false
+
+[node name="Label" type="Label" parent="WinningUI" unique_id=1643653251]
+visible = false
+offset_left = -300.0
+offset_top = -200.0
+offset_right = 300.0
+offset_bottom = 200.0
+text = "YOU WIN!!!"
+label_settings = SubResource("LabelSettings_vi4l0")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="xp_component" type="Node" parent="." unique_id=202771539]
+process_mode = 3
+script = ExtResource("6_4ab8g")
+
+[node name="UpgradeComponent" type="CanvasLayer" parent="." unique_id=571242943]
+process_mode = 3
+visible = false
+
+[node name="UpgradeContainer" type="Node" parent="UpgradeComponent" unique_id=267218919]
+
+[node name="ColorRect" type="ColorRect" parent="UpgradeComponent" unique_id=655372687]
+visible = false
+z_index = -5
+offset_left = -325.0
+offset_top = -200.0
+offset_right = 325.0
+offset_bottom = 100.0
+mouse_filter = 2
+color = Color(0.77, 0.77, 0.77, 0.81960785)
+
+[node name="UpgradePresets" parent="." unique_id=413033068 instance=ExtResource("7_w85wn")]
+
+[connection signal="timeout" from="FreezeTimer" to="." method="_on_freeze_timer_timeout"]
+[connection signal="timeout" from="shooting_component/SpecialShootCooldown" to="shooting_component" method="_on_special_shoot_cooldown_timeout"]
+[connection signal="timeout" from="shooting_component/Invincibility/InvincibilityTimer" to="shooting_component/Invincibility" method="_on_invincibility_timer_timeout"]
+[connection signal="timeout" from="shooting_component/Invincibility/InvincibilityTimer" to="health_component" method="_on_invincibility_timer_timeout"]
+[connection signal="timeout" from="shooting_component/Sprint/SprintTimer" to="shooting_component/Sprint" method="_on_sprint_timer_timeout"]
+[connection signal="timeout" from="StatsUI/LVLUPTXT/OnScreenTimer" to="xp_component" method="_on_on_screen_timer_timeout"]

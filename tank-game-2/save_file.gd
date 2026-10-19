@@ -14,7 +14,7 @@ var default_save: Dictionary = {
 	"tankcoins":0,
 	"unlocked_abilities":{
 		"Sprint": true,
-		"Josh Buster": false,
+		"Josh Buster": true,
 		"Invincibility": false
 	},
 	"selected_ability":"Josh Buster"
@@ -27,8 +27,8 @@ func save_game():
 	print("saving data")
 	var file := FileAccess.open("user://save_data.JSON", FileAccess.WRITE)
 
-	
-	file.store_string(JSON.stringify(game_data,"\t"))
+	file.store_string(JSON.stringify(default_save,"\t"))
+	#file.store_string(JSON.stringify(game_data,"\t"))
 	file.close()
 
 func load_game():

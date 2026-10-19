@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://cm54qyak1vey5"]
+
+[sub_resource type="Gradient" id="Gradient_ebdvi"]
+offsets = PackedFloat32Array(0, 0.3875, 0.425)
+colors = PackedColorArray(0, 0, 0, 1, 0.4, 0.4, 0.4, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2j51h"]
+gradient = SubResource("Gradient_ebdvi")
+width = 100
+height = 100
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.8, 0.2)
+
+[sub_resource type="Curve" id="Curve_ah5qx"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.7816901, 0.42696637), -1.8036152, -1.8036152, 0, 0, Vector2(0.99295783, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_ispy0"]
+curve = SubResource("Curve_ah5qx")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_65ldm"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 20.0
+initial_velocity_max = 100.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.19999999
+scale_max = 0.39999998
+scale_curve = SubResource("CurveTexture_ispy0")
+
+[node name="golf_fx" type="GPUParticles2D" unique_id=365541484]
+process_mode = 3
+emitting = false
+amount = 20
+texture = SubResource("GradientTexture2D_2j51h")
+lifetime = 1.5
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_65ldm")

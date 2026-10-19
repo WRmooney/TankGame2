@@ -1,0 +1,179 @@
+[gd_scene format=3 uid="uid://ctbv3qwotym7o"]
+
+[ext_resource type="Script" uid="uid://dslue1j1q7a0h" path="res://josh_buster_de.gd" id="1_m7dfb"]
+
+[sub_resource type="Gradient" id="Gradient_y2qf4"]
+colors = PackedColorArray(0.475, 0.68083334, 0.95, 1, 0.5, 0.5, 0.5, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ebadq"]
+gradient = SubResource("Gradient_y2qf4")
+width = 250
+height = 250
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.8, 0.2)
+
+[sub_resource type="Gradient" id="Gradient_tl1it"]
+colors = PackedColorArray(0, 0.3666668, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_kmrlh"]
+gradient = SubResource("Gradient_tl1it")
+
+[sub_resource type="Curve" id="Curve_qm1jk"]
+_limits = [-1.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, -0.17611575), 0.0, 0.0, 0, 0, Vector2(1e-05, 0.09047043), 0.0, 0.0, 0, 0, Vector2(0.22424242, -0.0036188364), 0.0, 0.0, 0, 0, Vector2(1, 0.012062788), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="CurveTexture" id="CurveTexture_dfdqy"]
+curve = SubResource("Curve_qm1jk")
+
+[sub_resource type="Curve" id="Curve_f2mxt"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.8484849, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_m7l0c"]
+curve = SubResource("Curve_f2mxt")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ofupe"]
+particle_flag_disable_z = true
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 1.0
+emission_ring_radius = 2000.0
+emission_ring_inner_radius = 2000.0
+emission_ring_cone_angle = 90.0
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -7000.0
+radial_accel_max = -7000.0
+tangential_accel_min = -2.2351742e-06
+tangential_accel_max = -2.2351742e-06
+scale_max = 2.0
+scale_curve = SubResource("CurveTexture_m7l0c")
+color_ramp = SubResource("GradientTexture1D_kmrlh")
+hue_variation_min = 0.99999994
+hue_variation_max = 0.99999994
+hue_variation_curve = SubResource("CurveTexture_dfdqy")
+
+[sub_resource type="Gradient" id="Gradient_7ktr4"]
+colors = PackedColorArray(0.88, 0.88, 0.88, 1, 0.68, 0.68, 0.68, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ax4r5"]
+gradient = SubResource("Gradient_7ktr4")
+width = 250
+height = 250
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.8, 0.2)
+
+[sub_resource type="Curve" id="Curve_1aow6"]
+_limits = [-1.2, 1.0, 0.0, 1.0]
+_data = [Vector2(0, -1.1217129), 0.0, 0.0, 0, 0, Vector2(0.4878788, -0.85042214), 0.0, 0.0, 0, 0, Vector2(1, -0.7563329), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_akm4p"]
+curve = SubResource("Curve_1aow6")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_uornd"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 2000.0
+initial_velocity_max = 2000.0
+gravity = Vector3(0, 0, 0)
+tangential_accel_min = 1000.0
+tangential_accel_max = 1000.0
+scale_min = 0.79999995
+scale_max = 1.4
+color = Color(0.60570395, 0.49848384, 1, 1)
+hue_variation_min = 0.99999994
+hue_variation_max = 0.99999994
+hue_variation_curve = SubResource("CurveTexture_akm4p")
+
+[sub_resource type="Gradient" id="Gradient_m7dfb"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_y2qf4"]
+gradient = SubResource("Gradient_m7dfb")
+width = 250
+height = 250
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.8, 0.2)
+
+[sub_resource type="Gradient" id="Gradient_ebadq"]
+colors = PackedColorArray(0.48021495, 0.7514987, 1, 1, 1, 0.18, 0.3303334, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_tl1it"]
+gradient = SubResource("Gradient_ebadq")
+
+[sub_resource type="Curve" id="Curve_30y8v"]
+_limits = [-1.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_kmrlh"]
+curve = SubResource("Curve_30y8v")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qm1jk"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 1500.0
+initial_velocity_max = 1500.0
+gravity = Vector3(0, 0, 0)
+color = Color(0, 1, 0.9666667, 1)
+color_ramp = SubResource("GradientTexture1D_tl1it")
+hue_variation_curve = SubResource("CurveTexture_kmrlh")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_m7dfb"]
+radius = 0.01
+
+[node name="JoshBusterDE" type="Node2D" unique_id=149777140]
+script = ExtResource("1_m7dfb")
+
+[node name="Windup" type="GPUParticles2D" parent="." unique_id=628590686]
+emitting = false
+amount = 100
+texture = SubResource("GradientTexture2D_ebadq")
+lifetime = 0.73
+process_material = SubResource("ParticleProcessMaterial_ofupe")
+
+[node name="WindupTimer" type="Timer" parent="." unique_id=351109053]
+one_shot = true
+
+[node name="Explosion" type="GPUParticles2D" parent="." unique_id=767314668]
+emitting = false
+amount = 150
+texture = SubResource("GradientTexture2D_ax4r5")
+lifetime = 3.0
+one_shot = true
+explosiveness = 0.9
+process_material = SubResource("ParticleProcessMaterial_uornd")
+
+[node name="ExplosionDelay" type="Timer" parent="." unique_id=1015943106]
+one_shot = true
+
+[node name="ExtraParticles" type="GPUParticles2D" parent="." unique_id=484221310]
+emitting = false
+amount = 200
+texture = SubResource("GradientTexture2D_y2qf4")
+lifetime = 3.0
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_qm1jk")
+
+[node name="EndTimer" type="Timer" parent="." unique_id=426073602]
+one_shot = true
+
+[node name="DeleteTimer" type="Timer" parent="." unique_id=853404954]
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=629710170]
+collision_mask = 3
+
+[node name="CircleCollisionShape" type="CollisionShape2D" parent="Hitbox" unique_id=298109963]
+shape = SubResource("CircleShape2D_m7dfb")
+disabled = true
+
+[connection signal="timeout" from="WindupTimer" to="." method="_on_windup_timer_timeout"]
+[connection signal="timeout" from="ExplosionDelay" to="." method="_on_explosion_delay_timeout"]
+[connection signal="timeout" from="EndTimer" to="." method="_on_end_timer_timeout"]
+[connection signal="timeout" from="DeleteTimer" to="." method="_on_delete_timer_timeout"]
+[connection signal="area_shape_entered" from="Hitbox" to="." method="_on_hitbox_area_shape_entered"]
+[connection signal="body_shape_entered" from="Hitbox" to="." method="_on_hitbox_body_shape_entered"]
