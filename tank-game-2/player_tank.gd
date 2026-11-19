@@ -13,13 +13,14 @@ extends CharacterBody2D
 @export var bullet_speed: int = 200
 @export var bullet_damage: float = 1
 @export var mine_damage: float = 3
-@export var cur_special: String = "Sprint"
+@export var cur_special: String = "None"
 
 var WUIon = false
 var LUIon = false
 
 var disabled = false
 
+var has_emitted_death = false
 signal player_died()
 
 func _ready() -> void:
@@ -33,6 +34,7 @@ func _ready() -> void:
 
 func _enter_tree() -> void:
 	$StatsUI.visible = true
+	
 
 func hit(damage: float) -> void:
 	$health_component.hit(damage)
@@ -54,7 +56,9 @@ func _process(_delta: float) -> void:
 	# rotate turret top
 	var mouse_pos_diff_x = get_viewport().get_mouse_position().x - get_global_transform_with_canvas().get_origin().x
 	var mouse_pos_diff_y = get_viewport().get_mouse_position().y - get_global_transform_with_canvas().get_origin().y
-	$Turret.rotation = atan2(mouse_pos_diff_y, mouse_pos_diff_x)
+	
+	if $Turret:
+		$Turret.rotation = atan2(mouse_pos_diff_y, mouse_pos_diff_x)
 	
 	
 
@@ -67,8 +71,14 @@ func heal(amount: float):
 		health = max_health
 		
 func death() -> void:
-	emit_signal("player_died")
+	if not has_emitted_death:
+		has_emitted_death = true
+		emit_signal("player_died")
 
+func level_complete() -> void:
+	# Pause health processing
+	print("level complete, disable health component")
+	$health_component.process_mode = PROCESS_MODE_DISABLED
 
 func _on_freeze_timer_timeout() -> void:
 	disabled = false

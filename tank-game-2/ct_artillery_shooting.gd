@@ -9,7 +9,7 @@ var blast_size_mod = 0.0
 var fire_rate_mod = 1.0
 
 func _on_shooting_timer_timeout() -> void:
-	if get_parent().disabled:
+	if get_parent().disabled or get_parent().frozen:
 		$ShootingTimer.start(randf_range(8.0 * fire_rate_mod,12.0 * fire_rate_mod))
 		return
 	var instance = SHELL.instantiate()

@@ -15,12 +15,31 @@ var events: Array[String] = ["Nearsighted","Farsighted","Low Ammo","Snow"] # Saw
 var cur_event: String = "none"
 
 var intermission: bool = true
-
+var pausable: bool = false
 var cur_level: Node2D
+
+# Timers/Level Transition Vars
+@onready var timers = $Timers
+
+@onready var win_timer = $Timers/WinTimer
+@onready var death_timer = $Timers/DeathTimer
+@onready var game_over_timer = $Timers/GameOverTimer
+@onready var level_load_timer = $Timers/LevelLoadingTimer
+
+var cur_timer_name: String = "None"
+var cur_timer: Timer = win_timer
+
+var input_press_delay = false
+
+@export var level_load_time: float = 5.0
+
 
 const BATTLEFIELD = preload("res://battlefield.tscn")
 
 """
+REPLACE WAIT TIMES WITH TIMERS!!! PLEASE!!!! DONT BE STUPID DUMBASS IDIOT!!!
+
+
 GOLF MODE?????
 
 LEVEL ORDER:
@@ -64,23 +83,43 @@ func _ready() -> void:
 	
 	# Initialize game
 	start_game()
-	
+
+func _process(float) -> void:
+	#print(cur_timer_name)
+	# Check early transition end (spacebar)
+	if cur_timer_name != "None":
+		if Input.get_action_strength("TransitionSkip") and not input_press_delay:
+			cur_timer.stop()
+			input_press_delay = true
+			cur_timer_name = "None"
+			cur_timer.timeout.emit()
+		elif not Input.get_action_strength("TransitionSkip") and input_press_delay:
+			input_press_delay = false
+			
+	# Add pausing (later)
+	if Input.get_action_strength("Pause") and pausable:
+		pause()
+
 func start_game() -> void:
 	# select enemy
 	select_enemy()
 
 func select_enemy() -> void:
+	pausable = false
 	$EnemySelect.select()
 
 func select_curse() -> void:
+	pausable = false
 	$CurseSelect.enemies = enemies
 	$CurseSelect.select()
 
 func add_enemy(enemy_name: String) -> void:
+	pausable = false
 	enemies.append(enemy_name)
 	continue_to_level()
 
 func add_curse(curse_name: String) -> void:
+	pausable = false
 	curses.append(curse_name)
 	continue_to_level()
 
@@ -145,30 +184,25 @@ func set_mode(battlefield: Node2D, mode: String) -> Node2D:
 		"destroy":
 			$ObjectiveLayer/ObjectiveLabel.text = "Eliminate All Enemy Bases!"
 			if random:
-				battlefield.extra_base_num = 3
-				battlefield.level_width += 1
-				battlefield.level_height += 1
+				battlefield.extra_base_num = 1
 		"collect":
-			$ObjectiveLayer/ObjectiveLabel.text = "Collect All Orbs!"
+			$ObjectiveLayer/ObjectiveLabel.text = "Collect the Orbs!"
 			if random:
-				battlefield.orb_percent = 1.0
-				battlefield.level_width += 1
-				battlefield.level_height += 1
+				battlefield.orb_percent = 0.9
 		"golf":
 			$ObjectiveLayer/ObjectiveLabel.text = "Push the Balls into the Hole!"
 			if random:
-				battlefield.level_width += 1
-				battlefield.level_height += 1
+				print("Replace this: set_mode golf")
 	
 	return battlefield
-	
-	
 
 func level_complete() -> void:
 	score += cur_level.get_score()
 	SaveFile.game_data["tankcoins"] += ceil(level / 10.0)
 	cur_level.pause_on_complete()
-	await show_win_screen()
+	show_win_screen()
+	
+func go_to_intermission() -> void:
 	delete_level()
 	if intermission:
 		return
@@ -204,19 +238,17 @@ func player_died() -> void:
 	score += cur_level.get_score()
 	lives -= 1
 	if lives == 0:
-		await game_over_screen()
-		delete_level()
-		reset_game()
+		game_over_screen()
 	else:
-		await death_screen()
-		delete_level()
-		continue_to_level()
+		death_screen()
 		
 func delete_level() -> void:
 	# get instance
+	#print("deleting level")
 	for child in get_children():
 		if child is Battlefield:
 			child.queue_free()
+			pausable = false
 
 func reset_game() -> void:
 	level = 1
@@ -236,15 +268,22 @@ func get_save_data(data:Dictionary):
 # UI FUNCTIONS
 
 func show_win_screen() -> void:
-	cur_level.process_mode =Node.PROCESS_MODE_DISABLED
 	$WinScreen.visible = true
 	if level % 5 == 0:
 		$WinScreen/ExtraLife.visible = true
 		lives += 1
-	await get_tree().create_timer(3.0).timeout
+	cur_timer_name = "WinTimer"
+	cur_timer = win_timer
+	cur_timer.start(3.0)
+	pausable = false
+	#print("Show win screen")
+	
+func show_win_screen_end() -> void:
 	$WinScreen/ExtraLife.visible = false
 	$WinScreen.visible = false
 	$ObjectiveLayer.visible = false
+	#print("end win screen")
+	go_to_intermission()
 	
 func boss_transition_screen() -> void:
 	$TankCoinLayer.visible = true
@@ -254,14 +293,23 @@ func boss_transition_screen() -> void:
 	$BossScreen/ColorRect.size = get_viewport().size
 	$BossScreen.visible = true
 	$ObjectiveLayer.visible = false
-	get_tree().paused = true
-	await get_tree().create_timer(3.0).timeout
-	get_tree().paused = false
+	cur_timer_name = "LevelLoadingTimer"
+	cur_timer = level_load_timer
+	cur_timer.start(level_load_time)
+	pausable = false
+
+func boss_transition_end() -> void:
 	$BossScreen.visible = false
 	$ObjectiveLayer.visible = true
 	$TankCoinLayer.visible = false
 	
 func level_transition_screen() -> void:
+	# scientists reveal the hi
+	var chance = randi_range(1,30)
+	print(chance)
+	if chance == 17:
+		$Hi.visible = true
+	
 	$LevelScreen/LevelNumber.text = "Level " + str(level)
 	$LevelScreen/LiveCount.text = "Lives: " + str(lives)
 	$LevelScreen/ColorRect.size = get_viewport().size
@@ -272,29 +320,97 @@ func level_transition_screen() -> void:
 		$LevelScreen/EventText.visible = true
 	$LevelScreen.visible = true
 	$ObjectiveLayer.visible = false
-	get_tree().paused = true
-	await get_tree().create_timer(3.0).timeout
-	get_tree().paused = false
+	cur_timer_name = "LevelLoadingTimer"
+	cur_timer = level_load_timer
+	cur_timer.start(level_load_time)
+	pausable = false
+	#print("level transition screen")
+
+func level_transition_end() -> void:
+	# the hi
+	$Hi.visible = false
+	
 	$LevelScreen/EventText.visible = false
 	$LevelScreen.visible = false
 	$ObjectiveLayer.visible = true
 	$TankCoinLayer.visible = false
-	
+	pausable = true
+	#print("level transition end")
+
 func death_screen() -> void:
-	cur_level.process_mode =Node.PROCESS_MODE_DISABLED
 	$DeathScreen.visible = true
-	await get_tree().create_timer(2.0).timeout
+	cur_timer_name = "DeathTimer"
+	cur_timer = death_timer
+	cur_timer.start(level_load_time)
+	pausable = false
+	#print("death screen")
+	
+func death_screen_end() -> void:
 	$DeathScreen.visible = false
 	$ObjectiveLayer.visible = false
+	#print("death screen end")
+	delete_level()
+	continue_to_level()
 	
 func game_over_screen() -> void:
-	cur_level.process_mode =Node.PROCESS_MODE_DISABLED
 	$GameOverScreen/ScoreLabel.text = "Final Score: " + str(score)
 	$GameOverScreen.visible = true
-	await get_tree().create_timer(2.0).timeout
+	cur_timer_name = "GameOverTimer"
+	cur_timer = game_over_timer
+	cur_timer.start(1.5)
+	pausable = false
+	#print("game over screen")
+	
+func game_over_screen_popup() -> void:
 	$GameOverScreen/RestartButton.visible = true
-	await $GameOverScreen/RestartButton.pressed
+	#print("game over popup")
+
+func _on_restart_button_pressed() -> void:
 	$GameOverScreen/RestartButton.visible = false
 	$GameOverScreen.visible = false
 	$ObjectiveLayer.visible = false
+	delete_level()
+	reset_game()
+
+# Pause/Unpause
+
+func pause() -> void:
+	cur_level.process_mode = Node.PROCESS_MODE_DISABLED
+	$PauseMenu.visible = true
+	pausable = false
+
+func unpause() -> void:
+	$PauseMenu.visible = false
+	cur_level.process_mode = Node.PROCESS_MODE_INHERIT
+	pausable = true
+
+func exit_to_menu() -> void:
+	$PauseMenu.visible = false
+	delete_level()
+	pausable = false
+	get_tree().change_scene_to_file("res://main_menu.tscn")
+
+# Timer timeouts
+
+func _on_win_timer_timeout() -> void:
+	show_win_screen_end()
+
+func _on_death_timer_timeout() -> void:
+	death_screen_end()
 	
+
+func _on_game_over_timer_timeout() -> void:
+	game_over_screen_popup()
+	
+
+func _on_level_loading_timer_timeout() -> void:
+	if level % 10 == 0:
+		boss_transition_end()
+	else:
+		level_transition_end()
+	
+func _on_resume_pressed() -> void:
+	unpause()
+
+func _on_exit_pressed() -> void:
+	exit_to_menu()

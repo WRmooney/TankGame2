@@ -26,6 +26,17 @@ height = 38
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
+[sub_resource type="Gradient" id="Gradient_trqja"]
+offsets = PackedFloat32Array(0.372, 0.696, 0.888)
+colors = PackedColorArray(0.83137256, 0.8235294, 0.36862746, 0, 0.83201015, 0.8246321, 0.36717603, 1, 1, 1, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5g3jv"]
+gradient = SubResource("Gradient_trqja")
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.2, 0.8)
+
 [sub_resource type="Gradient" id="Gradient_j33sn"]
 offsets = PackedFloat32Array(0, 0.31875, 0.6375, 0.93125)
 colors = PackedColorArray(0, 0, 0, 0, 0.52, 0.52, 0.17679998, 0.47058824, 1, 1, 0.33999997, 1, 1, 1, 1, 0)
@@ -59,6 +70,11 @@ shape = SubResource("RectangleShape2D_bx5ho")
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=46334775]
 scale = Vector2(0.8, 0.8)
 texture = SubResource("GradientTexture2D_r258f")
+
+[node name="StunnedAnimPlaceholder" type="Sprite2D" parent="." unique_id=1247236454]
+visible = false
+position = Vector2(0, -14)
+texture = SubResource("GradientTexture2D_5g3jv")
 
 [node name="Highlight" type="Sprite2D" parent="." unique_id=68985067]
 visible = false

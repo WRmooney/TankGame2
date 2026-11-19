@@ -13,7 +13,7 @@ var invincible = false
 const player_death = preload("res://player_death_explosion.tscn")
 
 func hit(damage: float) -> void:
-	if invincible:
+	if invincible or process_mode == PROCESS_MODE_DISABLED:
 		return
 	parent.health -= damage
 	if parent.health < 0:
@@ -25,6 +25,9 @@ func hit(damage: float) -> void:
 		$"../Turret".queue_free()
 		$"../CollisionShape2D".queue_free()
 		$"../NavigationObstacle2D".queue_free()
+		
+		
+		
 		parent.death()
 		"""
 		if not parent.WUIon:
@@ -40,10 +43,6 @@ func _process(delta: float) -> void:
 	healthrect.global_position = Vector2(50,50)
 	healthlabel.text = str(parent.health) + "/" + str(parent.max_health)
 	healthlabel.global_position = Vector2(50,50)
-	ammolabel.text = "Bullets (LMB): " + str(parent.max_bullets - prim_cont.get_child_count())
-	ammolabel.global_position = Vector2(50,50)
-	ammolabel2.text = "Mines (RMB): " + str(parent.max_secondary - second_cont.get_child_count())
-	ammolabel2.global_position = Vector2(50,100)
 
 func start_invincibility(time:float):
 	invincible = true

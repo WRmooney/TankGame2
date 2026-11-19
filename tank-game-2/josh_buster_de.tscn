@@ -165,7 +165,7 @@ one_shot = true
 [node name="DeleteTimer" type="Timer" parent="." unique_id=853404954]
 
 [node name="Hitbox" type="Area2D" parent="." unique_id=629710170]
-collision_mask = 3
+collision_mask = 35
 
 [node name="CircleCollisionShape" type="CollisionShape2D" parent="Hitbox" unique_id=298109963]
 shape = SubResource("CircleShape2D_m7dfb")

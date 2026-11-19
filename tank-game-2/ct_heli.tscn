@@ -9,6 +9,17 @@
 [ext_resource type="Script" uid="uid://dhwluw3g0kema" path="res://curse_modifications.gd" id="6_vy7x8"]
 [ext_resource type="Script" uid="uid://cekfbv0knop6d" path="res://valid_curse_pool.gd" id="7_2e1fo"]
 
+[sub_resource type="Gradient" id="Gradient_54e0u"]
+offsets = PackedFloat32Array(0.372, 0.696, 0.888)
+colors = PackedColorArray(0.83137256, 0.8235294, 0.36862746, 0, 0.83201015, 0.8246321, 0.36717603, 1, 1, 1, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_idn42"]
+gradient = SubResource("Gradient_54e0u")
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.2, 0.8)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bx5ho"]
 
 [sub_resource type="Gradient" id="Gradient_rypu6"]
@@ -27,7 +38,7 @@ radius = 20.0
 
 [node name="CT_Heli" type="CharacterBody2D" unique_id=586316251 groups=["cursed_tanks"]]
 z_index = 1
-collision_layer = 50
+collision_layer = 48
 collision_mask = 48
 motion_mode = 1
 wall_min_slide_angle = 0.0
@@ -44,6 +55,11 @@ bullet_speed = 800.0
 cursed_tank = true
 color = Color(0.023099978, 0.63306826, 0.77, 1)
 
+[node name="StunnedAnimPlaceholder" type="Sprite2D" parent="." unique_id=834102033]
+visible = false
+position = Vector2(0, -14)
+texture = SubResource("GradientTexture2D_idn42")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=586860767]
 scale = Vector2(1.5, 1.5)
 shape = SubResource("RectangleShape2D_bx5ho")
@@ -56,6 +72,9 @@ texture = SubResource("GradientTexture2D_dpkcn")
 scale = Vector2(1.4, 1.4)
 texture = ExtResource("2_wm1ts")
 
+[node name="FreezeTimer" type="Timer" parent="." unique_id=331964963]
+one_shot = true
+
 [node name="enemy_movement_component" type="Node2D" parent="." unique_id=626775412]
 script = ExtResource("3_cf0s8")
 
@@ -65,7 +84,6 @@ script = ExtResource("3_cf0s8")
 shape = SubResource("CircleShape2D_cf0s8")
 
 [node name="ct_enemy_health_component" type="Node" parent="." unique_id=1760583101]
-process_mode = 3
 script = ExtResource("4_vx88q")
 disable_time = 15.0
 
@@ -98,6 +116,7 @@ script = ExtResource("6_vy7x8")
 script = ExtResource("7_2e1fo")
 valid_curse_names = Array[String](["Faster Heli", "Longer Blades"])
 
+[connection signal="timeout" from="FreezeTimer" to="." method="_on_freeze_timer_timeout"]
 [connection signal="body_entered" from="enemy_movement_component/Area2D" to="enemy_movement_component" method="_on_area_2d_body_entered"]
 [connection signal="timeout" from="ct_enemy_health_component/DisableTimer" to="ct_enemy_health_component" method="_on_disable_timer_timeout"]
 [connection signal="timeout" from="ct_enemy_health_component/WarningTimer" to="ct_enemy_health_component" method="_on_warning_timer_timeout"]

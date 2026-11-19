@@ -4,8 +4,12 @@
 [ext_resource type="Script" uid="uid://cbbbkrs3cm0oy" path="res://main_menu.gd" id="1_fu7sn"]
 [ext_resource type="Texture2D" uid="uid://cv5ptu70q6hm3" path="res://TankCoinV1.png" id="3_fu7sn"]
 [ext_resource type="Script" uid="uid://baaimp0s0htm" path="res://shop_layer.gd" id="4_jix8l"]
-[ext_resource type="Texture2D" uid="uid://iw36stixn77l" path="res://icon.svg" id="5_glbon"]
 [ext_resource type="ButtonGroup" uid="uid://dbjb750hd0rjq" path="res://ShopAbilityButtons.tres" id="5_nlkkf"]
+[ext_resource type="Texture2D" uid="uid://df4fierxsepyw" path="res://Icons/DashAbilityIcon.png" id="6_qe12f"]
+[ext_resource type="Texture2D" uid="uid://c3tridn6xjep8" path="res://Icons/InvincibilityIcon.png" id="7_dy7ct"]
+[ext_resource type="Texture2D" uid="uid://bncpo8r6seqip" path="res://Icons/JoshbusterIcon.png" id="8_0o4t1"]
+[ext_resource type="Texture2D" uid="uid://cl0hwyu14ng8x" path="res://Icons/FlashbangIcon.png" id="9_0k4wn"]
+[ext_resource type="Texture2D" uid="uid://pukciddn0hyc" path="res://Icons/HomingIcon.png" id="10_0o4t1"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_nlkkf"]
 font_size = 40
@@ -300,22 +304,25 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="AbilitiesBGColor" type="ColorRect" parent="ShopLayer" unique_id=373519208]
-offset_left = 276.0
-offset_top = 180.0
-offset_right = 876.0
-offset_bottom = 480.0
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.25
+anchor_right = 0.5
+anchor_bottom = 0.75
+offset_left = -300.0
+offset_right = 300.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0.3647059, 0.24705882, 0.18039216, 1)
 
 [node name="AbilityContainer" type="ScrollContainer" parent="ShopLayer" unique_id=631589649]
-anchors_preset = 8
+anchors_preset = -1
 anchor_left = 0.5
-anchor_top = 0.5
+anchor_top = 0.26
 anchor_right = 0.5
-anchor_bottom = 0.5
+anchor_bottom = 0.74
 offset_left = -300.0
-offset_top = -144.0
 offset_right = 300.0
-offset_bottom = 156.0
 grow_horizontal = 2
 grow_vertical = 2
 follow_focus = true
@@ -331,6 +338,7 @@ layout_mode = 2
 toggle_mode = true
 button_group = ExtResource("5_nlkkf")
 flat = true
+expand_icon = true
 
 [node name="AbilityName" type="Label" parent="ShopLayer/AbilityContainer/VBoxContainer/Sprint" unique_id=76607891]
 layout_mode = 1
@@ -373,7 +381,8 @@ offset_top = -64.0
 offset_right = 128.0
 offset_bottom = 64.0
 grow_vertical = 2
-texture = ExtResource("5_glbon")
+texture = ExtResource("6_qe12f")
+expand_mode = 2
 
 [node name="DurationLabel" type="Label" parent="ShopLayer/AbilityContainer/VBoxContainer/Sprint" unique_id=349496787]
 layout_mode = 1
@@ -524,7 +533,8 @@ offset_top = -64.0
 offset_right = 128.0
 offset_bottom = 64.0
 grow_vertical = 2
-texture = ExtResource("5_glbon")
+texture = ExtResource("7_dy7ct")
+expand_mode = 2
 
 [node name="DurationLabel" type="Label" parent="ShopLayer/AbilityContainer/VBoxContainer/Invincibility" unique_id=808751958]
 layout_mode = 1
@@ -675,7 +685,8 @@ offset_top = -64.0
 offset_right = 128.0
 offset_bottom = 64.0
 grow_vertical = 2
-texture = ExtResource("5_glbon")
+texture = ExtResource("8_0o4t1")
+expand_mode = 2
 
 [node name="DurationLabel" type="Label" parent="ShopLayer/AbilityContainer/VBoxContainer/Josh Buster" unique_id=1896725888]
 layout_mode = 1
@@ -756,6 +767,312 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="AbilityEquippedLabel" type="Label" parent="ShopLayer/AbilityContainer/VBoxContainer/Josh Buster/AbilityEquipped" unique_id=861204012]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 440.0
+offset_top = 30.0
+offset_right = 509.0
+offset_bottom = 72.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Equipped"
+label_settings = SubResource("LabelSettings_iotk1")
+
+[node name="AbilityDivider3" type="ColorRect" parent="ShopLayer/AbilityContainer/VBoxContainer" unique_id=1581261455]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.1, 1.1)
+color = Color(0.7647059, 0.4745098, 0.3019608, 1)
+
+[node name="Flashbang" type="Button" parent="ShopLayer/AbilityContainer/VBoxContainer" unique_id=1462712661]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("5_nlkkf")
+flat = true
+
+[node name="AbilityName" type="Label" parent="ShopLayer/AbilityContainer/VBoxContainer/Flashbang" unique_id=2011061092]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -111.0
+offset_right = 111.0
+offset_bottom = 55.0
+grow_horizontal = 2
+text = "Flashbang
+"
+label_settings = SubResource("LabelSettings_qe12f")
+horizontal_alignment = 1
+
+[node name="AbilityDesc" type="Label" parent="ShopLayer/AbilityContainer/VBoxContainer/Flashbang" unique_id=338502222]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -132.5
+offset_top = -14.0
+offset_right = 132.5
+offset_bottom = 61.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Bangs flash"
+label_settings = SubResource("LabelSettings_8qtwp")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="AbilityIcon" type="TextureRect" parent="ShopLayer/AbilityContainer/VBoxContainer/Flashbang" unique_id=1959057758]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -64.0
+offset_right = 128.0
+offset_bottom = 64.0
+grow_vertical = 2
+texture = ExtResource("9_0k4wn")
+expand_mode = 2
+
+[node name="DurationLabel" type="Label" parent="ShopLayer/AbilityContainer/VBoxContainer/Flashbang" unique_id=1108806544]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -157.0
+offset_top = 10.0
+offset_right = -41.0
+offset_bottom = 52.0
+grow_horizontal = 0
+text = "60 Sec."
+label_settings = SubResource("LabelSettings_0o4t1")
+horizontal_alignment = 1
+
+[node name="AbilityPrice" type="Control" parent="ShopLayer/AbilityContainer/VBoxContainer/Flashbang" unique_id=924635393]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AbilityCostIcon" type="TextureRect" parent="ShopLayer/AbilityContainer/VBoxContainer/Flashbang/AbilityPrice" unique_id=1240179759]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 390.0
+offset_top = 30.0
+offset_right = 430.0
+offset_bottom = 70.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("3_fu7sn")
+
+[node name="AbilityCostLabel" type="Label" parent="ShopLayer/AbilityContainer/VBoxContainer/Flashbang/AbilityPrice" unique_id=1238128203]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 440.0
+offset_top = 30.0
+offset_right = 509.0
+offset_bottom = 72.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "200"
+label_settings = SubResource("LabelSettings_dy7ct")
+
+[node name="AbilityOwned" type="Control" parent="ShopLayer/AbilityContainer/VBoxContainer/Flashbang" unique_id=37632043]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AbilityOwnedLabel" type="Label" parent="ShopLayer/AbilityContainer/VBoxContainer/Flashbang/AbilityOwned" unique_id=1915945705]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 440.0
+offset_top = 30.0
+offset_right = 509.0
+offset_bottom = 72.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Owned"
+label_settings = SubResource("LabelSettings_j5v2v")
+
+[node name="AbilityEquipped" type="Control" parent="ShopLayer/AbilityContainer/VBoxContainer/Flashbang" unique_id=1101484406]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AbilityEquippedLabel" type="Label" parent="ShopLayer/AbilityContainer/VBoxContainer/Flashbang/AbilityEquipped" unique_id=2072329807]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 440.0
+offset_top = 30.0
+offset_right = 509.0
+offset_bottom = 72.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Equipped"
+label_settings = SubResource("LabelSettings_iotk1")
+
+[node name="AbilityDivider4" type="ColorRect" parent="ShopLayer/AbilityContainer/VBoxContainer" unique_id=1701977024]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.1, 1.1)
+color = Color(0.7647059, 0.4745098, 0.3019608, 1)
+
+[node name="Homing" type="Button" parent="ShopLayer/AbilityContainer/VBoxContainer" unique_id=1149123306]
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
+toggle_mode = true
+button_group = ExtResource("5_nlkkf")
+flat = true
+
+[node name="AbilityName" type="Label" parent="ShopLayer/AbilityContainer/VBoxContainer/Homing" unique_id=1936030827]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -111.0
+offset_right = 111.0
+offset_bottom = 55.0
+grow_horizontal = 2
+text = "Homing
+"
+label_settings = SubResource("LabelSettings_qe12f")
+horizontal_alignment = 1
+
+[node name="AbilityDesc" type="Label" parent="ShopLayer/AbilityContainer/VBoxContainer/Homing" unique_id=1536146821]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -132.5
+offset_top = -14.0
+offset_right = 132.5
+offset_bottom = 61.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Bullets lock in... i mean on..."
+label_settings = SubResource("LabelSettings_8qtwp")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="AbilityIcon" type="TextureRect" parent="ShopLayer/AbilityContainer/VBoxContainer/Homing" unique_id=1865999156]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -64.0
+offset_right = 128.0
+offset_bottom = 64.0
+grow_vertical = 2
+texture = ExtResource("10_0o4t1")
+expand_mode = 2
+
+[node name="DurationLabel" type="Label" parent="ShopLayer/AbilityContainer/VBoxContainer/Homing" unique_id=339439625]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -157.0
+offset_top = 10.0
+offset_right = -41.0
+offset_bottom = 52.0
+grow_horizontal = 0
+text = "60 Sec."
+label_settings = SubResource("LabelSettings_0o4t1")
+horizontal_alignment = 1
+
+[node name="AbilityPrice" type="Control" parent="ShopLayer/AbilityContainer/VBoxContainer/Homing" unique_id=622706818]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AbilityCostIcon" type="TextureRect" parent="ShopLayer/AbilityContainer/VBoxContainer/Homing/AbilityPrice" unique_id=2138389877]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 390.0
+offset_top = 30.0
+offset_right = 430.0
+offset_bottom = 70.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("3_fu7sn")
+
+[node name="AbilityCostLabel" type="Label" parent="ShopLayer/AbilityContainer/VBoxContainer/Homing/AbilityPrice" unique_id=2002314711]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 440.0
+offset_top = 30.0
+offset_right = 509.0
+offset_bottom = 72.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "300"
+label_settings = SubResource("LabelSettings_dy7ct")
+
+[node name="AbilityOwned" type="Control" parent="ShopLayer/AbilityContainer/VBoxContainer/Homing" unique_id=761961180]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AbilityOwnedLabel" type="Label" parent="ShopLayer/AbilityContainer/VBoxContainer/Homing/AbilityOwned" unique_id=514612440]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 440.0
+offset_top = 30.0
+offset_right = 509.0
+offset_bottom = 72.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Owned"
+label_settings = SubResource("LabelSettings_j5v2v")
+
+[node name="AbilityEquipped" type="Control" parent="ShopLayer/AbilityContainer/VBoxContainer/Homing" unique_id=493753454]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="AbilityEquippedLabel" type="Label" parent="ShopLayer/AbilityContainer/VBoxContainer/Homing/AbilityEquipped" unique_id=2052255369]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0

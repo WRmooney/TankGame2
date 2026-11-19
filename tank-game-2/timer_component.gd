@@ -42,7 +42,7 @@ func _on_mine_timer_timeout() -> void:
 	var instance = explosion.instantiate()
 	instance.position = get_parent().position
 	instance.damage = parent.damage
-	instance.length = 1
+	instance.length = 0.4
 	instance.ex_radius = parent.explosion_radius
 	get_battlefield().bullet_container.call_deferred("add_child",instance)
 	parent.queue_free()

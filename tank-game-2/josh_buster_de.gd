@@ -14,6 +14,7 @@ var cur_state = "windup"
 var in_explosion = false
 
 func _ready() -> void:
+	circlecollisionshape.shape.radius = 0.01
 	cur_state = "windup"
 	windup.emitting = true
 	winduptimer.start(3.0)
@@ -22,7 +23,9 @@ func _process(delta: float) -> void:
 	if not in_explosion:
 		return
 	# in_explosion is true
-	circlecollisionshape.shape.radius += 5
+	circlecollisionshape.shape.radius += 10
+	if circlecollisionshape.shape.radius > 600:
+		circlecollisionshape.shape.radius = 600
 
 func _on_windup_timer_timeout() -> void:
 	windup.emitting = false

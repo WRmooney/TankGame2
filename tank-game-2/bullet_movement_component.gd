@@ -3,6 +3,9 @@ extends Node
 var tankref = Node2D
 
 @onready var parent = get_parent()
+
+
+
 var temp_boost = 30
 
 const BULLET = preload("res://bullet.tscn")
@@ -18,6 +21,7 @@ func _ready() -> void:
 				if attack.is_in_group("bullets"):
 					attack.add_collision_exception_with(parent)
 	$TempBoost.start(0.2)
+	
 	
 
 func _physics_process(delta: float) -> void:

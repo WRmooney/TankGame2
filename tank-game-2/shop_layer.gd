@@ -18,7 +18,7 @@ func _process(delta: float) -> void:
 		
 		if ability is not Button:
 			continue
-		
+			
 		# Check if equipped, owned, or not purchased yet, update visual accordingly
 		if selected_ability == ability.name: # equipped
 			ability.disabled = true

@@ -15,6 +15,7 @@ class_name EnemyTank extends CharacterBody2D
 @export var color: Color
 
 var disabled: bool = false
+var frozen: bool = false
 
 @export var enemy_container: Node
 
@@ -22,9 +23,13 @@ var disabled: bool = false
 
 @onready var freezetimer = $FreezeTimer
 
+@onready var stunned_anim = $StunnedAnimPlaceholder
+
 var curses: Array[String] = []
 
 var sees_player: bool
+
+var cur_effect: String = "None"
 
 
 
@@ -44,10 +49,21 @@ func apply_curses(curses: Array[String]) -> void:
 		curses = $ValidCursePool.filter_curses(curses)
 		$CurseModifications.apply_curses(curses)
 
-func freeze(time: float, freeze_bullets: bool = false):
-	disabled = true
-	if cursed_tank:
-		$ct_enemy_health_component.freeze(time)
+func freeze(time: float, freeze_bullets: bool = false, effect_name: String = "None"):
+	frozen = true
+	cur_effect = effect_name
+	
+	# Apply specific effects
+	match effect_name:
+		"Josh Buster":
+			if cursed_tank:
+				$ct_enemy_health_component.freeze(time, freeze_bullets, effect_name)
+		"Flashbang":
+			stunned_anim.visible = true
+			if cursed_tank:
+				$ct_enemy_health_component.freeze(time, freeze_bullets, effect_name)
+			# Add animation!!!
+			
 	if freeze_bullets:
 		if $enemy_shooting_component/BulletContainer:
 			for bullet in $enemy_shooting_component/BulletContainer.get_children():
@@ -67,4 +83,12 @@ func hit(damage: float) -> void:
 
 
 func _on_freeze_timer_timeout() -> void:
-	disabled = false
+	match cur_effect:
+		"None":
+			pass
+		"Josh Buster":
+			pass
+		"Flashbang":
+			stunned_anim.visible = false
+			
+	frozen = false

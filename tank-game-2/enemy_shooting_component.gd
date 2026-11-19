@@ -25,6 +25,9 @@ func _process(delta: float) -> void:
 		turn_in_dir(rand_angle)
 
 func turn_to_player() -> void:
+	if parent.disabled or parent.frozen:
+		return
+	
 	var goal_angle = rad_to_deg(atan2(player.position.y-parent.position.y,player.position.x-parent.position.x))
 	var cur_angle = turret.rotation_degrees
 	
@@ -50,7 +53,7 @@ func turn_to_player() -> void:
 			
 	
 func turn_in_dir(dir: int) -> void:
-	if dir == 0 or parent.disabled:
+	if dir == 0 or parent.disabled or parent.frozen:
 		return
 	for i in range(parent.turn_speed):
 		if dir < 0:
@@ -64,7 +67,7 @@ func _on_turret_turning_timer_timeout() -> void:
 	timer.start(randf_range(1.0,5.0))
 	
 func _on_shooting_timer_timeout() -> void:
-	if parent.disabled:
+	if parent.disabled or parent.frozen:
 		timer.start(parent.fire_rate)
 		return
 	var ang_to_player = rad_to_deg(atan2(player.position.y-parent.position.y,player.position.x-parent.position.x))

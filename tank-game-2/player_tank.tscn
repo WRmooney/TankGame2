@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://biggw55dplkua" path="res://invincibility.gd" id="6_4sbgd"]
 [ext_resource type="Script" uid="uid://bgybhd2ynuylh" path="res://sprint.gd" id="7_btr0d"]
 [ext_resource type="PackedScene" uid="uid://dqaj80548ygcg" path="res://upgrade_presets.tscn" id="7_w85wn"]
+[ext_resource type="Script" uid="uid://b4bljv3850dm1" path="res://flashbang.gd" id="8_sar2m"]
 [ext_resource type="Script" uid="uid://bxgeoowe3j3qe" path="res://player_camera.gd" id="9_wvgpw"]
 
 [sub_resource type="Gradient" id="Gradient_4ab8g"]
@@ -47,6 +48,41 @@ size = Vector2(19.060402, 19.060402)
 font_size = 50
 outline_size = 10
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SystemFont" id="SystemFont_sar2m"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_5g3jv"]
+font = SubResource("SystemFont_sar2m")
+font_size = 24
+outline_size = 6
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Gradient" id="Gradient_wvgpw"]
+offsets = PackedFloat32Array(0.696, 1)
+colors = PackedColorArray(1, 1, 1, 0.72156864, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5g3jv"]
+gradient = SubResource("Gradient_wvgpw")
+width = 1000
+height = 1000
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.2, 0.8)
+
+[sub_resource type="Curve" id="Curve_k22k7"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.6801802, 0.4360903), -1.0145955, -1.0145955, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_al5ll"]
+curve = SubResource("Curve_k22k7")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_65226"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+alpha_curve = SubResource("CurveTexture_al5ll")
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_65226"]
+radius = 400.0
 
 [sub_resource type="SystemFont" id="SystemFont_1jnsx"]
 subpixel_positioning = 0
@@ -129,8 +165,14 @@ one_shot = true
 [node name="movement_component" type="Node" parent="." unique_id=555221281]
 script = ExtResource("3_4ab8g")
 
-[node name="shooting_component" type="Node" parent="." unique_id=1012643861]
+[node name="shooting_component" type="Node2D" parent="." unique_id=249419095]
 script = ExtResource("4_w85wn")
+
+[node name="PrimaryShootReplenish" type="Timer" parent="shooting_component" unique_id=1700691219]
+one_shot = true
+
+[node name="SecondaryShootReplenish" type="Timer" parent="shooting_component" unique_id=927036685]
+one_shot = true
 
 [node name="SpecialShootCooldown" type="Timer" parent="shooting_component" unique_id=1112580372]
 one_shot = true
@@ -176,6 +218,22 @@ label_settings = SubResource("LabelSettings_btr0d")
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="KeyLabel" type="Label" parent="shooting_component/SpecialCooldownUI/Container" unique_id=1674293071]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -56.0
+offset_top = -23.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "(Space)"
+label_settings = SubResource("LabelSettings_5g3jv")
+horizontal_alignment = 1
+
 [node name="Invincibility" type="Node" parent="shooting_component" unique_id=1096077028]
 script = ExtResource("6_4sbgd")
 
@@ -188,6 +246,28 @@ script = ExtResource("7_btr0d")
 [node name="SprintTimer" type="Timer" parent="shooting_component/Sprint" unique_id=438046239]
 one_shot = true
 
+[node name="Flashbang" type="Node2D" parent="shooting_component" unique_id=995011737]
+script = ExtResource("8_sar2m")
+
+[node name="FlashbangLight" type="GPUParticles2D" parent="shooting_component/Flashbang" unique_id=598899743]
+emitting = false
+amount = 1
+texture = SubResource("GradientTexture2D_5g3jv")
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_65226")
+
+[node name="FlashbangArea" type="Area2D" parent="shooting_component/Flashbang" unique_id=465616493]
+collision_layer = 0
+collision_mask = 35
+
+[node name="FlashbangShape" type="CollisionShape2D" parent="shooting_component/Flashbang/FlashbangArea" unique_id=362985160]
+shape = SubResource("CircleShape2D_65226")
+
+[node name="Homing" type="Node" parent="shooting_component" unique_id=1643897409]
+
+[node name="HomingTimer" type="Timer" parent="shooting_component/Homing" unique_id=1912800441]
+one_shot = true
+
 [node name="health_component" type="Node" parent="." unique_id=488077003]
 script = ExtResource("5_1jnsx")
 
@@ -197,7 +277,7 @@ affect_navigation_mesh = true
 carve_navigation_mesh = true
 avoidance_layers = 15
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1369838070]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1369838070 groups=["PlayerCamera"]]
 position_smoothing_enabled = true
 script = ExtResource("9_wvgpw")
 
@@ -211,7 +291,6 @@ one_shot = true
 [node name="SpecialContainer" type="Node" parent="." unique_id=878716646]
 
 [node name="StatsUI" type="CanvasLayer" parent="." unique_id=1956557960]
-visible = false
 
 [node name="HealthLabel" type="Label" parent="StatsUI" unique_id=1170438300]
 visible = false
@@ -241,6 +320,13 @@ offset_bottom = -208.0
 text = "Bullets (LMB): 5"
 label_settings = SubResource("LabelSettings_w85wn")
 
+[node name="PrimaryCooldown" type="ColorRect" parent="StatsUI/AmmoLabel" unique_id=704400494]
+z_index = -1
+layout_mode = 0
+offset_right = 223.0
+offset_bottom = 42.0
+color = Color(0.69135684, 0.6913568, 0.6913567, 0.79607844)
+
 [node name="AmmoLabel2" type="Label" parent="StatsUI" unique_id=1687843005]
 offset_left = -550.0
 offset_top = -200.0
@@ -248,6 +334,13 @@ offset_right = -336.0
 offset_bottom = -158.0
 text = "Mines (RMB): 2"
 label_settings = SubResource("LabelSettings_w85wn")
+
+[node name="SecondaryCooldown" type="ColorRect" parent="StatsUI/AmmoLabel2" unique_id=1865372125]
+z_index = -1
+layout_mode = 0
+offset_right = 223.0
+offset_bottom = 42.0
+color = Color(0.6901961, 0.6901961, 0.6901961, 0.79607844)
 
 [node name="XPBar" type="ColorRect" parent="StatsUI" unique_id=1589978385]
 offset_bottom = 40.0
@@ -324,8 +417,12 @@ color = Color(0.77, 0.77, 0.77, 0.81960785)
 [node name="UpgradePresets" parent="." unique_id=413033068 instance=ExtResource("7_w85wn")]
 
 [connection signal="timeout" from="FreezeTimer" to="." method="_on_freeze_timer_timeout"]
+[connection signal="timeout" from="shooting_component/PrimaryShootReplenish" to="shooting_component" method="_on_primary_shoot_replenish_timeout"]
+[connection signal="timeout" from="shooting_component/SecondaryShootReplenish" to="shooting_component" method="_on_secondary_shoot_replenish_timeout"]
 [connection signal="timeout" from="shooting_component/SpecialShootCooldown" to="shooting_component" method="_on_special_shoot_cooldown_timeout"]
 [connection signal="timeout" from="shooting_component/Invincibility/InvincibilityTimer" to="shooting_component/Invincibility" method="_on_invincibility_timer_timeout"]
 [connection signal="timeout" from="shooting_component/Invincibility/InvincibilityTimer" to="health_component" method="_on_invincibility_timer_timeout"]
 [connection signal="timeout" from="shooting_component/Sprint/SprintTimer" to="shooting_component/Sprint" method="_on_sprint_timer_timeout"]
+[connection signal="timeout" from="shooting_component/Homing/HomingTimer" to="shooting_component" method="_on_homing_timer_timeout"]
+[connection signal="timeout" from="Camera2D/ShakeTimer" to="Camera2D" method="_on_shake_timer_timeout"]
 [connection signal="timeout" from="StatsUI/LVLUPTXT/OnScreenTimer" to="xp_component" method="_on_on_screen_timer_timeout"]

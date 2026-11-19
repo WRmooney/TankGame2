@@ -17,6 +17,17 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bx5ho"]
 
+[sub_resource type="Gradient" id="Gradient_ufojo"]
+offsets = PackedFloat32Array(0.372, 0.696, 0.888)
+colors = PackedColorArray(0.83137256, 0.8235294, 0.36862746, 0, 0.83201015, 0.8246321, 0.36717603, 1, 1, 1, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_lb0na"]
+gradient = SubResource("Gradient_ufojo")
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.2, 0.8)
+
 [sub_resource type="Gradient" id="Gradient_rypu6"]
 offsets = PackedFloat32Array(0.5338078)
 colors = PackedColorArray(0.98, 0.8609301, 0.18620001, 1)
@@ -63,6 +74,11 @@ color = Color(0.98039216, 0.8627451, 0.18431373, 1)
 scale = Vector2(1.5, 1.5)
 shape = SubResource("RectangleShape2D_bx5ho")
 
+[node name="StunnedAnimPlaceholder" type="Sprite2D" parent="." unique_id=67729809]
+visible = false
+position = Vector2(0, -14)
+texture = SubResource("GradientTexture2D_lb0na")
+
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=46334775]
 scale = Vector2(0.8, 0.8)
 texture = SubResource("GradientTexture2D_dpkcn")
@@ -74,6 +90,9 @@ texture = SubResource("GradientTexture2D_wpka7")
 [node name="Turret" type="Sprite2D" parent="." unique_id=1424094878]
 visible = false
 texture = ExtResource("2_wpka7")
+
+[node name="FreezeTimer" type="Timer" parent="." unique_id=1449687995 groups=["cursed_tanks"]]
+one_shot = true
 
 [node name="StateMachine" type="Node" parent="." unique_id=1601003323 node_paths=PackedStringArray("initial_state")]
 script = ExtResource("3_crbbu")
@@ -129,7 +148,6 @@ max_speed = 1000.0
 avoidance_priority = 0.1
 
 [node name="ct_enemy_health_component" type="Node" parent="." unique_id=733628799]
-process_mode = 3
 script = ExtResource("10_wpka7")
 disable_time = 15.0
 
@@ -159,6 +177,7 @@ script = ExtResource("12_my2ju")
 script = ExtResource("13_fajts")
 valid_curse_names = Array[String](["Larger Shells", "Faster Shells"])
 
+[connection signal="timeout" from="FreezeTimer" to="." method="_on_freeze_timer_timeout"]
 [connection signal="timeout" from="StateMachine/Idle/PathNearPlayer" to="StateMachine/Idle" method="_on_path_near_player_timeout"]
 [connection signal="timeout" from="StateMachine/Attack/LostPlayer" to="StateMachine/Attack" method="_on_lost_player_timeout"]
 [connection signal="timeout" from="StateMachine/Search/SearchTime" to="StateMachine/Search" method="_on_search_time_timeout"]

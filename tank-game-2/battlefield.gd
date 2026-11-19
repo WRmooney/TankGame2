@@ -57,9 +57,11 @@ var enemy_fire_rate = 1
 var enemy_damage = 1
 
 var orb_max: int = -1
+var orb_threshold: int = 100000000
 var base_max: int = -1
 var kill_max: int = 10
 var balls_to_spawn: int = 0
+var level_complete_flag = false
 
 var base_chunks: Array[Vector2i] = []
 
@@ -102,24 +104,28 @@ func _enter_tree() -> void:
 func _process(delta: float) -> void:
 	match mode:
 		"collect":
-			orb_count.text = str(orb_max - $OrbContainer.get_child_count()) + " / " + str(orb_max)
+			orb_count.text = str(orb_max - $OrbContainer.get_child_count()) + " / " + str(orb_threshold)
 			orb_count.global_position = Vector2(get_viewport().size.x / 2 - 100, get_viewport().size.y - 100)
-			if $OrbContainer.get_child_count() == 0:
+			if ((orb_max - $OrbContainer.get_child_count()) >= orb_threshold) and not level_complete_flag:
+				level_complete_flag = true
 				emit_signal("level_complete")
 		"destroy":
 			base_count.text = str(base_max - $BaseContainer.get_child_count()) + " / " + str(base_max)
 			base_count.global_position = Vector2(get_viewport().size.x / 2 - 100, get_viewport().size.y - 100)
-			if $BaseContainer.get_child_count() == 0:
+			if $BaseContainer.get_child_count() == 0 and not level_complete_flag:
+				level_complete_flag = true
 				emit_signal("level_complete")
 		"kill":
 			kill_count.text = str(enemy_container.kills) + " / " + str(kill_max)
 			kill_count.global_position = Vector2(get_viewport().size.x / 2 - 100, get_viewport().size.y - 100)
-			if enemy_container.kills >= kill_max:
+			if enemy_container.kills >= kill_max and not level_complete_flag:
+				level_complete_flag = true
 				emit_signal("level_complete")
 		"golf":
 			score_count.text = str(balls_to_spawn - $GolfContainer/BallContainer.get_child_count()) + " / " + str(balls_to_spawn)
 			score_count.global_position = Vector2(get_viewport().size.x / 2 - 100, get_viewport().size.y - 100)
-			if $GolfContainer/BallContainer.get_child_count() == 0:
+			if $GolfContainer/BallContainer.get_child_count() == 0 and not level_complete_flag:
+				level_complete_flag = true
 				emit_signal("level_complete")
 	
 func print_map(tile: Vector2i) -> void:
@@ -417,7 +423,8 @@ func spawn_orbs() -> void:
 			var instance = ORB.instantiate()
 			instance.position = Vector2(cell_pos.x * 64 + 32, cell_pos.y * 64 + 32)
 			$OrbContainer.add_child(instance)
-	orb_max = $OrbContainer.get_child_count()
+	orb_max = $OrbContainer.get_child_count() 
+	orb_threshold = orb_max * orb_percent
 
 func spawn_bases() -> void:
 	for base_pos in base_chunks:
@@ -579,13 +586,28 @@ func spawn_ct_enemies() -> void:
 				enemy_container.add_child(instance)
 
 
-func freeze_enemies(time:float,freeze_bullets:bool=false):
+func freeze_enemies(time:float,freeze_bullets:bool=false, effect_name:String="None"):
+	# Freeze enemies for some time
 	enemies_frozen = true
 	$FreezeTimer.start(time)
-	for bullet in $BulletContainer.get_children():
-		if bullet is not GPUParticles2D:
-			bullet.freeze(time)
-	$Enemy_Container.freeze_enemies(time,freeze_bullets)
+	
+	# Freeze bullets
+	if freeze_bullets:
+		for bullet in $BulletContainer.get_children():
+			if bullet is not GPUParticles2D:
+				bullet.freeze(time)
+	
+	# Apply effects
+	match effect_name:
+		"None":
+			pass
+	
+	# Freeze the enemies
+	if mode == "destroy":
+		for base in $BaseContainer.get_children():
+			for enemy in base.get_children():
+				enemy.freeze(time, freeze_bullets, effect_name)
+	$Enemy_Container.freeze_enemies(time,freeze_bullets, effect_name)
 
 func _on_enemy_spawn_timer_timeout() -> void:
 	if enemies_frozen:
@@ -626,8 +648,7 @@ func _on_enemy_spawn_timer_timeout() -> void:
 		$EnemySpawnTimer.start(enemy_spawn_time * 5)
 
 func pause_on_complete() -> void:
-	$Player_tank.process_mode = Node.PROCESS_MODE_DISABLED
-	enemy_container.process_mode = Node.PROCESS_MODE_DISABLED
+	$Player_tank.level_complete() # pause player health processing
 
 func get_score() -> int:
 	match mode:

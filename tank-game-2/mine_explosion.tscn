@@ -16,7 +16,8 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 
 [sub_resource type="Curve" id="Curve_28tef"]
-_data = [Vector2(0.0038910508, 0), 0.0, 0.0, 0, 0, Vector2(0.102880664, 1), 0.0, 0.0, 0, 0, Vector2(0.74897116, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.04508257), 0.0, 0.0, 0, 0]
+_limits = [0.0, 1.1, 0.0, 1.0]
+_data = [Vector2(0.0038910508, 0), 0.0, 0.0, 0, 0, Vector2(0.11711712, 1.1), 0.0, 0.0, 0, 0, Vector2(0.18918918, 1.1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 4
 
 [sub_resource type="CurveTexture" id="CurveTexture_8grcl"]
@@ -39,16 +40,16 @@ radius = 30.0
 emitting = false
 amount = 1
 texture = SubResource("GradientTexture2D_sp1n0")
-lifetime = 1.5
+lifetime = 0.4
 one_shot = true
 explosiveness = 1.0
 randomness = 1.0
 process_material = SubResource("ParticleProcessMaterial_okcqs")
 script = ExtResource("1_sp1n0")
-length = 1.5
+length = 0.4
 
 [node name="Area2D" type="Area2D" parent="." unique_id=393544565]
-collision_mask = 3
+collision_mask = 35
 script = ExtResource("2_28tef")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=2142857652]

@@ -18,6 +18,22 @@ fill_from = Vector2(0.5, 0.5)
 [sub_resource type="CircleShape2D" id="CircleShape2D_2b2rl"]
 radius = 7.071068
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_5g3jv"]
+radius = 400.0
+
+[sub_resource type="Gradient" id="Gradient_2b2rl"]
+offsets = PackedFloat32Array(0, 0.532, 1)
+colors = PackedColorArray(0.7019608, 0, 0, 0, 0.7019608, 0, 0, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_5g3jv"]
+gradient = SubResource("Gradient_2b2rl")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.2, 0.8)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_65226"]
+radius = 80.0
+
 [node name="Bullet" type="CharacterBody2D" unique_id=968395164 groups=["bullets", "destroy_on_bullet_collide"]]
 collision_layer = 35
 collision_mask = 35
@@ -42,6 +58,30 @@ script = ExtResource("2_b7duk")
 [node name="TempBoost" type="Timer" parent="movement_component" unique_id=137153169]
 one_shot = true
 
+[node name="HomingAbility" type="Node2D" parent="." unique_id=2111951372]
+
+[node name="HomingTimer" type="Timer" parent="HomingAbility" unique_id=2058008913]
+
+[node name="HomingZone" type="Area2D" parent="HomingAbility" unique_id=1360042642]
+collision_layer = 34
+collision_mask = 34
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HomingAbility/HomingZone" unique_id=1468513943]
+shape = SubResource("CircleShape2D_5g3jv")
+
+[node name="HomingSightCheck" type="RayCast2D" parent="HomingAbility" unique_id=514268292]
+
+[node name="HomingSprite" type="Sprite2D" parent="HomingAbility" unique_id=1790960695]
+visible = false
+texture = SubResource("GradientTexture2D_5g3jv")
+
+[node name="OrbZone" type="Area2D" parent="HomingAbility" unique_id=1374702401]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HomingAbility/OrbZone" unique_id=916600751]
+shape = SubResource("CircleShape2D_65226")
+
 [node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="." unique_id=2048208839]
 radius = 25.0
 affect_navigation_mesh = true
@@ -59,3 +99,4 @@ volume_db = -2.0
 autoplay = true
 
 [connection signal="timeout" from="movement_component/TempBoost" to="movement_component" method="_on_temp_boost_timeout"]
+[connection signal="timeout" from="HomingAbility/HomingTimer" to="." method="_on_homing_timer_timeout"]

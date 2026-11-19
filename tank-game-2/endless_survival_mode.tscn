@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://cb73607ftma5x" path="res://curse_select.gd" id="2_x8s7t"]
 [ext_resource type="Script" uid="uid://qm1gp8t4c07w" path="res://enemy_select.gd" id="3_ouk6g"]
 [ext_resource type="Texture2D" uid="uid://cv5ptu70q6hm3" path="res://TankCoinV1.png" id="4_x8s7t"]
+[ext_resource type="Texture2D" uid="uid://dyj15hxe12vdr" path="res://1000065890.jpg" id="5_ouk6g"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ombb5"]
 font_size = 26
@@ -110,8 +111,32 @@ font_color = Color(1, 0.91733336, 0.38, 1)
 outline_size = 10
 outline_color = Color(0.47, 0.36659998, 0.1598, 1)
 
+[sub_resource type="LabelSettings" id="LabelSettings_65226"]
+font_size = 35
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_5g3jv"]
+font_size = 120
+outline_size = 20
+outline_color = Color(0, 0, 0, 1)
+
 [node name="EndlessSurvivalMode" type="Node2D" unique_id=1380732344 groups=["persist"]]
 script = ExtResource("1_2nnlu")
+
+[node name="Timers" type="Node" parent="." unique_id=1215832186]
+
+[node name="WinTimer" type="Timer" parent="Timers" unique_id=1364010250]
+one_shot = true
+
+[node name="DeathTimer" type="Timer" parent="Timers" unique_id=1517489940]
+one_shot = true
+
+[node name="GameOverTimer" type="Timer" parent="Timers" unique_id=1989777287]
+one_shot = true
+
+[node name="LevelLoadingTimer" type="Timer" parent="Timers" unique_id=1948880061]
+one_shot = true
 
 [node name="CurseSelect" type="Node" parent="." unique_id=368783521]
 script = ExtResource("2_x8s7t")
@@ -691,19 +716,22 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="RestartButton" type="Button" parent="GameOverScreen" unique_id=1504875443]
-visible = false
+custom_minimum_size = Vector2(200, 100)
 anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 0.7
-anchor_right = 0.5
+anchor_left = 0.4
+anchor_top = 0.6
+anchor_right = 0.6
 anchor_bottom = 0.7
-offset_left = -100.0
-offset_top = -50.0
-offset_right = 100.0
-offset_bottom = 50.0
-grow_horizontal = 2
-grow_vertical = 2
 text = "Restart"
+
+[node name="Exit" type="Button" parent="GameOverScreen" unique_id=96946742]
+custom_minimum_size = Vector2(200, 100)
+anchors_preset = -1
+anchor_left = 0.4
+anchor_top = 0.8
+anchor_right = 0.6
+anchor_bottom = 0.9
+text = "Exit to Main Menu"
 
 [node name="ObjectiveLayer" type="CanvasLayer" parent="." unique_id=658692197]
 visible = false
@@ -721,9 +749,81 @@ label_settings = SubResource("LabelSettings_cv253")
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="PauseLabel" type="Label" parent="ObjectiveLayer" unique_id=699793126]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -174.0
+offset_bottom = 49.0
+grow_horizontal = 0
+offset_transform_enabled = true
+offset_transform_position = Vector2(-20, 20)
+text = "Esc: Pause"
+label_settings = SubResource("LabelSettings_65226")
+horizontal_alignment = 1
+
+[node name="PauseMenu" type="CanvasLayer" parent="." unique_id=1750108990]
+layer = 10
+visible = false
+
+[node name="Paused" type="Label" parent="PauseMenu" unique_id=547218619]
+anchors_preset = -1
+anchor_left = 0.25
+anchor_top = 0.1
+anchor_right = 0.75
+anchor_bottom = 0.2
+grow_horizontal = 2
+text = "Paused"
+label_settings = SubResource("LabelSettings_5g3jv")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Resume" type="Button" parent="PauseMenu" unique_id=1820613256]
+custom_minimum_size = Vector2(200, 100)
+anchors_preset = -1
+anchor_left = 0.4
+anchor_top = 0.4
+anchor_right = 0.6
+anchor_bottom = 0.5
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Resume"
+
+[node name="Exit" type="Button" parent="PauseMenu" unique_id=1743056233]
+custom_minimum_size = Vector2(200, 100)
+anchors_preset = -1
+anchor_left = 0.4
+anchor_top = 0.6
+anchor_right = 0.6
+anchor_bottom = 0.7
+offset_right = 8.0
+offset_bottom = 8.0
+text = "Exit to Main Menu"
+
+[node name="Hi" type="CanvasLayer" parent="." unique_id=443965884]
+layer = 20
+visible = false
+
+[node name="Hi" type="TextureRect" parent="Hi" unique_id=1334621609]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("5_ouk6g")
+expand_mode = 2
+
+[connection signal="timeout" from="Timers/WinTimer" to="." method="_on_win_timer_timeout"]
+[connection signal="timeout" from="Timers/DeathTimer" to="." method="_on_death_timer_timeout"]
+[connection signal="timeout" from="Timers/GameOverTimer" to="." method="_on_game_over_timer_timeout"]
+[connection signal="timeout" from="Timers/LevelLoadingTimer" to="." method="_on_level_loading_timer_timeout"]
 [connection signal="pressed" from="CurseSelect/Selections/C1/Choice1" to="CurseSelect" method="_on_choice_1_pressed"]
 [connection signal="pressed" from="CurseSelect/Selections/C2/Choice2" to="CurseSelect" method="_on_choice_2_pressed"]
 [connection signal="pressed" from="CurseSelect/Selections/C3/Choice3" to="CurseSelect" method="_on_choice_3_pressed"]
 [connection signal="pressed" from="EnemySelect/Selections/C1/Choice1" to="EnemySelect" method="_on_choice_1_pressed"]
 [connection signal="pressed" from="EnemySelect/Selections/C2/Choice2" to="EnemySelect" method="_on_choice_2_pressed"]
 [connection signal="pressed" from="EnemySelect/Selections/C3/Choice3" to="EnemySelect" method="_on_choice_3_pressed"]
+[connection signal="pressed" from="GameOverScreen/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="GameOverScreen/Exit" to="." method="_on_exit_pressed"]
+[connection signal="pressed" from="PauseMenu/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="PauseMenu/Exit" to="." method="_on_exit_pressed"]

@@ -4,7 +4,7 @@ extends Node2D
 @onready var nav_agent := $"../NavigationAgent2D" as NavigationAgent2D
 
 func _physics_process(delta: float) -> void:
-	if parent.disabled:
+	if parent.disabled or parent.frozen:
 		return
 	var dir = to_local(nav_agent.get_next_path_position()).normalized()
 	

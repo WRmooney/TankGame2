@@ -20,7 +20,7 @@ func _ready() -> void:
 	raycast.add_exception(parent)
 
 func _physics_process(delta: float) -> void:
-	if parent.disabled:
+	if parent.disabled or parent.frozen:
 		return
 	if timer.is_stopped():
 		rand_angle = 0
@@ -77,7 +77,7 @@ func hits_player(ang_to_check: float) -> bool: #angle in degrees
 	return hits
 	
 func turn_in_dir(dir: int) -> void:
-	if parent.disabled:
+	if parent.disabled or parent.frozen:
 		return
 	for i in range(parent.turn_speed):
 		if dir <= 0:
@@ -99,7 +99,7 @@ func _on_shooting_timer_timeout() -> void:
 		$ShootingTimer.start(parent.fire_rate)
 
 func shoot(angle: float) -> void:
-	if parent.disabled:
+	if parent.disabled or parent.frozen:
 		return
 	if not can_shoot:
 		return

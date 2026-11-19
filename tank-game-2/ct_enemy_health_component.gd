@@ -9,25 +9,39 @@ extends Node
 @export var disable_time: float = 20.0
 
 var hbsize = 50
+var frozen_health = false
 
 func _ready() -> void:
+	# start disabled, to avoid instakills
+	parent.disabled = true
+	dis_timer.start(disable_time/2)
 	if parent.maxhealth > 1:
 		healthbar.visible = true
 
 func _process(delta: float) -> void:
 	if not dis_timer.is_stopped():
-		parent.health = ((disable_time - dis_timer.time_left) / disable_time) * parent.maxhealth
+		parent.health = ((dis_timer.wait_time - dis_timer.time_left) / dis_timer.wait_time) * parent.maxhealth
 	
 	healthbar.size.x = 50 * (parent.health / parent.maxhealth)
 	healthbar.position = parent.position + Vector2(-25, 20)
 
-func freeze(time:float):
+func freeze(time:float, freeze_bullets:bool, effect_name:String):
+	match effect_name:
+		"Joshbuster":
+			frozen_health = false
+		"Flashbang":
+			frozen_health = false
+	
 	if parent.disabled:
 		$DisableTimer.paused = true
 		$FreezeTimer.start(time)
 
 func hit(damage: float):
-	if not dis_timer.is_stopped():
+	if parent.disabled:
+		print("disabled")
+		return
+	if frozen_health:
+		print("frozen")
 		return
 	parent.health -= damage
 	if parent.health <= 0:
@@ -54,4 +68,6 @@ func _on_disable_timer_timeout() -> void:
 
 
 func _on_freeze_timer_timeout() -> void:
-	$DisableTimer.paused = false
+	if parent.disabled:
+		$DisableTimer.paused = false
+	frozen_health = false

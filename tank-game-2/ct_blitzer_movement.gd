@@ -21,7 +21,7 @@ func update_length() -> void:
 func _process(delta: float) -> void:
 	if $LineContainer/Line.texture.width != parent.range:
 		update_length()
-	if parent.disabled:
+	if parent.disabled or parent.frozen:
 		$LineContainer.visible = false
 		in_attack = false
 		return
@@ -34,10 +34,10 @@ func _process(delta: float) -> void:
 			$Cooldown.start((parent.fire_rate / 2 + randf_range(0.0, 0.5)) * dash_cooldown_mod)
 		
 		# SPINNNNNN
-		$"../Sprite2D".rotate(deg_to_rad(9))
+		$"../Sprite2D".rotate(deg_to_rad(30))
 	else:
 		# SPINNNNNNN
-		$"../Sprite2D".rotate(deg_to_rad(3))
+		$"../Sprite2D".rotate(deg_to_rad(10))
 	
 	if $Cooldown.is_stopped() and $Windup.is_stopped():
 		$Cooldown.start(3)
@@ -45,7 +45,7 @@ func _process(delta: float) -> void:
 
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	if parent.disabled:
+	if parent.disabled or parent.frozen:
 		return
 	if body.is_in_group("player"):
 		body.hit(parent.damage)
@@ -54,7 +54,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 
 
 func _on_cooldown_timeout() -> void:
-	if parent.disabled:
+	if parent.disabled or parent.frozen:
 		$Cooldown.start(3)
 		return
 	$LineContainer.rotation = atan2(player.position.y - parent.position.y, player.position.x - parent.position.x)
@@ -65,7 +65,7 @@ func _on_cooldown_timeout() -> void:
 
 
 func _on_windup_timeout() -> void:
-	if parent.disabled:
+	if parent.disabled or parent.frozen:
 		$Cooldown.start(3)
 		return
 	$LineContainer.visible = false

@@ -66,13 +66,13 @@ scale_max = 1.1999999
 script = ExtResource("1_4eiu0")
 level_width = 5
 level_height = 5
-player_maxhealth = 100.0
+player_maxhealth = 1.0
 player_speed = 200.0
 player_max_bullets = 10
 player_max_secondary = 3
 spawn_cap = 50
 mode = "destroy"
-orb_percent = 0.5
+orb_percent = 0.75
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1919255553 groups=["bounceable"]]
 tile_set = ExtResource("2_y8d5v")

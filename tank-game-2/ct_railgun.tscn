@@ -28,6 +28,17 @@ height = 38
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
+[sub_resource type="Gradient" id="Gradient_ke18n"]
+offsets = PackedFloat32Array(0.372, 0.696, 0.888)
+colors = PackedColorArray(0.83137256, 0.8235294, 0.36862746, 0, 0.83201015, 0.8246321, 0.36717603, 1, 1, 1, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_by8ig"]
+gradient = SubResource("Gradient_ke18n")
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.2, 0.8)
+
 [node name="CT_Railgun" type="CharacterBody2D" unique_id=586316251 groups=["cursed_tanks"]]
 z_index = 1
 collision_layer = 38
@@ -54,8 +65,16 @@ shape = SubResource("RectangleShape2D_bx5ho")
 scale = Vector2(0.8, 0.8)
 texture = SubResource("GradientTexture2D_dpkcn")
 
+[node name="StunnedAnimPlaceholder" type="Sprite2D" parent="." unique_id=1877361758]
+visible = false
+position = Vector2(0, -14)
+texture = SubResource("GradientTexture2D_by8ig")
+
 [node name="Turret" type="Sprite2D" parent="." unique_id=1424094878]
 texture = ExtResource("2_toqic")
+
+[node name="FreezeTimer" type="Timer" parent="." unique_id=923989091 groups=["cursed_tanks"]]
+one_shot = true
 
 [node name="StateMachine" type="Node" parent="." unique_id=1601003323 node_paths=PackedStringArray("initial_state")]
 script = ExtResource("3_jkq6i")
@@ -121,7 +140,6 @@ max_speed = 1000.0
 avoidance_priority = 0.1
 
 [node name="ct_enemy_health_component" type="Node" parent="." unique_id=1072991922]
-process_mode = 3
 script = ExtResource("10_toqic")
 disable_time = 15.0
 
@@ -154,6 +172,7 @@ script = ExtResource("12_jkq6i")
 script = ExtResource("13_l2jyx")
 valid_curse_names = Array[String](["Lasting Lasers", "Wide Lasers"])
 
+[connection signal="timeout" from="FreezeTimer" to="." method="_on_freeze_timer_timeout"]
 [connection signal="timeout" from="StateMachine/Idle/PathNearPlayer" to="StateMachine/Idle" method="_on_path_near_player_timeout"]
 [connection signal="timeout" from="StateMachine/Attack/LostPlayer" to="StateMachine/Attack" method="_on_lost_player_timeout"]
 [connection signal="timeout" from="StateMachine/Search/SearchTime" to="StateMachine/Search" method="_on_search_time_timeout"]

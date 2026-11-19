@@ -11,6 +11,11 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		add_child(instance)
 		instance.emitting = true
 		$GolfScored.play()
+		
+		# Camera Shake
+		var camera = get_tree().get_first_node_in_group("PlayerCamera")
+		if camera:
+			camera.start_shake(1.0,0.25)
 
 func _process(delta: float) -> void:
 	if not level_started:

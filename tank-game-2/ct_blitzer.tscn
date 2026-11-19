@@ -10,6 +10,17 @@
 [ext_resource type="Script" uid="uid://cekfbv0knop6d" path="res://valid_curse_pool.gd" id="6_w6hnp"]
 [ext_resource type="Script" uid="uid://kmdm5yll0hgo" path="res://bullet_trail.gd" id="7_rg8ph"]
 
+[sub_resource type="Gradient" id="Gradient_o6pby"]
+offsets = PackedFloat32Array(0.372, 0.696, 0.888)
+colors = PackedColorArray(0.83137256, 0.8235294, 0.36862746, 0, 0.83201015, 0.8246321, 0.36717603, 1, 1, 1, 0, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_o0ykl"]
+gradient = SubResource("Gradient_o6pby")
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.2, 0.8)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bx5ho"]
 
 [sub_resource type="Gradient" id="Gradient_rypu6"]
@@ -55,7 +66,7 @@ colors = PackedColorArray(0.76862746, 0.47058824, 0.023529412, 1, 1, 0, 0, 0)
 
 [node name="CT_Blitzer" type="CharacterBody2D" unique_id=586316251 groups=["cursed_tanks"]]
 z_index = 1
-collision_layer = 34
+collision_layer = 32
 collision_mask = 0
 motion_mode = 1
 wall_min_slide_angle = 0.0
@@ -72,6 +83,11 @@ bullet_speed = 800.0
 cursed_tank = true
 color = Color(0.77, 0.47123998, 0.023099978, 1)
 
+[node name="StunnedAnimPlaceholder" type="Sprite2D" parent="." unique_id=1187823805]
+visible = false
+position = Vector2(0, -14)
+texture = SubResource("GradientTexture2D_o0ykl")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=586860767]
 scale = Vector2(1.5, 1.5)
 shape = SubResource("RectangleShape2D_bx5ho")
@@ -79,6 +95,9 @@ shape = SubResource("RectangleShape2D_bx5ho")
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=46334775]
 scale = Vector2(0.8, 0.8)
 texture = SubResource("GradientTexture2D_dpkcn")
+
+[node name="FreezeTimer" type="Timer" parent="." unique_id=1078297633]
+one_shot = true
 
 [node name="enemy_movement_component" type="Node2D" parent="." unique_id=626775412]
 script = ExtResource("2_1cjks")
@@ -107,7 +126,6 @@ stream = ExtResource("3_sx4dj")
 volume_db = 5.0
 
 [node name="ct_enemy_health_component" type="Node" parent="." unique_id=985156232]
-process_mode = 3
 script = ExtResource("3_uln4j")
 disable_time = 15.0
 
@@ -148,6 +166,7 @@ gradient = SubResource("Gradient_sx4dj")
 script = ExtResource("7_rg8ph")
 max_length = 100
 
+[connection signal="timeout" from="FreezeTimer" to="." method="_on_freeze_timer_timeout"]
 [connection signal="timeout" from="enemy_movement_component/Cooldown" to="enemy_movement_component" method="_on_cooldown_timeout"]
 [connection signal="timeout" from="enemy_movement_component/Windup" to="enemy_movement_component" method="_on_windup_timeout"]
 [connection signal="body_entered" from="enemy_movement_component/Area2D" to="enemy_movement_component" method="_on_area_2d_body_entered"]

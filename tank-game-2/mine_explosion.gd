@@ -25,6 +25,11 @@ func _ready() -> void:
 	col_off.start(col_end)
 	emitting = true
 	
+	# start camera shake
+	var camera = get_tree().get_first_node_in_group("PlayerCamera")
+	if camera:
+		camera.start_shake(2.5,0.5)
+	
 	#add_to_group("player_attacks")
 	
 func _process(_delta: float) -> void:

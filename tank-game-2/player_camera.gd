@@ -18,3 +18,8 @@ func _process(delta: float) -> void:
 func start_shake(intensity: float, duration: float) -> void:
 	shake_intensity = intensity
 	$ShakeTimer.start(duration)
+
+
+func _on_shake_timer_timeout() -> void:
+	offset.x = 0
+	offset.y = 0

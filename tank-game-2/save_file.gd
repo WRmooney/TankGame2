@@ -6,7 +6,8 @@ var game_data: Dictionary = {
 		"Sprint": false,
 		"Josh Buster": true,
 		"Invincibility": false,
-		"Flashbang": true
+		"Flashbang": true,
+		"Homing": false
 	},
 	"selected_ability":"Josh Buster"
 }
@@ -16,10 +17,11 @@ var default_save: Dictionary = {
 	"unlocked_abilities":{
 		"Sprint": true,
 		"Josh Buster": true,
-		"Invincibility": false,
-		"Flashbang": true
+		"Invincibility": true,
+		"Flashbang": true,
+		"Homing": true
 	},
-	"selected_ability":"Josh Buster"
+	"selected_ability":"Sprint"
 }
 
 func _ready() -> void:
