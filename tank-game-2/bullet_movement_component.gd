@@ -52,6 +52,8 @@ func _physics_process(delta: float) -> void:
 				parent.queue_free()
 
 		elif collider.is_in_group("hurtable"):
+			if collider.is_in_group("cursed_tanks"):
+				collider.knock_back(parent.dir_vector, 1.0)
 			collider.hit(parent.damage)
 			parent.queue_free()
 

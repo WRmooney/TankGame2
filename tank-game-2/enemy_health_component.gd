@@ -20,6 +20,7 @@ func _process(delta: float) -> void:
 
 func hit(damage: float):
 	parent.health -= damage
+	
 	if parent.health <= 0:
 		# create explosion
 		var instance = explosion.instantiate()

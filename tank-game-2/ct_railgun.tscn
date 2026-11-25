@@ -42,19 +42,22 @@ fill_to = Vector2(0.2, 0.8)
 [node name="CT_Railgun" type="CharacterBody2D" unique_id=586316251 groups=["cursed_tanks"]]
 z_index = 1
 collision_layer = 38
-collision_mask = 36
+collision_mask = 37
 motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_ro6eq")
 maxhealth = 10.0
 speed = 100
+health = null
 turn_speed = 20
 max_bullets = 5
 fire_rate = 1.0
+damage = null
 range = 1000
 bounces = 1
 bullet_speed = 800.0
 cursed_tank = true
+ct_type = "Railgun"
 color = Color(0.63529414, 0.98039216, 0.18431373, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=586860767]
@@ -141,7 +144,7 @@ avoidance_priority = 0.1
 
 [node name="ct_enemy_health_component" type="Node" parent="." unique_id=1072991922]
 script = ExtResource("10_toqic")
-disable_time = 15.0
+disable_time = 30.0
 
 [node name="HealthBar" type="ColorRect" parent="ct_enemy_health_component" unique_id=1519977743]
 z_index = 10

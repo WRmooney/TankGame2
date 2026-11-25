@@ -54,6 +54,8 @@ func hit(damage: float):
 		
 		# Disable enemy for short period
 		parent.disabled = true
+		parent.knock_back_vector = Vector2(0,0)
+		parent.knock_back_scalar = 0
 		
 		dis_timer.start(disable_time)
 		

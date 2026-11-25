@@ -8,8 +8,11 @@ func _on_body_shape_entered(body_rid: RID, body: Node2D, body_shape_index: int, 
 		if tile_id == 3:
 			body.set_cell(coords,0, Vector2(randi_range(0,2),0))
 	elif body.is_in_group("cursed_tanks"):
-		return
+		body.hit(get_parent().damage)
+		body.knock_back(Vector2(body.position.x-get_parent().position.x, body.position.y - get_parent().position.y).normalized(), 2)
 	elif body.is_in_group("hurtable"):
 		body.hit(get_parent().damage)
+	elif body.is_in_group("ball"):
+		body.hit(get_parent())
 	elif body.is_in_group("bullets"):
 		body.queue_free()

@@ -142,15 +142,15 @@ func start_special_cooldown(value_override: int = -1):
 	
 	match get_parent().cur_special:
 		"Josh Buster":
-			specialshootcooldown.start(135)
+			specialshootcooldown.start(60)
 		"Invincibility":
-			specialshootcooldown.start(90)
-		"Sprint":
 			specialshootcooldown.start(45)
+		"Sprint":
+			specialshootcooldown.start(30)
 		"Flashbang":
-			specialshootcooldown.start(60)
+			specialshootcooldown.start(45)
 		"Homing":
-			specialshootcooldown.start(60)
+			specialshootcooldown.start(30)
 		_:
 			pass
 

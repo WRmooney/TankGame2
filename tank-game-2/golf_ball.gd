@@ -6,7 +6,12 @@ func _ready() -> void:
 	print("ready")
 
 func hit(body):
-	apply_impulse(Vector2(position.x - body.position.x, position.y - body.position.y).normalized() * 150, body.position - position)
+	if body.is_in_group("bullets"):
+		apply_central_impulse(body.dir_vector.normalized() * 150)
+	elif body.is_in_group("explosions"):
+		apply_central_impulse(Vector2(position.x - body.position.x, position.y - body.position.y).normalized() * 400)
+	else:
+		apply_impulse(Vector2(position.x - body.position.x, position.y - body.position.y).normalized() * 150, body.position - position)
 
 func _process(delta: float) -> void:
 	if not level_started:

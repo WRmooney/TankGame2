@@ -36,7 +36,7 @@ scale_curve = SubResource("CurveTexture_8grcl")
 [sub_resource type="CircleShape2D" id="CircleShape2D_f8ti5"]
 radius = 30.0
 
-[node name="GPUParticles2D" type="GPUParticles2D" unique_id=404837875]
+[node name="GPUParticles2D" type="GPUParticles2D" unique_id=404837875 groups=["explosions"]]
 emitting = false
 amount = 1
 texture = SubResource("GradientTexture2D_sp1n0")

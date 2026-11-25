@@ -61,6 +61,7 @@ var orb_threshold: int = 100000000
 var base_max: int = -1
 var kill_max: int = 10
 var balls_to_spawn: int = 0
+var ball_threshold: int = 10000
 var level_complete_flag = false
 
 var base_chunks: Array[Vector2i] = []
@@ -122,9 +123,9 @@ func _process(delta: float) -> void:
 				level_complete_flag = true
 				emit_signal("level_complete")
 		"golf":
-			score_count.text = str(balls_to_spawn - $GolfContainer/BallContainer.get_child_count()) + " / " + str(balls_to_spawn)
+			score_count.text = str(balls_to_spawn - $GolfContainer/BallContainer.get_child_count()) + " / " + str(ball_threshold)
 			score_count.global_position = Vector2(get_viewport().size.x / 2 - 100, get_viewport().size.y - 100)
-			if $GolfContainer/BallContainer.get_child_count() == 0 and not level_complete_flag:
+			if (balls_to_spawn - $GolfContainer/BallContainer.get_child_count()) >= ball_threshold and not level_complete_flag:
 				level_complete_flag = true
 				emit_signal("level_complete")
 	
@@ -142,18 +143,20 @@ func generate_level(width_chunks: int, height_chunks: int) -> void: # chunk dime
 	if mode == "destroy":
 		while len(base_chunks) < base_max:
 			var base_to_add = Vector2i(randi_range(0,width_chunks-1),randi_range(0,height_chunks-1))
-			if base_to_add not in base_chunks:
+			#print(base_to_add)
+			#print(spawn_tile)
+			if (base_to_add not in base_chunks) and not is_in_player_chunk(base_to_add):
 				base_chunks.append(base_to_add)
+				fill_with_floor(base_to_add.x, base_to_add.y)
 			else:
 				continue
+	
+	
 	# fill area with chunks
 	for chunk_x in range(width_chunks):
 		for chunk_y in range(height_chunks):
-			if Vector2i(chunk_x,chunk_y) in base_chunks:
-				fill_with_floor(chunk_x, chunk_y)
-			else:
+			if Vector2i(chunk_x,chunk_y) not in base_chunks:
 				place_random_chunk(chunk_x, chunk_y, maze)
-
 			
 	# create outline
 	create_outline(width_chunks, height_chunks)
@@ -478,15 +481,17 @@ func spawn_golf() -> void:
 	#spawn hole
 	var open_cells = tilemap.get_used_cells_by_id(0)
 	open_cells.erase(spawn_tile)
-	var hole_spawn = open_cells.pick_random()
-	open_cells.erase(hole_spawn)
-	
-	var instance = GOLFHOLE.instantiate()
-	instance.position = Vector2(hole_spawn.x * 64 + 32, hole_spawn.y * 64 + 32)
-	$GolfContainer.add_child(instance)
+	for i in range(ceil(level_width + level_height) / 2):
+		var hole_spawn = open_cells.pick_random()
+		open_cells.erase(hole_spawn)
+		
+		var instance = GOLFHOLE.instantiate()
+		instance.position = Vector2(hole_spawn.x * 64 + 32, hole_spawn.y * 64 + 32)
+		$GolfContainer.add_child(instance)
 	
 	# spawn balls
-	balls_to_spawn = ceil((level_width + level_height) / 2)
+	balls_to_spawn = ceil((level_width + level_height) * 1.25)
+	ball_threshold = ceil(balls_to_spawn*0.8)
 	for i in range(balls_to_spawn):
 		var ball_spawn = open_cells.pick_random()
 		var ball_instance = GOLFBALL.instantiate()
@@ -499,15 +504,23 @@ func is_in_player_chunk(chunk_to_check: Vector2i):
 	if player_chunk == chunk_to_check:
 		return true
 	return false
-	
+
+func is_in_unavailable_chunks(spawn_coords: Vector2i):
+	var coord_chunk = Vector2i(floor(spawn_coords.x/10.0), floor(spawn_coords.y/10.0))
+	for chunk in base_chunks:
+		if coord_chunk == chunk:
+			return true
+	return false
+
 func spawn_player() -> void:
 	var instance = PLAYER.instantiate()
 	tilemap.update_internals()
 	while true:
 		var tile = Vector2i(randi_range(1,level_width*10), randi_range(1, level_height*10)+1)
-		if tilemap.get_cell_source_id(tile) == 0:
+		if tilemap.get_cell_source_id(tile) == 0 and not is_in_unavailable_chunks(tile):
 			instance.position = Vector2(tile.x * 64 + 32, tile.y * 64 + 32)
 			spawn_tile = tile
+			#print(spawn_tile)
 			#print_map(tile)
 			break
 			
@@ -526,6 +539,7 @@ func spawn_player() -> void:
 	add_child(instance)
 
 func death() -> void:
+	level_complete_flag = true
 	emit_signal("player_died")
 
 func spawn_ct_enemies() -> void:

@@ -12,7 +12,11 @@ class_name EnemyTank extends CharacterBody2D
 @export var bounces: int
 @export var bullet_speed: float
 @export var cursed_tank: bool = false
+@export var ct_type: String = "None"
 @export var color: Color
+
+var knock_back_vector: Vector2 = Vector2(0,0)
+var knock_back_scalar: float = 0.0
 
 var disabled: bool = false
 var frozen: bool = false
@@ -81,6 +85,13 @@ func hit(damage: float) -> void:
 	else:
 		$enemy_health_component.hit(damage)
 
+func knock_back(dir_vector: Vector2, multiplier: float):
+	if disabled: 
+		return
+	if ct_type == "Blitzer":
+		$enemy_movement_component.knock_back_hit()
+	knock_back_vector = dir_vector.normalized()
+	knock_back_scalar = 300 * multiplier
 
 func _on_freeze_timer_timeout() -> void:
 	match cur_effect:

@@ -44,6 +44,9 @@ height = 5
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1ealj"]
 size = Vector2(19.060402, 19.060402)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_5g3jv"]
+radius = 70.0
+
 [sub_resource type="LabelSettings" id="LabelSettings_btr0d"]
 font_size = 50
 outline_size = 10
@@ -134,7 +137,6 @@ max_bullets = 10
 max_secondary = 3
 mine_radius = 3.0
 bullet_speed = 260
-mine_damage = 1.0
 
 [node name="Turret" type="Sprite2D" parent="." unique_id=1724804025]
 z_index = 1
@@ -158,6 +160,18 @@ position = Vector2(-1.1920929e-07, 1.1920929e-07)
 scale = Vector2(1.5, 1.5)
 shape = SubResource("RectangleShape2D_1ealj")
 debug_color = Color(0.9349291, 2.0407439e-05, 0.6405946, 0.41960785)
+
+[node name="GolfGravitator" type="Area2D" parent="." unique_id=1113484351]
+collision_layer = 256
+collision_mask = 256
+gravity_space_override = 3
+gravity_point = true
+gravity_point_center = Vector2(0, 0)
+gravity_direction = Vector2(0, 0)
+gravity = 600.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GolfGravitator" unique_id=357841354]
+shape = SubResource("CircleShape2D_5g3jv")
 
 [node name="FreezeTimer" type="Timer" parent="." unique_id=988394351]
 one_shot = true

@@ -20,4 +20,12 @@ func _on_navigation_agent_2d_velocity_computed(safe_velocity: Vector2) -> void:
 		return
 	
 	parent.velocity = safe_velocity.normalized() * parent.speed
+	
+	if parent.knock_back_vector != Vector2(0,0):
+		parent.velocity += parent.knock_back_vector * parent.knock_back_scalar
+		parent.knock_back_scalar -= 10
+		if parent.knock_back_scalar <= 0:
+			parent.knock_back_scalar = 0
+			parent.knock_back_vector = Vector2(0,0)
+	
 	parent.move_and_slide()

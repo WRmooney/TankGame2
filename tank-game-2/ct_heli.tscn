@@ -45,6 +45,7 @@ wall_min_slide_angle = 0.0
 script = ExtResource("1_idn42")
 maxhealth = 10.0
 speed = 50
+health = null
 turn_speed = 20
 max_bullets = 5
 fire_rate = 1.0
@@ -53,6 +54,7 @@ range = 1000
 bounces = 4
 bullet_speed = 800.0
 cursed_tank = true
+ct_type = "Heli"
 color = Color(0.023099978, 0.63306826, 0.77, 1)
 
 [node name="StunnedAnimPlaceholder" type="Sprite2D" parent="." unique_id=834102033]
@@ -85,7 +87,7 @@ shape = SubResource("CircleShape2D_cf0s8")
 
 [node name="ct_enemy_health_component" type="Node" parent="." unique_id=1760583101]
 script = ExtResource("4_vx88q")
-disable_time = 15.0
+disable_time = 30.0
 
 [node name="HealthBar" type="ColorRect" parent="ct_enemy_health_component" unique_id=540300277]
 z_index = 10

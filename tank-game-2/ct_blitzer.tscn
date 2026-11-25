@@ -81,6 +81,7 @@ range = 300
 bounces = 4
 bullet_speed = 800.0
 cursed_tank = true
+ct_type = "Blitzer"
 color = Color(0.77, 0.47123998, 0.023099978, 1)
 
 [node name="StunnedAnimPlaceholder" type="Sprite2D" parent="." unique_id=1187823805]
@@ -127,7 +128,7 @@ volume_db = 5.0
 
 [node name="ct_enemy_health_component" type="Node" parent="." unique_id=985156232]
 script = ExtResource("3_uln4j")
-disable_time = 15.0
+disable_time = 30.0
 
 [node name="HealthBar" type="ColorRect" parent="ct_enemy_health_component" unique_id=1748823791]
 z_index = 10

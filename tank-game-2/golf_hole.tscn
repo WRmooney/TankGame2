@@ -19,6 +19,9 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.8, 0.2)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_5g3jv"]
+radius = 60.0
+
 [node name="GolfHole" type="Node2D" unique_id=92398270]
 script = ExtResource("1_128hw")
 
@@ -84,6 +87,18 @@ pivot_offset = Vector2(30, 30)
 texture = ExtResource("3_128hw")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." unique_id=739043991]
+
+[node name="GolfGravitator" type="Area2D" parent="." unique_id=1449803689]
+collision_layer = 256
+collision_mask = 256
+priority = 1
+gravity_space_override = 3
+gravity_point = true
+gravity_point_center = Vector2(0, 0)
+gravity_direction = Vector2(0, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GolfGravitator" unique_id=2127839856]
+shape = SubResource("CircleShape2D_5g3jv")
 
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
 [connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_entered"]

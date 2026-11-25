@@ -13,6 +13,15 @@ func _process(delta: float) -> void:
 	var dir_to_player = atan2(player.position.y - parent.position.y, player.position.x - parent.position.x)
 	parent.velocity = Vector2(1,0).rotated(dir_to_player).normalized() * speed
 	blades.rotate(deg_to_rad(8))
+	
+	if parent.knock_back_vector != Vector2(0,0):
+		parent.velocity += parent.knock_back_vector * parent.knock_back_scalar
+		parent.knock_back_scalar -= 10
+		blades.rotate(deg_to_rad(7))
+		if parent.knock_back_scalar <= 0:
+			parent.knock_back_scalar = 0
+			parent.knock_back_vector = Vector2(0,0)
+	
 	parent.move_and_slide()
 
 

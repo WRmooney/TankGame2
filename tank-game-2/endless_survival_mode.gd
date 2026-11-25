@@ -1,10 +1,10 @@
 extends Node2D
 
 
-var level: int = 1
+var level: int = 4
 var lives: int = 3
-var level_width: int = 2
-var level_height: int = 2
+var level_width: int = 3
+var level_height: int = 3
 var score: int = 0
 
 @export var enemies: Array[String] = []
@@ -30,6 +30,7 @@ var cur_timer_name: String = "None"
 var cur_timer: Timer = win_timer
 
 var input_press_delay = false
+var the_cat = false
 
 @export var level_load_time: float = 5.0
 
@@ -88,7 +89,7 @@ func _process(float) -> void:
 	#print(cur_timer_name)
 	# Check early transition end (spacebar)
 	if cur_timer_name != "None":
-		if Input.get_action_strength("TransitionSkip") and not input_press_delay:
+		if Input.get_action_strength("TransitionSkip") and not input_press_delay and not the_cat:
 			cur_timer.stop()
 			input_press_delay = true
 			cur_timer_name = "None"
@@ -167,7 +168,7 @@ func continue_to_level() -> void:
 	battlefield.level_complete.connect(level_complete)
 	battlefield.player_died.connect(player_died)
 	cur_level = battlefield
-	add_child(battlefield)
+	
 	
 func set_mode(battlefield: Node2D, mode: String) -> Node2D:
 	var random = false
@@ -299,15 +300,19 @@ func boss_transition_screen() -> void:
 	pausable = false
 
 func boss_transition_end() -> void:
+	add_child(cur_level)
+	
 	$BossScreen.visible = false
 	$ObjectiveLayer.visible = true
 	$TankCoinLayer.visible = false
+	pausable = true
 	
 func level_transition_screen() -> void:
 	# scientists reveal the hi
 	var chance = randi_range(1,30)
 	print(chance)
 	if chance == 17:
+		the_cat = true
 		$Hi.visible = true
 	
 	$LevelScreen/LevelNumber.text = "Level " + str(level)
@@ -328,7 +333,10 @@ func level_transition_screen() -> void:
 
 func level_transition_end() -> void:
 	# the hi
+	the_cat = false
 	$Hi.visible = false
+	
+	add_child(cur_level)
 	
 	$LevelScreen/EventText.visible = false
 	$LevelScreen.visible = false
@@ -363,10 +371,12 @@ func game_over_screen() -> void:
 	
 func game_over_screen_popup() -> void:
 	$GameOverScreen/RestartButton.visible = true
+	$GameOverScreen/Exit.visible = true
 	#print("game over popup")
 
 func _on_restart_button_pressed() -> void:
 	$GameOverScreen/RestartButton.visible = false
+	$GameOverScreen/Exit.visible = false
 	$GameOverScreen.visible = false
 	$ObjectiveLayer.visible = false
 	delete_level()

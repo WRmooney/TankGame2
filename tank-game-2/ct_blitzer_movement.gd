@@ -36,13 +36,28 @@ func _process(delta: float) -> void:
 		# SPINNNNNN
 		$"../Sprite2D".rotate(deg_to_rad(30))
 	else:
+		if parent.knock_back_vector != Vector2(0,0):
+			parent.velocity = parent.knock_back_vector * parent.knock_back_scalar * 1.5
+			parent.knock_back_scalar -= 10
+			if parent.knock_back_scalar <= 0:
+				parent.knock_back_scalar = 0
+				parent.knock_back_vector = Vector2(0,0)
+				$Cooldown.start(1.5)
+				
+			parent.move_and_slide()
 		# SPINNNNNNN
 		$"../Sprite2D".rotate(deg_to_rad(10))
 	
 	if $Cooldown.is_stopped() and $Windup.is_stopped():
 		$Cooldown.start(3)
 
-
+func knock_back_hit():
+	in_attack = false
+	parent.velocity = Vector2(0,0)
+	$Cooldown.stop()
+	$Windup.stop()
+	$LineContainer.visible = false
+	
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if parent.disabled or parent.frozen:
