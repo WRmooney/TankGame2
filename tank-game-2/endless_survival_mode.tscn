@@ -5,6 +5,30 @@
 [ext_resource type="Script" uid="uid://qm1gp8t4c07w" path="res://enemy_select.gd" id="3_ouk6g"]
 [ext_resource type="Texture2D" uid="uid://cv5ptu70q6hm3" path="res://TankCoinV1.png" id="4_x8s7t"]
 [ext_resource type="Texture2D" uid="uid://dyj15hxe12vdr" path="res://1000065890.jpg" id="5_ouk6g"]
+[ext_resource type="Texture2D" uid="uid://dnturfuhfvifp" path="res://Snapchat-2002855866(1).jpg" id="6_01vdm"]
+[ext_resource type="Texture2D" uid="uid://bew6cwfumwibl" path="res://PXL_20260726_141144297.jpg" id="7_ji1u7"]
+[ext_resource type="Texture2D" uid="uid://ckcwuxicmtjw3" path="res://PXL_20260530_031133211.jpg" id="8_yjgt5"]
+[ext_resource type="Texture2D" uid="uid://cx4w7a0ur52b3" path="res://20240914_183626(1).jpg" id="9_abns6"]
+[ext_resource type="Texture2D" uid="uid://8iywdnpg5exy" path="res://20240914_183612(1).jpg" id="10_xydwc"]
+[ext_resource type="Texture2D" uid="uid://bpus325ftscb7" path="res://20240712_120710(1).jpg" id="11_d0w2k"]
+[ext_resource type="Texture2D" uid="uid://d1wdic0wh8nn6" path="res://20240711_183556(1).jpg" id="12_sgml7"]
+[ext_resource type="Texture2D" uid="uid://ce3roaop3dx6w" path="res://20240204_174800(1).jpg" id="13_raahe"]
+[ext_resource type="Texture2D" uid="uid://w5dc4ckwglk4" path="res://20240204_173414(1).jpg" id="14_pqtfu"]
+[ext_resource type="Texture2D" uid="uid://dr4hym5806xk8" path="res://20240105_071858(1).jpg" id="15_oanyr"]
+[ext_resource type="Texture2D" uid="uid://cjhx6tf7ro8sr" path="res://20231226_173127(1).jpg" id="16_lqw6f"]
+[ext_resource type="Texture2D" uid="uid://dokojg3nnmiis" path="res://20231226_171645(1).jpg" id="17_tg02x"]
+[ext_resource type="Texture2D" uid="uid://cik65v5amxa7m" path="res://20261114_131354.jpg" id="18_j7i5h"]
+[ext_resource type="Texture2D" uid="uid://cxvlhxixy4t0l" path="res://20260501_194035(0)(1).jpg" id="19_1ngvu"]
+[ext_resource type="Texture2D" uid="uid://kawnnhsymmtv" path="res://20260320_180944(0)(1).jpg" id="20_k1fly"]
+[ext_resource type="Texture2D" uid="uid://b82xwu0jjs8xu" path="res://20250518_191600(0)(1).jpg" id="21_gcecq"]
+[ext_resource type="Texture2D" uid="uid://bet14ojilthfu" path="res://20250412_162938(0)(1).jpg" id="22_gc8lp"]
+[ext_resource type="Texture2D" uid="uid://4ir6rhsfmhro" path="res://20241217_143112(1)(1).jpg" id="23_qa54r"]
+[ext_resource type="Texture2D" uid="uid://c1vh8tsvism4i" path="res://IMG_20260911_142337.jpg" id="24_7vgin"]
+[ext_resource type="Texture2D" uid="uid://bfc8fodpuabh3" path="res://20260403_173331(1).jpg" id="25_o5k1j"]
+[ext_resource type="Texture2D" uid="uid://g5il012abdrh" path="res://20241128_203012(1).jpg" id="26_2jwc7"]
+[ext_resource type="Texture2D" uid="uid://dqeadseimyfr3" path="res://20250207_221247(1).jpg" id="27_s2c5s"]
+[ext_resource type="Texture2D" uid="uid://drjs0lhvru114" path="res://20250207_221255(1).jpg" id="28_wjsky"]
+[ext_resource type="Texture2D" uid="uid://bej7gku16xm3w" path="res://20260106_205033(1).jpg" id="29_nlmgg"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ombb5"]
 font_size = 26
@@ -807,15 +831,205 @@ text = "Exit to Main Menu"
 
 [node name="Hi" type="CanvasLayer" parent="." unique_id=443965884]
 layer = 20
-visible = false
 
 [node name="Hi" type="TextureRect" parent="Hi" unique_id=1334621609]
+visible = false
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 40.0
-offset_bottom = 40.0
 texture = ExtResource("5_ouk6g")
+expand_mode = 2
+
+[node name="Hi2" type="TextureRect" parent="Hi" unique_id=959960747]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("6_01vdm")
+expand_mode = 2
+
+[node name="Hi3" type="TextureRect" parent="Hi" unique_id=1654872978]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("7_ji1u7")
+expand_mode = 2
+
+[node name="Hi4" type="TextureRect" parent="Hi" unique_id=52580405]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("8_yjgt5")
+expand_mode = 2
+
+[node name="Hi5" type="TextureRect" parent="Hi" unique_id=1287647413]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("9_abns6")
+expand_mode = 2
+
+[node name="Hi6" type="TextureRect" parent="Hi" unique_id=389493963]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("10_xydwc")
+expand_mode = 2
+
+[node name="Hi7" type="TextureRect" parent="Hi" unique_id=59082475]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("11_d0w2k")
+expand_mode = 2
+
+[node name="Hi8" type="TextureRect" parent="Hi" unique_id=611672329]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("12_sgml7")
+expand_mode = 2
+
+[node name="Hi9" type="TextureRect" parent="Hi" unique_id=2090151083]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("13_raahe")
+expand_mode = 2
+
+[node name="Hi10" type="TextureRect" parent="Hi" unique_id=464127286]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("14_pqtfu")
+expand_mode = 2
+
+[node name="Hi11" type="TextureRect" parent="Hi" unique_id=2129998693]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("15_oanyr")
+expand_mode = 2
+
+[node name="Hi12" type="TextureRect" parent="Hi" unique_id=1985108577]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("16_lqw6f")
+expand_mode = 2
+
+[node name="Hi13" type="TextureRect" parent="Hi" unique_id=195102804]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("17_tg02x")
+expand_mode = 2
+
+[node name="Hi14" type="TextureRect" parent="Hi" unique_id=1907429067]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("18_j7i5h")
+expand_mode = 2
+
+[node name="Hi15" type="TextureRect" parent="Hi" unique_id=2114396655]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("19_1ngvu")
+expand_mode = 2
+
+[node name="Hi16" type="TextureRect" parent="Hi" unique_id=70812231]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("20_k1fly")
+expand_mode = 2
+
+[node name="Hi17" type="TextureRect" parent="Hi" unique_id=392740293]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("21_gcecq")
+expand_mode = 2
+
+[node name="Hi18" type="TextureRect" parent="Hi" unique_id=1313932309]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("22_gc8lp")
+expand_mode = 2
+
+[node name="Hi19" type="TextureRect" parent="Hi" unique_id=2036295599]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("23_qa54r")
+expand_mode = 2
+
+[node name="Hi20" type="TextureRect" parent="Hi" unique_id=1613407323]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("24_7vgin")
+expand_mode = 2
+
+[node name="Hi21" type="TextureRect" parent="Hi" unique_id=1748341013]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("25_o5k1j")
+expand_mode = 2
+
+[node name="Hi22" type="TextureRect" parent="Hi" unique_id=1053557321]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("26_2jwc7")
+expand_mode = 2
+
+[node name="Hi23" type="TextureRect" parent="Hi" unique_id=1311674096]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("27_s2c5s")
+expand_mode = 2
+
+[node name="Hi24" type="TextureRect" parent="Hi" unique_id=931807473]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("28_wjsky")
+expand_mode = 2
+
+[node name="Hi25" type="TextureRect" parent="Hi" unique_id=1294969980]
+visible = false
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("29_nlmgg")
 expand_mode = 2
 
 [connection signal="timeout" from="Timers/WinTimer" to="." method="_on_win_timer_timeout"]

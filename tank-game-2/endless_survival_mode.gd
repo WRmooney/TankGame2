@@ -31,6 +31,7 @@ var cur_timer: Timer = win_timer
 
 var input_press_delay = false
 var the_cat = false
+var cur_cat: TextureRect
 
 @export var level_load_time: float = 5.0
 
@@ -309,11 +310,12 @@ func boss_transition_end() -> void:
 	
 func level_transition_screen() -> void:
 	# scientists reveal the hi
-	var chance = randi_range(1,30)
+	var chance = randi_range(1,3)
 	print(chance)
-	if chance == 17:
+	if chance == 1:
 		the_cat = true
-		$Hi.visible = true
+		$Hi.get_children().pick_random().visible = true
+		# Do other stuff too
 	
 	$LevelScreen/LevelNumber.text = "Level " + str(level)
 	$LevelScreen/LiveCount.text = "Lives: " + str(lives)
@@ -333,8 +335,10 @@ func level_transition_screen() -> void:
 
 func level_transition_end() -> void:
 	# the hi
-	the_cat = false
-	$Hi.visible = false
+	if the_cat:
+		the_cat = false
+		for pic in $Hi.get_children():
+			pic.visible = false
 	
 	add_child(cur_level)
 	
